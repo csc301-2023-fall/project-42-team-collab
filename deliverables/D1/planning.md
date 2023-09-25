@@ -3,7 +3,7 @@
  > **This document will serve as a master plan between your team, your partner and your TA.**
 
 ## Product Details
- 
+
 #### Q1: What is the product?
 
  > Short (1 - 2 min' read)
@@ -18,12 +18,12 @@
    For example: This is not the time or the place to talk about which programming language and/or framework you are planning to use.
  * **Feel free (and very much encouraged) to include useful diagrams, mock-ups and/or links**.
 
+TODO
+
 
 #### Q2: Who are your target users?
 
-  > Short (1 - 2 min' read max)
- * Be specific (e.g. a 'a third-year university student studying Computer Science' and not 'a student')
- * **Feel free to use personas. You can create your personas as part of this Markdown file, or add a link to an external site (for example, [Xtensio](https://xtensio.com/user-persona/)).**
+Teams working in small organizations (less than 2000 people).
 
 #### Q3: Why would your users choose your product? What are they using today to solve their problem/need?
 
@@ -36,12 +36,16 @@
     * Does this application exist in another form? If so, how does your differ and provide value to the users?
     * How does this align with your partner's organization's values/mission/mandate?
 
+TODO
+
 #### Q4: What are the user stories that make up the Minumum Viable Product (MVP)?
 
  * At least 5 user stories concerning the main features of the application - note that this can broken down further
  * You must follow proper user story format (as taught in lecture) ```As a <user of the app>, I want to <do something in the app> in order to <accomplish some goal>```
  * User stories must contain acceptance criteria. Examples of user stories with different formats can be found here: https://www.justinmind.com/blog/user-story-examples/. **It is important that you provide a link to an artifact containing your user stories**.
  * If you have a partner, these must be reviewed and accepted by them. You need to include the evidence of partner approval (e.g., screenshot from email) or at least communication to the partner (e.g., email you sent)
+
+TODO
 
 #### Q5: Have you decided on how you will build it? Share what you know now or tell us the options you are considering.
 
@@ -50,6 +54,8 @@
  * How will you deploy the application?
  * Describe the architecture - what are the high level components or patterns you will use? Diagrams are useful here. 
  * Will you be using third party applications or APIs? If so, what are they?
+
+TODO
 
 ----
 ## Intellectual Property Confidentiality Agreement 
@@ -66,6 +72,10 @@
 
 Briefly describe which option you have agreed to.
 
+Option 5. 
+
+TODO
+
 ----
 
 ## Teamwork Details
@@ -76,6 +86,13 @@ Do a team-building activity in-person or online. This can be playing an online g
 * Get to know each other on a more personal level.
 * Provide a few sentences on what you did and share a picture or other evidence of your team building activity.
 * Share at least three fun facts from members of you team (total not 3 for each member).
+
+Since we all know each other very well, we hang out frequently together.
+
+Fun Facts:
+
+1. Ray Hung can easily get a 90+ exam grade with a 1-hour review. 
+2. TODO
 
 
 #### Q7: What are the roles & responsibilities on the team?
@@ -90,6 +107,8 @@ List each team member and:
  * A description of their role(s) and responsibilities including the components they'll work on and non-software related work
  * Why did you choose them to take that role? Specify if they are interested in learning that part, experienced in it, or any other reasons. Do no make things up. This part is not graded but may be reviewed later.
 
+TODO
+
 
 #### Q8: How will you work as a team?
 
@@ -100,24 +119,38 @@ Describe meetings (and other events) you are planning to have.
  * You should have 2 meetings with your project partner (if you have one) before D1 is due. Describe them here:
    * You must keep track of meeting minutes and add them to your repo under "documents/minutes" folder
    * You must have a regular meeting schedule established for the rest of the term.  
-  
+
+TODO
+
 #### Q9: How will you organize your team?
 
-List/describe the artifacts you will produce in order to organize your team.       
+We used Notion to manage tasks, schedule meetings, post announcements, and document information. 
 
- * Artifacts can be To-Do lists, Task boards, schedule(s), meeting minutes, etc.
- * We want to understand:
-   * How do you keep track of what needs to get done? (You must grant your TA and partner access to systems you use to manage work)
-   * **How do you prioritize tasks?**
-   * How do tasks get assigned to team members?
-   * How do you determine the status of work from inception to completion?
+- We prioritize our tasks with the help of the Notion task board. It's flexible and we can easily assign tasks to specific people.
+- Different types of work have different criteria for determining the status. 
+    - Programming works are completed once the pull requests are merged.
+    - Meetings are completed once we reach our goal for that meeting.
+    - Assignments/Deliverables are completed once we submit it.
+    - Other tasks can be generalized in similar ways.
+
+We will also use the GitHub project to better manage programming works.
 
 #### Q10: What are the rules regarding how your team works?
 
 **Communications:**
- * What is the expected frequency? What methods/channels will be used? 
- * If you have a partner project, what is your process for communicating with your partner?
- 
+
+ * We expect that we will meet weekly. 
+    * For daily communications, we will use Slack.
+    * For weekly meetings, we will host them on Zoom.
+
+ * We will try our best to meet with our partner once a week. 
+    * We will first email our partner about our expected meeting schedule, and we will modify it as needed.
+    * Then, we will host a meeting with our partner on a proper platform (Zoom).
+    * If situation allowed, we will record the meetings and archive them.
+
+
 **Collaboration: (Share your responses to Q8 & Q9 from A1)**
+
  * How are people held accountable for attending meetings, completing action items? Is there a moderator or process?
  * How will you address the issue if one person doesn't contribute or is not responsive? 
+ * TODO
