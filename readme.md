@@ -1,5 +1,7 @@
 # Slack App / Getting Employed
 
+Application Icon obtained from: https://user-images.githubusercontent.com/7389110/58056685-eec98200-7b59-11e9-99e0-fd327b3e22e4.png
+
 ## Partner Intro
 - Partner Information: Team Collab
 - Primary Contact: David Jorjani (d.jorjani@gmail.com)
