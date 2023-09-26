@@ -18,7 +18,11 @@
    For example: This is not the time or the place to talk about which programming language and/or framework you are planning to use.
  * **Feel free (and very much encouraged) to include useful diagrams, mock-ups and/or links**.
 
-TODO
+A Slack App that helps users to do various things, these include but not limited to:
+- Send kudos using a form to a certain user
+- Option to add user's alignment of company values in the kudos that are sent
+- Ability to retrieve information of how much kudos are sent to a certain user and their statistics
+- TODO
 
 
 #### Q2: Who are your target users?
@@ -54,6 +58,12 @@ TODO
  * How will you deploy the application?
  * Describe the architecture - what are the high level components or patterns you will use? Diagrams are useful here. 
  * Will you be using third party applications or APIs? If so, what are they?
+
+Technology Stack
+
+- Python as the Backend
+- Slack Bolt SDK for Python as the entry point to Slack's API
+- TODO as the Database entry
 
 TODO
 
@@ -92,7 +102,8 @@ Since we all know each other very well, we hang out frequently together.
 Fun Facts:
 
 1. Ray Hung can easily get a 90+ exam grade with a 1-hour review. 
-2. TODO
+2. We have at least 2 students that knows how to solve a rubik's cube. Including one speed-cuber that can solve it in under 30 seconds consistently!
+3. We have 3 students that can play the piano.
 
 
 #### Q7: What are the roles & responsibilities on the team?
@@ -107,8 +118,19 @@ List each team member and:
  * A description of their role(s) and responsibilities including the components they'll work on and non-software related work
  * Why did you choose them to take that role? Specify if they are interested in learning that part, experienced in it, or any other reasons. Do no make things up. This part is not graded but may be reviewed later.
 
-TODO
+1. Ray Hung - Leader, Backend Developer, Scrum Manager, Partner Liaison
+- He is the leader of the team (Has experience in leading teams)
+- He will be responsible for the overall progress of the project, and ensuring that it meets requirements
+- He will also be responsible for the backend development of the project that is related to Slack's API (Has experience writing a Discord bot)
+- He will also be the partner liaison (As the leader)
 
+2. Scott Cui - Co-Leader, Partner Liaison
+
+3. Will Zhao
+
+4. Arthur Li
+
+5. Jiawei Yu
 
 #### Q8: How will you work as a team?
 
@@ -120,7 +142,11 @@ Describe meetings (and other events) you are planning to have.
    * You must keep track of meeting minutes and add them to your repo under "documents/minutes" folder
    * You must have a regular meeting schedule established for the rest of the term.  
 
-TODO
+Any meetings required will be held either in person or Zoom. 
+
+However, meetings are not necessary, as we will communicate through Slack and Notion on a frequent basis.
+
+Meetings with project partner will be conducted through Slack as well, as the project partner prefers communication on Slack. 
 
 #### Q9: How will you organize your team?
 
@@ -133,7 +159,9 @@ We used Notion to manage tasks, schedule meetings, post announcements, and docum
     - Assignments/Deliverables are completed once we submit it.
     - Other tasks can be generalized in similar ways.
 
-We will also use the GitHub project to better manage programming works.
+We will also utilize Slack to test out our bot and to communicate with our partner.
+
+We will also use the GitHub Project to better manage programming works.
 
 #### Q10: What are the rules regarding how your team works?
 
