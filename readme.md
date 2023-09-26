@@ -9,10 +9,10 @@ How to access our Notion: TODO
 
 ## Description about the project
 * Not available at the moment
-​
+
 ## Key Features
 * Not available at the moment
-​
+
 ## Instructions
 * Not available at the moment
 
@@ -24,6 +24,6 @@ How to access our Notion: TODO
 
 ## Coding Standards and Guidelines
 * Not available at the moment
-​
+
 ## Licenses 
 * Not available at the moment
