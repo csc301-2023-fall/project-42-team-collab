@@ -104,7 +104,7 @@ Fun Facts:
 1. Ray Hung can easily get a 90+ exam grade with a 1-hour review. 
 2. We have at least 3 students that knows how to solve a Rubik's cube. Including one speed-cuber that can solve it in under 20 seconds consistently!
 3. We have 3 students that can play the piano.
-
+4. There is only 1 senior student in our team, and he is the one out of two students that has a driver's license.
 
 #### Q7: What are the roles & responsibilities on the team?
 
@@ -130,7 +130,10 @@ List each team member and:
    - He will serve as a backend developer and will primarily be responsible for refining and organizing the code and streamlining the workflow for the entire project. (He likes to organize stuff)
    - He will ensure that the implemented feature works as intended and meets the specified requirments. 
 
-4. Arthur Li
+4. Arthur Li - Frontend Developer, Quality Assurance Tester
+   - He will be responsible for the frontend development of the project, especially the ones related to the Slack's API (Has prior experience in frontend development in CSC309)
+   - He will main decide on how the frontend will look like and how it will interact with the backend in the project
+   - He will also be responsible for testing the implemented features and ensure there are no quality issues.
 
 5. Jiawei Yu
     - He will be responsible for some parts of the backend development of the project, especially the ones with the database (Has experience in database management)
@@ -189,5 +192,5 @@ We will also use the GitHub Project to better manage programming works.
  * TODO
 
 
- - As we are close friends in our lives, we will hold each other accountable for attending meetings and completing assigned tasks 
+ - As we are close friends in our lives, we will hold each other accountable for attending meetings and completing assigned tasks. Team leads - Ray would act as moderators in this case to ensure that everyone is on track.
  - If some member of our team does not contribute or is not responsive, we will first try to communicate with them and understand the reason behind it, and try our best to help him overcome it. If the problem persists, we will contact the TA for help.
