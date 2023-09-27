@@ -102,7 +102,7 @@ Since we all know each other very well, we hang out frequently together.
 Fun Facts:
 
 1. Ray Hung can easily get a 90+ exam grade with a 1-hour review. 
-2. We have at least 2 students that knows how to solve a Rubik's cube. Including one speed-cuber that can solve it in under 20 seconds consistently!
+2. We have at least 3 students that knows how to solve a Rubik's cube. Including one speed-cuber that can solve it in under 20 seconds consistently!
 3. We have 3 students that can play the piano.
 
 
@@ -126,7 +126,9 @@ List each team member and:
 
 2. Scott Cui - Co-Leader, Partner Liaison
 
-3. Will Zhao
+3. Will Zhao - Backend Developer, Quality Assurance Tester
+   - He will serve as a backend developer and will primarily be responsible for refining and organizing the code and streamlining the workflow for the entire project. (He likes to organize stuff)
+   - He will ensure that the implemented feature works as intended and meets the specified requirments. 
 
 4. Arthur Li
 
@@ -177,6 +179,7 @@ We will also use the GitHub Project to better manage programming works.
     * We will first email our partner about our expected meeting schedule, and we will modify it as needed.
     * Then, we will host a meeting with our partner on a proper platform (Zoom).
     * If situation allowed, we will record the meetings and archive them.
+    * If in doubt about the client's needs, we will ask on Slack directly.
 
 
 **Collaboration: (Share your responses to Q8 & Q9 from A1)**
