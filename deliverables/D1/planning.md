@@ -102,7 +102,7 @@ Since we all know each other very well, we hang out frequently together.
 Fun Facts:
 
 1. Ray Hung can easily get a 90+ exam grade with a 1-hour review. 
-2. We have at least 2 students that knows how to solve a rubik's cube. Including one speed-cuber that can solve it in under 30 seconds consistently!
+2. We have at least 2 students that knows how to solve a Rubik's cube. Including one speed-cuber that can solve it in under 20 seconds consistently!
 3. We have 3 students that can play the piano.
 
 
@@ -119,10 +119,10 @@ List each team member and:
  * Why did you choose them to take that role? Specify if they are interested in learning that part, experienced in it, or any other reasons. Do no make things up. This part is not graded but may be reviewed later.
 
 1. Ray Hung - Leader, Backend Developer, Scrum Manager, Partner Liaison
-- He is the leader of the team (Has experience in leading teams)
-- He will be responsible for the overall progress of the project, and ensuring that it meets requirements
-- He will also be responsible for the backend development of the project that is related to Slack's API (Has experience writing a Discord bot)
-- He will also be the partner liaison (As the leader)
+    - He is the leader of the team (Has experience in leading teams)
+    - He will be responsible for the overall progress of the project, and ensuring that it meets requirements
+    - He will also be responsible for the backend development of the project that is related to Slack's API (Has experience writing a Discord bot)
+    - He will also be the partner liaison (As the leader)
 
 2. Scott Cui - Co-Leader, Partner Liaison
 
@@ -131,6 +131,8 @@ List each team member and:
 4. Arthur Li
 
 5. Jiawei Yu
+    - He will be responsible for some parts of the backend development of the project, especially the ones with the database (Has experience in database management)
+    - He chooses to take this role as he likes managing databases and understanding the back scene of a project seems really enjoyable to him
 
 #### Q8: How will you work as a team?
 
@@ -182,3 +184,7 @@ We will also use the GitHub Project to better manage programming works.
  * How are people held accountable for attending meetings, completing action items? Is there a moderator or process?
  * How will you address the issue if one person doesn't contribute or is not responsive? 
  * TODO
+
+
+ - As we are close friends in our lives, we will hold each other accountable for attending meetings and completing assigned tasks 
+ - If some member of our team does not contribute or is not responsive, we will first try to communicate with them and understand the reason behind it, and try our best to help him overcome it. If the problem persists, we will contact the TA for help.
