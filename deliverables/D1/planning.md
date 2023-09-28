@@ -135,7 +135,7 @@ List each team member and:
    - He will main decide on how the frontend will look like and how it will interact with the backend in the project
    - He will also be responsible for testing the implemented features and ensure there are no quality issues.
 
-5. Jiawei Yu
+5. Jiawei Yu - backend Developer, Database Manager
     - He will be responsible for some parts of the backend development of the project, especially the ones with the database (Has experience in database management)
     - He chooses to take this role as he likes managing databases and understanding the back scene of a project seems really enjoyable to him
 
