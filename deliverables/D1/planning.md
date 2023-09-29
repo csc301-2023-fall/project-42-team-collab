@@ -53,19 +53,17 @@ TODO
 
 #### Q5: Have you decided on how you will build it? Share what you know now or tell us the options you are considering.
 
-> Short (1-2 min' read max)
+<!-- > Short (1-2 min' read max)
  * What is the technology stack? Specify languages, frameworks, libraries, PaaS products or tools to be used or being considered. 
  * How will you deploy the application?
  * Describe the architecture - what are the high level components or patterns you will use? Diagrams are useful here. 
- * Will you be using third party applications or APIs? If so, what are they?
+ * Will you be using third party applications or APIs? If so, what are they? -->
 
 Technology Stack
 
 - Python as the Backend
 - Slack Bolt SDK for Python as the entry point to Slack's API
-- TODO as the Database entry
-
-TODO
+- PostgreSQL with Psycopg2 for Database (Microsoft Azure perhaps)
 
 ----
 ## Intellectual Property Confidentiality Agreement 
@@ -92,10 +90,10 @@ TODO
 
 #### Q6: Have you met with your team?
 
-Do a team-building activity in-person or online. This can be playing an online game, meeting for bubble tea, lunch, or any other activity you all enjoy.
+<!-- Do a team-building activity in-person or online. This can be playing an online game, meeting for bubble tea, lunch, or any other activity you all enjoy.
 * Get to know each other on a more personal level.
 * Provide a few sentences on what you did and share a picture or other evidence of your team building activity.
-* Share at least three fun facts from members of you team (total not 3 for each member).
+* Share at least three fun facts from members of you team (total not 3 for each member). -->
 
 Since we all know each other very well, we hang out frequently together.
 
