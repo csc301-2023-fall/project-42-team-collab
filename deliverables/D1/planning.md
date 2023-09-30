@@ -42,7 +42,7 @@ Teams working in small organizations (less than 2000 people).
 
 TODO
 
-#### Q4: What are the user stories that make up the Minumum Viable Product (MVP)?
+#### Q4: What are the user stories that make up the Minimum Viable Product (MVP)?
 
  * At least 5 user stories concerning the main features of the application - note that this can broken down further
  * You must follow proper user story format (as taught in lecture) ```As a <user of the app>, I want to <do something in the app> in order to <accomplish some goal>```
@@ -53,17 +53,13 @@ TODO
 
 #### Q5: Have you decided on how you will build it? Share what you know now or tell us the options you are considering.
 
-<!-- > Short (1-2 min' read max)
- * What is the technology stack? Specify languages, frameworks, libraries, PaaS products or tools to be used or being considered. 
- * How will you deploy the application?
- * Describe the architecture - what are the high level components or patterns you will use? Diagrams are useful here. 
- * Will you be using third party applications or APIs? If so, what are they? -->
-
 Technology Stack
 
-- Python as the Backend
+- Python as the backend
 - Slack Bolt SDK for Python as the entry point to Slack's API
 - PostgreSQL with Psycopg2 for Database (Microsoft Azure perhaps)
+- Docker for easy deployment
+- Slack as the frontend (may add more in the future).
 
 ----
 ## Intellectual Property Confidentiality Agreement 
@@ -80,9 +76,7 @@ Technology Stack
 
 Briefly describe which option you have agreed to.
 
-Option 5. 
-
-TODO
+We have agreed upon Option 5 as our partner required. 
 
 ----
 
@@ -90,12 +84,9 @@ TODO
 
 #### Q6: Have you met with your team?
 
-<!-- Do a team-building activity in-person or online. This can be playing an online game, meeting for bubble tea, lunch, or any other activity you all enjoy.
-* Get to know each other on a more personal level.
-* Provide a few sentences on what you did and share a picture or other evidence of your team building activity.
-* Share at least three fun facts from members of you team (total not 3 for each member). -->
-
 Since we all know each other very well, we hang out frequently together.
+
+<img src="./team-building-activity.jpg" style="zoom:15%;" />
 
 Fun Facts:
 
@@ -106,12 +97,6 @@ Fun Facts:
 
 #### Q7: What are the roles & responsibilities on the team?
 
-Describe the different roles on the team and the responsibilities associated with each role. 
- * Roles should reflect the structure of your team and be appropriate for your project. One person may have multiple roles.  
- * Add role(s) to your Team-[Team_Number]-[Team_Name].csv file on the main folder.
- * At least one person must be identified as the dedicated partner liaison. They need to have great organization and communication skills.
- * Everyone must contribute to code. Students who don't contribute to code enough will receive a lower mark at the end of the term.
-
 List each team member and:
  * A description of their role(s) and responsibilities including the components they'll work on and non-software related work
  * Why did you choose them to take that role? Specify if they are interested in learning that part, experienced in it, or any other reasons. Do no make things up. This part is not graded but may be reviewed later.
@@ -121,31 +106,23 @@ List each team member and:
     - He will be responsible for the overall progress of the project, and ensuring that it meets requirements
     - He will also be responsible for the backend development of the project that is related to Slack's API (Has experience writing a Discord bot)
     - He will also be the partner liaison (As the leader)
-
-2. Scott Cui - Co-Leader, Partner Liaison
-
+2. Scott Cui - Co-Leader, Backend Developer, Partner Liaison
+    - He will also lead the team in most aspects (Had experience in leading team)
+    - He will be more focus on managing architecture and details of the programming parts of the project (Had experience in planning out program architecture).
+    - He will manage and clean the overall code base.
+    - He will also be responsible for software deployment (Interested in learning software deployment)
 3. Will Zhao - Backend Developer, Quality Assurance Tester
    - He will serve as a backend developer and will primarily be responsible for refining and organizing the code and streamlining the workflow for the entire project. (He likes to organize stuff)
    - He will ensure that the implemented feature works as intended and meets the specified requirments. 
-
 4. Arthur Li - Frontend Developer, Quality Assurance Tester
    - He will be responsible for the frontend development of the project, especially the ones related to the Slack's API (Has prior experience in frontend development in CSC309)
    - He will main decide on how the frontend will look like and how it will interact with the backend in the project
    - He will also be responsible for testing the implemented features and ensure there are no quality issues.
-
-5. Jiawei Yu - backend Developer, Database Manager
+5. Jiawei Yu - Backend Developer, Database Manager
     - He will be responsible for some parts of the backend development of the project, especially the ones with the database (Has experience in database management)
     - He chooses to take this role as he likes managing databases and understanding the back scene of a project seems really enjoyable to him
 
 #### Q8: How will you work as a team?
-
-Describe meetings (and other events) you are planning to have. 
- * When and where? Recurring or ad hoc? In-person or online?
- * What's the purpose of each meeting?
- * Other events could be coding sessions, code reviews, quick weekly sync meeting online, etc.
- * You should have 2 meetings with your project partner (if you have one) before D1 is due. Describe them here:
-   * You must keep track of meeting minutes and add them to your repo under "documents/minutes" folder
-   * You must have a regular meeting schedule established for the rest of the term.  
 
 Any meetings required will be held either in person or Zoom. 
 
@@ -182,12 +159,7 @@ We will also use the GitHub Project to better manage programming works.
     * If situation allowed, we will record the meetings and archive them.
     * If in doubt about the client's needs, we will ask on Slack directly.
 
-
 **Collaboration: (Share your responses to Q8 & Q9 from A1)**
-
- * How are people held accountable for attending meetings, completing action items? Is there a moderator or process?
- * How will you address the issue if one person doesn't contribute or is not responsive? 
- * TODO
 
 
  - As we are close friends in our lives, we will hold each other accountable for attending meetings and completing assigned tasks. Team leads - Ray would act as moderators in this case to ensure that everyone is on track.
