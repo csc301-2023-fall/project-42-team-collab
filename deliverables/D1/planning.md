@@ -25,8 +25,9 @@ A Slack App that helps users to do various things, these include but not limited
 - Option to add user's alignment of company values in the kudos that are sent
 - Ability to retrieve information of how much kudos are sent to a certain user and their statistics
 
-**(Insert Figma diagram here)**
-
+![Figma Diagram](./Workflow.png)
+![Figma Diagram](./Program_Architecture.png)
+![Figma Diagram](./Frame.jpg)
 
 #### Q2: Who are your target users?
 
