@@ -49,6 +49,7 @@ Our product will be able to accomplish the following:
 1. Allow users to efficiently acknowledge work done by other employees in the same team.
 2. Makes users able to extend the functionalities of our product by configuring the App. 
 3. Allow users to easily retrieve information about the kudos they have sent and received.
+4. Allow organizations to incorporate their own values into the App, and use it to acknowledge their employees.
 
 #### Q4: What are the user stories that make up the Minimum Viable Product (MVP)?
 
@@ -62,9 +63,10 @@ Our product will be able to accomplish the following:
 1. As a manager of my company, I want to predefine a set of company values that I can use to acknowledge my employees. I will use the configuration feature in my application to define the company values.
 2. As a leader of a team, I want to be able to acknowledge what my team members did. I will use the kudos feature in my application to send a kudos to my teammate.
 This kudos will contain the name of the employee I sent to, my name, the company values that I have defined in the App earlier, and a message.
-3. As a manager of a team, I want to view the amount of kudos that a certain employee has received in the previous month. I will use this number to determine which employee should receive a bonus for being a great addition to our team. 
-4. As an employee of a team, I want to request kudos from a specific manager because I have worked hard on a project with him/her. I will ask the application to send a notification that I requested for a kudos. 
-5. As an employee of a team, I want to be able to view the kudos that I have received, and present it to another project manager to show that I am competent to undertake the newly proposed project. 
+3. As a manager of a team, I want to view the amount of kudos that a certain employee has received in the previous month. I will use this number to determine which employee should receive a bonus for being a great addition to our team.
+4. As a manager of a team, I want ot analyze the types of kudos that my team members have received. I will use this information to determine which company values are the most important to my team members. 
+5. As an employee of a team, I want to request kudos from a specific manager because I have worked hard on a project with him/her. I will ask the application to send a notification that I requested for a kudos. 
+6. As an employee of a team, I want to be able to view the kudos that I have received, and present it to another project manager to show that I am competent to undertake the newly proposed project. 
 
 #### Q5: Have you decided on how you will build it? Share what you know now or tell us the options you are considering.
 
