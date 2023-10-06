@@ -60,15 +60,17 @@ Our product will be able to accomplish the following:
  * User stories must contain acceptance criteria. Examples of user stories with different formats can be found here: https://www.justinmind.com/blog/user-story-examples/. **It is important that you provide a link to an artifact containing your user stories**.
  * If you have a partner, these must be reviewed and accepted by them. You need to include the evidence of partner approval (e.g., screenshot from email) or at least communication to the partner (e.g., email you sent)
 -->
-
-1. As a manager of my company, I want to predefine a set of company values that I can use to acknowledge my employees. I will use the configuration feature in my application to define the company values.
-2. As a leader of a team, I want to be able to acknowledge what my team members did. I will use the kudos feature in my application to send a kudos to my teammate.
-This kudos will contain the name of the employee I sent to, my name, the company values that I have defined in the App earlier, and a message.
-3. As a manager of a team, I want to view the amount of kudos that a certain employee has received in the previous month. I will use this number to determine which employee should receive a bonus for being a great addition to our team.
-4. As a manager of a team, I want ot analyze the types of kudos that my team members have received. I will use this information to determine which company values are the most important to my team members. 
+##### Workspace Administrator
+1. As a workspace administrator of my company, I want to predefine a set of company values that I can use to acknowledge my employees. I will use the configuration feature in my application to define the company values.
+2. As a workspace administrator of my team, I want to view the amount of kudos that a certain employee has received in the previous month. I will use this number to determine which employee should receive a bonus for being a great addition to our team.
+3. As a workspace administrator of my team, I want to analyze the types of kudos that my team members have received. I will use this information to determine which company values are the most important to my team members. 
+##### User
+4. As a leader of a team, I want to be able to acknowledge what my team members did. I will use the kudos feature in my application to send a kudos to my teammate.
+This kudos will contain the name of the employee I sent to, my name, and a message.
 5. As an employee of a team, I want to request kudos from a specific manager because I have worked hard on a project with him/her. I will ask the application to send a notification that I requested for a kudos. 
-6. As an employee of a team, I want to be able to view the kudos that I have received, and present it to another project manager to show that I am competent to undertake the newly proposed project. 
-
+6. As an employee of a team, I want to be able to view the kudos that I have received, and present it to another project manager to show that I am competent to undertake the newly proposed project.
+##### System Administrator 
+7. As a system administrator, I need to add a bot to a new company who decides to use our Kudos system in their slack workspace.
 #### Q5: Have you decided on how you will build it? Share what you know now or tell us the options you are considering.
 
 Technology Stack
