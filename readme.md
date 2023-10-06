@@ -1,5 +1,9 @@
 # Slack App / Getting Employed
 
+We use Notion and GitHub project to manage tasks, post announcements, and archive documents. 
+
+How to access our Notion: TODO
+
 ## Partner Intro
 - Partner Information: Team Collab
 - Primary Contact: David Jorjani (d.jorjani@gmail.com)
