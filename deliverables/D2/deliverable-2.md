@@ -15,11 +15,22 @@ Furthermore, the "kudos" that the users are receiving can also be tied with an a
 
 # Subgroup formation
 
-We have decided to split ourselves into 3 subgroups, with 1-2 people in each group. 
-
-[FILL IN DESCRIPTION OF WHY WE SPLIT LIKE THIS]
+We have decided to split ourselves into 3 subgroups (Backend, Database, Logging and Docker), with 1-2 people in each group. 
 
 [MAYBE WITH SOME DIAGRAMS HERE]
+
+[//]: # (I'm not sure if we will use this diagram, but I will just put it here for now)
+![Diagram flow](../D1/Frame.jpg)
+
+From the diagram shown above, we can clearly indicate that we need a Database component and a Backend component to setup our application.
+Therefore, it follows that we are splitting into these 2 subgroups with 2 people each. 
+
+The main objective of the backend group is to develop handler logic with the Slack API, which ensures that the interactive features of our Slack App can be used by the users. 
+To function as a complete application, a static interactive Slack App cannot hold any persistent information, therefore, we also need the database group to come up with a scheme that can store information in a persistent manner.
+In this case, the database group will be responsible for the database management of our application, which will be used to store and retrieve the information that we will obtain from the backend component.
+
+Lastly, as we only have 5 members, we have decided to let the last group member work on a relatively simple yet effective task, which is to figure out how to setup a common environment for everyone. 
+With this task in mind, we have assigned the last group the task of figuring out Docker and Logging, which can be used to aid development in the long run. 
 
 ## Subgroup 1 - Backend Development
 
@@ -31,4 +42,8 @@ We have decided to split ourselves into 3 subgroups, with 1-2 people in each gro
 
 ## Subgroup 3 - Logging and Docker
 
-[FILL IN THINGS HERE]
+For the Logging and Docker subgroup, our main goal is to ensure that our application can be monitored in a controlled manner, and that our application can be deployed easily.
+For the logging component of this subgroup, we will be utilizing the Python logging library with a pre-defined logging config file. This will ensure that our logs will be outputted as a file in the `logs` directory with information of how our application is running. 
+For the Docker component of this subgroup, we will be utilizing Docker to containerize our application to allow easy deployment. With the help of Docker, we can skip the process of setting up the environment for our application, and just run the application using Docker. 
+This will allow the group to focus on the development of the application, and not worry about the environment that the application is running on. 
+With these peripheral setup done, our group will be able to identify bugs and develop in a more bug-free environment. 
