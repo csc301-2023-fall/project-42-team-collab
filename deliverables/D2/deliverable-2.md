@@ -34,22 +34,15 @@ With this task in mind, we have assigned the last group the task of figuring out
 
 ## Subgroup 1 - Frontend Development and Slack API
 
-Goal: Provide a user-friendly interface for users to interact with the Slack App.
-
-We use the `slack_sdk` library to implement the frontend logic of our Slack App. We use the `Block Kit Builder` which provided by Slack to build the UI of our Slack App.
-
-We then use the Slack API to implement the reaction logic of our Slack App. Specifically we use the `slack_bolt` library to handle the requests from Slack and provide responses.
-
-
+The goal for this sub team is to provide a user-friendly interface for users to interact with the Slack App.
+We used Slack's API libraries to implement the frontend logic of our Slack App. Specifically, we used the `Block Kit Builder` provided by Slack's API to build the UI of our Slack App, reflected in the window components when slash commands are invoked.
+Then, we used the Slack's Library API to implement the reaction logic of our Slack App. Specifically we used the `Slack Bolt` library (Slack SDK in Python) to handle the requests from Slack and provide responses.
 
 ## Subgroup 2 - Database Management
 
-Goal: Provide reliable and efficient database access to support subgroup1's operations.
-
-We host our PostgreSQL database on Microsoft Azure and have functions needed by the subgroup1 implemented by Python with the `psycopg2` library. 
-
-To adhere to the clean architectural design of our project, we abstract the API for subgroup1 and implement the details separately. In this way, we may potentially add implementations of other databases/data persistence format. 
-
+The goal for this subgroup is to provide reliable and efficient database access to support subgroup1's operations.
+We hosted our PostgreSQL database on Microsoft Azure and have functions needed by the subgroup1 implemented by Python with the `psycopg2` library.
+To adhere to the clean architectural design of our project, we abstract the API for subgroup1 and implemented the details separately. In this way, we may potentially add implementations of other databases/data persistence format.
 Also, we designed the relations carefully to maximize extensibility and minimize coupling. Therefore, we would easily add new relations/data in the future.
 
 ## Subgroup 3 - Logging and Docker
