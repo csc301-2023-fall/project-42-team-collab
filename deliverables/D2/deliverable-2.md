@@ -32,17 +32,23 @@ In this case, the database group will be responsible for the database management
 Lastly, as we only have 5 members, we have decided to let the last group member work on a relatively simple yet effective task, which is to figure out how to setup a common environment for everyone. 
 With this task in mind, we have assigned the last group the task of figuring out Docker and Logging, which can be used to aid development in the long run. 
 
-## Subgroup 1 - Backend Development
+## Subgroup 1 - Frontend Development and Slack API
 
-[FILL IN THINGS HERE]
+Goal: Provide a user-friendly interface for users to interact with the Slack App.
+
+We use the `slack_sdk` library to implement the frontend logic of our Slack App. We use the `Block Kit Builder` which provided by Slack to build the UI of our Slack App.
+
+We then use the Slack API to implement the reaction logic of our Slack App. Specifically we use the `slack_bolt` library to handle the requests from Slack and provide responses.
+
+
 
 ## Subgroup 2 - Database Management
 
-Goal: Provide reliable and efficient database access to support backend operations.
+Goal: Provide reliable and efficient database access to support subgroup1's operations.
 
-We host our PostgreSQL database on Microsoft Azure and have functions needed by the backend implemented by Python with the `psycopg2` library. 
+We host our PostgreSQL database on Microsoft Azure and have functions needed by the subgroup1 implemented by Python with the `psycopg2` library. 
 
-To adhere to the clean architectural design of our project, we abstract the API for the backend and implement the details separately. In this way, we may potentially add implementations of other databases/data persistence format. 
+To adhere to the clean architectural design of our project, we abstract the API for subgroup1 and implement the details separately. In this way, we may potentially add implementations of other databases/data persistence format. 
 
 Also, we designed the relations carefully to maximize extensibility and minimize coupling. Therefore, we would easily add new relations/data in the future.
 
