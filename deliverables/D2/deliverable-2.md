@@ -38,7 +38,13 @@ With this task in mind, we have assigned the last group the task of figuring out
 
 ## Subgroup 2 - Database Management
 
-[FILL IN THINGS HERE]
+Goal: Provide reliable and efficient database access to support backend operations.
+
+We host our PostgreSQL database on Microsoft Azure and have functions needed by the backend implemented by Python with the `psycopg2` library. 
+
+To adhere to the clean architectural design of our project, we abstract the API for the backend and implement the details separately. In this way, we may potentially add implementations of other databases/data persistence format. 
+
+Also, we designed the relations carefully to maximize extensibility and minimize coupling. Therefore, we would easily add new relations/data in the future.
 
 ## Subgroup 3 - Logging and Docker
 
