@@ -16,9 +16,10 @@ Our software is designed from the ground up without deriving from any existing p
 We have decided to split ourselves into 3 subgroups (Backend, Database, Logging and Docker), with 1-2 people in each group. 
 
 [//]: # (I'm not sure if we will use this diagram, but I will just put it here for now)
-![Diagram flow](../D1/Frame.jpg)
+![Program Layout](../D1/Frame.jpg)
+![Architectural layout](../D1/Program_Architecture.png)
 
-From the diagram shown above, we can clearly indicate that we need a Database component and a Backend component to setup our application.
+From the diagrams shown above, we can clearly indicate that we need a Database component and a Backend component to setup our application.
 Therefore, it follows that we are splitting into these 2 subgroups with 2 people each. 
 
 The main objective of the backend group is to develop handler logic with the Slack API, which ensures that the interactive features of our Slack App can be used by the users. 
