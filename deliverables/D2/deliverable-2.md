@@ -15,7 +15,6 @@ Our software is designed from the ground up without deriving from any existing p
 
 We have decided to split ourselves into 3 subgroups (Backend, Database, Logging and Docker), with 1-2 people in each group. 
 
-[//]: # (I'm not sure if we will use this diagram, but I will just put it here for now)
 ![Program Layout](../D1/Frame.jpg)
 ![Architectural layout](../D1/Program_Architecture.png)
 
