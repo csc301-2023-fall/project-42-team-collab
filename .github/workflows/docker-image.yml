@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag test_main:$(date +%s)
+      run: docker build main --file Dockerfile --tag team_spirit:$(date +%s)
