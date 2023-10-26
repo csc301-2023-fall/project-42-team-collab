@@ -30,7 +30,3 @@ if __name__ == '__main__':
         logger.info('Removing old log files')
         for file in files[MAX_LOG_COUNT:]:
             os.remove(file)
-
-    import time
-    while True:
-        time.sleep(1)
