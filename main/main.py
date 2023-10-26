@@ -26,10 +26,11 @@ if __name__ == '__main__':
     files.sort(key=lambda x: os.path.getmtime(x), reverse=True)
 
     if len(files) > MAX_LOG_COUNT:
-        logging.info(f'Found {len(files)} log files, exceeding MAX_LOG_COUNT of {MAX_LOG_COUNT}')
+        logger.info(f'Found {len(files)} log files, exceeding MAX_LOG_COUNT of {MAX_LOG_COUNT}')
         logger.info('Removing old log files')
         for file in files[MAX_LOG_COUNT:]:
             os.remove(file)
 
-
-
+    import time
+    while True:
+        time.sleep(1)

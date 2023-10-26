@@ -1,5 +1,4 @@
 #!/bin/bash
 
 echo 'Cleaning up docker images and containers...'
-
-docker rmi test_main
+docker rmi team_spirit
