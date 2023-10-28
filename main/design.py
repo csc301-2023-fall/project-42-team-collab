@@ -1,5 +1,7 @@
-import database
+import logging
+logger = logging.getLogger(__name__)
 
+# TODO: Add logging functions here
 
 def set_up_recipient() -> dict:
     return {
@@ -43,6 +45,8 @@ def set_up_corp_value(custom_values=None) -> dict:
     # Default list of corporate values and their corresponding emojis
     if custom_values is None:
         custom_values = set()
+
+    # TODO: Fix database loading
     corporate_values = database.load_corp_values()
 
     # Extend or override with custom values provided by customers

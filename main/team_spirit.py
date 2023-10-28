@@ -1,13 +1,29 @@
 import config
-import database
 from design import *
 
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
+import logging
+logger = logging.getLogger(__name__)
+
+# TODO: Add logging functions here
+
 app = App(
     token=config.SLACK_BOT_TOKEN,
 )
+
+
+# Helper function to fetch kudos data for a user
+def fetch_kudos_for_user(user_id):
+    # TODO: Fix database load information
+    user_kudos_data = database.load_user_kudos_status(user_id)
+    kudos_count = user_kudos_data.get("total_kudos", 0)
+    corp_values = user_kudos_data.get("corp_values", {})
+
+    kudos_values_status = "\n".join([f"• {kudos}: {count}" for kudos, count in corp_values.items()])
+
+    return kudos_count, kudos_values_status
 
 
 @app.event("app_mention")
@@ -84,17 +100,6 @@ def handle_kudos_view(ack, body, client):
     client.views_open(trigger_id=body['trigger_id'], view=view)
 
 
-# Helper function to fetch kudos data for a user
-def fetch_kudos_for_user(user_id):
-    user_kudos_data = database.load_user_kudos_status(user_id)
-    kudos_count = user_kudos_data.get("total_kudos", 0)
-    corp_values = user_kudos_data.get("corp_values", {})
-
-    kudos_values_status = "\n".join([f"• {kudos}: {count}" for kudos, count in corp_values.items()])
-
-    return kudos_count, kudos_values_status
-
-
 @app.command("/kudos")
 def open_modal(ack, command, client):
     # TODO: if there is new user or channel added, add them to the database
@@ -117,6 +122,8 @@ def handle_custom_submission(ack, body, client, view):
     print("view_submission event received")
     # Extract values from the view
     new_corp_value = view['state']['values']["new_value_block"]["new_corp_value_input"]["value"]
+
+    # TODO: Fix database information
     database.add_new_corp_value(new_corp_value)
     # Give the user a success message
     sender_id = body["user"]["id"]
@@ -204,6 +211,16 @@ def handle_checkbox_action(ack):
     ack()
 
 
-# Start your app
-if __name__ == "__main__":
+def run() -> None:
     SocketModeHandler(app, config.SLACK_APP_TOKEN).start()
+
+
+# Start your slack app on standalone
+if __name__ == "__main__":
+    import logging.config
+
+    logging.config.fileConfig('logging.conf')
+    logger = logging.getLogger('database')
+    logger.info(f"Running team_spirit.py standalone")
+
+    run()
