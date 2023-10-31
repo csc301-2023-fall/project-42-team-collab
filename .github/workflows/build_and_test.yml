@@ -27,4 +27,5 @@ jobs:
 
     - name: Test database with Pytest
       run: |
-        PYTHONPATH=./main/database/ pytest
+        cd ./main/database
+        python test_dao_psql.py
