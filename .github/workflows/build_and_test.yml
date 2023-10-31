@@ -25,4 +25,4 @@ jobs:
 
     - name: Test database with Pytest
       run: |
-        PYTHONPATH=./database/ pytest
+        PYTHONPATH=./main/database/ pytest
