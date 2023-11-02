@@ -35,11 +35,11 @@ class DAOPostgreSQL(DAOBase):
     _connection: Any
 
     def __init__(self,
-                 hostname: str = 'csc301-database.postgres.database.azure.com',
+                 hostname: str = 'teamspirit.postgres.database.azure.com',
                  port: int = 5432,
                  dbname: str = 'team_spirit',
-                 user: str = 'dev',
-                 password: str = 'dev') -> None:
+                 user: str = 'kudosadmin',
+                 password: str = 'Highsalary001') -> None:
         self.hostname = hostname
         self.port = port
         self.dbname = dbname
