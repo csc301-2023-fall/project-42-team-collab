@@ -110,7 +110,11 @@ def open_modal(ack, command, client):
     ack()
     logger.info(f"/kudos command received")
     # Open the modal
-    client.views_open(trigger_id=command["trigger_id"], view=set_up_kudos_modal())
+
+    workspace_id = 'PLACEHOLDER'
+    corp_vals = DAO.get_corp_values(workspace_id)
+
+    client.views_open(trigger_id=command["trigger_id"], view=set_up_kudos_modal(corp_vals))
 
 
 @app.command("/kudos_customize")
