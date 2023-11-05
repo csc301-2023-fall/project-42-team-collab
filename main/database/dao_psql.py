@@ -1,6 +1,6 @@
 import sys
 from datetime import datetime
-from typing import List, Any
+from typing import List, Any, Tuple
 
 import psycopg2 as pg
 
@@ -265,6 +265,33 @@ class DAOPostgreSQL(DAOBase):
     # - 'total_kudos': int
     # - 'corp_values': dict[str, int]
     # Maps from a corp_value to the count that this user has received under that value
+    def get_user_kudos(self, user_id: str) -> Tuple[int, dict[str, int]]:
+        try:
+            logger.info(f"Getting kudos stats of the user with id: {user_id}")
+            # get connection
+            conn = self.get_connection()
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    """
+                    SELECT corp_values.corp_value, COUNT(*) as kudos_count
+                    FROM messages
+                    JOIN kudos ON messages.id = kudos.message_id
+                    JOIN corp_values ON kudos.corp_value_id = corp_values.id
+                    WHERE messages.to_slack_id = 'your_user_id'
+                    GROUP BY kudos.corp_value_id, corp_values.corp_value;
+                    """,
+                    (user_id,)
+                )
+
+            stats = {}
+            for kudo in cursor.fetchall():
+                stats[kudo[0]] = kudo[1]
+
+            return sum(stats.values()), stats
+        except Exception as e:
+            logger.error(f"Failed to get corp values from the user with id '{user_id}'")
+            print(e, file=sys.stderr)
+            return 0, {}
 
     def _connect(self):
         return pg.connect(host=self.hostname, port=self.port,
