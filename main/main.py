@@ -33,8 +33,4 @@ if __name__ == '__main__':
         for file in files[MAX_LOG_COUNT:]:
             os.remove(file)
 
-    # TODO: Insert Database init functions here
-
-    # TODO: Insert other init needed here
-
     team_spirit.run()

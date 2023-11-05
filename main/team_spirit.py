@@ -1,23 +1,25 @@
 import config
 from design import *
 
+from database import *
+
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
 import logging
 logger = logging.getLogger(__name__)
 
-# TODO: Add logging functions here
-
 app = App(
     token=config.SLACK_BOT_TOKEN,
 )
 
+DAO = get_DAO()
+
 
 # Helper function to fetch kudos data for a user
 def fetch_kudos_for_user(user_id):
-    # TODO: Fix database load information
-    user_kudos_data = database.load_user_kudos_status(user_id)
+    logger.info(f"Fetching kudos data for user {user_id}")
+    user_kudos_data = DAO.get_user_kudos(user_id)
     kudos_count = user_kudos_data.get("total_kudos", 0)
     corp_values = user_kudos_data.get("corp_values", {})
 
@@ -40,7 +42,9 @@ def echo(ack, respond, command):
 
 @app.command("/kudos_overview")
 def kudos_overview(ack, command, client):
+    # TODO: if there is new user or channel added, add them to the database
     ack()
+    logger.info("/kudos_overview command received")
 
     # Define a modal that includes a user selection block
     view = set_up_overview_modal()
@@ -57,9 +61,9 @@ def handle_kudos_view(ack, body, client):
     try:
         selected_user_id = body['view']['state']['values']['user_select']['user_selected']['selected_user']
     except KeyError as e:
-        # Log or print the error and body for debugging
-        print(f"KeyError: {e}")
-        print(body)
+        # Log the error and body for debugging
+        logger.error(f"KeyError: {e}")
+        logger.error(body)
         return
 
     # Fetch and format the kudos data for the selected user
@@ -70,7 +74,7 @@ def handle_kudos_view(ack, body, client):
         user_info = client.users_info(user=selected_user_id)
         username = user_info['user']['name']
     except Exception as e:
-        print(f"Error fetching user info: {e}")
+        logger.error(f"Error fetching user info: {e}")
         username = selected_user_id  # Fallback to user ID if fetch fails
 
     # Define a modal that shows the kudos overview
@@ -104,14 +108,16 @@ def handle_kudos_view(ack, body, client):
 def open_modal(ack, command, client):
     # TODO: if there is new user or channel added, add them to the database
     ack()
+    logger.info(f"/kudos command received")
     # Open the modal
     client.views_open(trigger_id=command["trigger_id"], view=set_up_kudos_modal())
 
 
 @app.command("/kudos_customize")
 def open_customize_corp_value_modal(ack, command, client):
+    # TODO: if there is new user or channel added, add them to the database
     ack()
-    print("Customize Corp Value Command Received")
+    logger.info(f"/kudos_customize command received")
     client.views_open(trigger_id=command["trigger_id"], view=set_up_customize_modal())
 
 
@@ -119,12 +125,14 @@ def open_customize_corp_value_modal(ack, command, client):
 def handle_custom_submission(ack, body, client, view):
     # Acknowledge the view_submission event
     ack()
-    print("view_submission event received")
+    logger.info(f"View_submission event received")
     # Extract values from the view
     new_corp_value = view['state']['values']["new_value_block"]["new_corp_value_input"]["value"]
 
-    # TODO: Fix database information
-    database.add_new_corp_value(new_corp_value)
+    # TODO: Figure out how to fetch workspace ID
+    workspace_id = 'PLACEHOLDER'
+    DAO.add_corp_values(workspace_id, [new_corp_value])
+
     # Give the user a success message
     sender_id = body["user"]["id"]
     client.chat_postMessage(
@@ -137,28 +145,32 @@ def handle_custom_submission(ack, body, client, view):
 def handle_submission(ack, body, view, client):
     # Acknowledge the view_submission event
     ack()
-    print("view_submission event received")
+    # TODO: Figure out how to fetch workspace ID
+    workspace = 'PLACEHOLDER'
+
+    # TODO: Replace print statements to logging statements with references to the workspace ID
+    # print("view_submission event received")
 
     sender_id = body["user"]["id"]
-    print("sender_id: ", sender_id)
+    # print("sender_id: ", sender_id)
 
     try:
         # Extract recipient ID from view
         recipient_id = view['state']['values']["recipient_select_block"]["user_select_action"]["selected_user"]
-        print("recipient_id: ", recipient_id)
+        # print("recipient_id: ", recipient_id)
 
         # Extract channel ID from view
         channel_id = view['state']['values']['channel_select_block']['channel_select_action']['selected_channel']
-        print("channel_input: ", channel_id)
+        # print("channel_input: ", channel_id)
 
         # Extract selected corporation values from view
         selected_values = view['state']['values']['corp_select_block']['multi_static_select-action']['selected_options']
         selected_value_texts = [option['text']['text'] for option in selected_values]
-        print("selected_values: ", selected_value_texts)
+        # print("selected_values: ", selected_value_texts)
 
         # Extract message text from view
         message_text = view['state']['values']['message_input_block']['plain_text_input-action']['value']
-        print("message_text: ", message_text)
+        # print("message_text: ", message_text)
 
         # Extract checkbox values find out which checkbox is selected
         selected_checkbox_options = view['state']['values']['checkboxes_block']['checkboxes_action']['selected_options']
@@ -177,8 +189,18 @@ def handle_submission(ack, body, view, client):
             f"{message_text}\n"
         )
 
-        # TODO: Add real database function to add kudos here
-        database.add_kudos(recipient_id, selected_value_texts)
+        # TODO: Figure out how to get a message ID from the command invoked
+        message_id = 'PLACEHOLDER'
+
+        DAO.add_message(workspace_id=workspace,
+                        channel_id=channel_id,
+                        msg_id=message_id,
+                        time=datetime.now(),
+                        from_slack_id=sender_id,
+                        to_slack_id=recipient_id,
+                        text=message_text,
+                        kudos_value=selected_value_texts)
+
         # Send a direct message to the recipient if the checkbox is selected
         if notify_recipient_selected:
             client.chat_postMessage(
@@ -199,7 +221,7 @@ def handle_submission(ack, body, view, client):
             text="Kudos sent successfully!"
         )
     except Exception as e:
-        print(e)
+        logger.error(f"Error received in handle_submission: {e}")
         client.chat_postMessage(
             channel=sender_id,
             text="Kudos failed to send. Please try again."
