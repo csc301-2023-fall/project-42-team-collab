@@ -1,15 +1,15 @@
-name: Docker Image CI
+name: Docker Image Action
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
 
     steps:

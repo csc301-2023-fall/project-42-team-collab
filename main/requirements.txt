@@ -1,2 +1,4 @@
 slack_bolt == 1.18.0
 slack-sdk == 3.22.0
+psycopg2-binary ~= 2.9.9
+pytest ~= 7.4.2
