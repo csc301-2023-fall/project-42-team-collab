@@ -1,7 +1,8 @@
+from typing import List
+
 import logging
 logger = logging.getLogger(__name__)
 
-# TODO: Add logging functions here
 
 def set_up_recipient() -> dict:
     return {
@@ -41,16 +42,13 @@ def set_up_channel() -> dict:
     }
 
 
-def set_up_corp_value(custom_values=None) -> dict:
+def set_up_corp_value(custom_values: List[str] = None) -> dict:
     # Default list of corporate values and their corresponding emojis
     if custom_values is None:
-        custom_values = set()
+        custom_values = []
 
-    # TODO: Fix database loading
-    corporate_values = database.load_corp_values()
+    corporate_values = custom_values
 
-    # Extend or override with custom values provided by customers
-    corporate_values.update(custom_values)
     # Generate options programmatically
     options = []
     for index, value in enumerate(corporate_values):
@@ -222,8 +220,9 @@ def set_up_customize_modal() -> dict:
     }
 
 
-def set_up_kudos_modal() -> dict:
-    corp_value = set_up_corp_value(database.load_customize_corp_values())
+def set_up_kudos_modal(corp_vals: List[str]) -> dict:
+    corp_value = set_up_corp_value(corp_vals)
+
     # Define the view (modal content)
     return {
         "type": "modal",
