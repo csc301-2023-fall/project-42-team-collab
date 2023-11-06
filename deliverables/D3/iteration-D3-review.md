@@ -11,6 +11,11 @@
  * When: FILL IN THE DATE WHEN YOU ACTUALLY HAD YOUR REVIEW MEETING
  * Where: Online Zoom Meeting 
 
+ * The recording link is here:
+
+ * https://utoronto.zoom.us/rec/share/jJo7lJWrfT64yPBoxLF9JdbhaLhejLjHRVNA6Y_6AcHYIqjjdiWOdhwks__RIkvV.RrkGAJLFdz6Uuqya?startTime=1699309966000
+ * Password: 0&%7$Si0Ge
+
 ## Process - Reflection
 
 
