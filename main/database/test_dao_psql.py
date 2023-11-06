@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from dao_psql import DAOPostgreSQL
+from database.dao_psql import DAOPostgreSQL
 
 
 class TestDAOPostgreSQL:

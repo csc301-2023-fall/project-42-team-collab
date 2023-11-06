@@ -42,11 +42,8 @@ def set_up_channel() -> dict:
     }
 
 
-def set_up_corp_value(custom_values: List[str] = None) -> dict:
+def set_up_corp_value(custom_values: List[str]) -> dict:
     # Default list of corporate values and their corresponding emojis
-    if custom_values is None:
-        custom_values = []
-
     corporate_values = custom_values
 
     # Generate options programmatically
@@ -61,6 +58,8 @@ def set_up_corp_value(custom_values: List[str] = None) -> dict:
             "value": f"value-{index}"  # Generate a value ID dynamically based on the index
         }
         options.append(option)
+
+    logger.info(options)
 
     corp_val = {
         "type": "input",
@@ -221,6 +220,7 @@ def set_up_customize_modal() -> dict:
 
 
 def set_up_kudos_modal(corp_vals: List[str]) -> dict:
+
     corp_value = set_up_corp_value(corp_vals)
 
     # Define the view (modal content)

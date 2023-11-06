@@ -3,8 +3,6 @@ import logging.config
 import os
 from datetime import datetime
 
-import team_spirit
-
 logging.config.fileConfig('logging.conf')
 
 # Note that the name of name of the logger will be called "root"
@@ -32,5 +30,7 @@ if __name__ == '__main__':
         logger.info('Removing old log files')
         for file in files[MAX_LOG_COUNT:]:
             os.remove(file)
+
+    import team_spirit
 
     team_spirit.run()

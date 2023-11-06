@@ -10,18 +10,18 @@ import logging
 logger = logging.getLogger(__name__)
 
 app = App(
-    token=config.SLACK_BOT_TOKEN,
+    token=config.SLACK_BOT_TOKEN
 )
 
 DAO = get_DAO()
 
 
 # Helper function to fetch kudos data for a user
-def fetch_kudos_for_user(user_id):
+def fetch_kudos_for_user(workspace_id: str, user_id: str):
     logger.info(f"Fetching kudos data for user {user_id}")
-    user_kudos_data = DAO.get_user_kudos(user_id)
-    kudos_count = user_kudos_data.get("total_kudos", 0)
-    corp_values = user_kudos_data.get("corp_values", {})
+    user_kudos_data = DAO.get_user_kudos(workspace_id, user_id)
+    kudos_count = user_kudos_data[0]
+    corp_values = user_kudos_data[1]
 
     kudos_values_status = "\n".join([f"• {kudos}: {count}" for kudos, count in corp_values.items()])
 
@@ -41,9 +41,12 @@ def echo(ack, respond, command):
 
 
 @app.command("/kudos_overview")
-def kudos_overview(ack, command, client):
-    # TODO: if there is new user or channel added, add them to the database
+def kudos_overview(ack, command, client, payload):
     ack()
+
+    workspace_id = payload['team_id']
+    DAO.create_workspace(workspace_id)
+
     logger.info("/kudos_overview command received")
 
     # Define a modal that includes a user selection block
@@ -66,8 +69,10 @@ def handle_kudos_view(ack, body, client):
         logger.error(body)
         return
 
+    workspace_id = body['team']['id']
+
     # Fetch and format the kudos data for the selected user
-    kudos_count, kudos_value_status = fetch_kudos_for_user(selected_user_id)
+    kudos_count, kudos_value_status = fetch_kudos_for_user(workspace_id, selected_user_id)
 
     # Fetch the user's info to get the username
     try:
@@ -105,36 +110,42 @@ def handle_kudos_view(ack, body, client):
 
 
 @app.command("/kudos")
-def open_modal(ack, command, client):
-    # TODO: if there is new user or channel added, add them to the database
+def open_modal(ack, command, client, payload):
     ack()
     logger.info(f"/kudos command received")
     # Open the modal
 
-    workspace_id = 'PLACEHOLDER'
+    workspace_id = payload['team_id']
+    DAO.create_workspace(workspace_id)
+
     corp_vals = DAO.get_corp_values(workspace_id)
 
     client.views_open(trigger_id=command["trigger_id"], view=set_up_kudos_modal(corp_vals))
 
 
 @app.command("/kudos_customize")
-def open_customize_corp_value_modal(ack, command, client):
-    # TODO: if there is new user or channel added, add them to the database
+def open_customize_corp_value_modal(ack, command, client, payload):
     ack()
     logger.info(f"/kudos_customize command received")
+
+    workspace_id = payload['team_id']
+    DAO.create_workspace(workspace_id)
+
     client.views_open(trigger_id=command["trigger_id"], view=set_up_customize_modal())
 
 
 @app.view("custom_value_modal")
-def handle_custom_submission(ack, body, client, view):
+def handle_custom_submission(ack, body, client, view, payload):
     # Acknowledge the view_submission event
     ack()
     logger.info(f"View_submission event received")
+
+    workspace_id = payload['team_id']
+    DAO.create_workspace(workspace_id)
+
     # Extract values from the view
     new_corp_value = view['state']['values']["new_value_block"]["new_corp_value_input"]["value"]
 
-    # TODO: Figure out how to fetch workspace ID
-    workspace_id = 'PLACEHOLDER'
     DAO.add_corp_values(workspace_id, [new_corp_value])
 
     # Give the user a success message
@@ -146,11 +157,12 @@ def handle_custom_submission(ack, body, client, view):
 
 
 @app.view("kudos_modal")
-def handle_submission(ack, body, view, client):
+def handle_submission(ack, body, view, client, payload):
     # Acknowledge the view_submission event
     ack()
-    # TODO: Figure out how to fetch workspace ID
-    workspace = 'PLACEHOLDER'
+
+    workspace = payload['team_id']
+    DAO.create_workspace(workspace)
 
     # TODO: Replace print statements to logging statements with references to the workspace ID
     # print("view_submission event received")
@@ -193,15 +205,22 @@ def handle_submission(ack, body, view, client):
             f"{message_text}\n"
         )
 
-        # TODO: Figure out how to get a message ID from the command invoked
-        message_id = 'PLACEHOLDER'
+        # This is actually view ID, but it's also unique, so it should be good
+        message_id = payload['id']
+
+        from_username = app.client.users_info(user=sender_id)['user']['profile']['display_name']
+        to_username = app.client.users_info(user=recipient_id)['user']['profile']['display_name']
+        channel_name = app.client.conversations_info(channel=channel_id)['channel']['name']
 
         DAO.add_message(workspace_id=workspace,
                         channel_id=channel_id,
+                        channel_name=channel_name,
                         msg_id=message_id,
                         time=datetime.now(),
                         from_slack_id=sender_id,
+                        from_username=from_username,
                         to_slack_id=recipient_id,
+                        to_username=to_username,
                         text=message_text,
                         kudos_value=selected_value_texts)
 
