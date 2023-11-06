@@ -66,19 +66,17 @@ def kudos_overview(ack, command, client, payload) -> None:
     Open kudos_overview modal on given client slack
     Args:
         ack: Acknowledgement function to respond to Slack's request.
-        command: Data about the user's command, including text, user ID, channel ID.
+        command: Stores information about this invoked command.
         client: Slack's API client for performing actions like sending messages.
         payload: Additional data about the event that triggered the function.
-
-    Returns:
-        None
     """
     ack()
+    logger.info("/kudos_overview - Command received")
 
     workspace_id = payload['team_id']
     DAO.create_workspace(workspace_id)
 
-    logger.info("/kudos_overview command received")
+    logger.info("/kudos_overview - Submission event received")
 
     # Define a modal that includes a user selection block
     view = set_up_overview_modal()
@@ -95,9 +93,6 @@ def handle_kudos_view(ack, body, client) -> None:
         ack: Acknowledgement function to respond to Slack's request.
         body: The request body that triggered the view.
         client: The Slack client to interact with the Slack API.
-
-    Returns:
-        None
     """
     ack()
 
@@ -106,7 +101,7 @@ def handle_kudos_view(ack, body, client) -> None:
         selected_user_id = body['view']['state']['values']['user_select']['user_selected']['selected_user']
     except KeyError as e:
         # Log the error and body for debugging
-        logger.error(f"KeyError: User might not exists {e}")
+        logger.error(f"/kudos_overview - EmptySelectError: selected_user is None {e}")
         logger.error(body)
         return
 
@@ -120,7 +115,7 @@ def handle_kudos_view(ack, body, client) -> None:
         user_info = client.users_info(user=selected_user_id)
         username = user_info['user']['name']
     except Exception as e:
-        logger.error(f"Error fetching user info: {e}")
+        logger.error(f"/kudos_overview - Error fetching user info: {e}")
         username = selected_user_id  # Fallback to user ID if fetch fails
 
     # Define a modal that shows the kudos overview
@@ -159,15 +154,12 @@ def open_modal(ack, command, client, payload) -> None:
     Open modal for giving teammate kudos.
     Args:
         ack: Acknowledgement function to respond to Slack's request.
-        command: Data about the user's command, including text, user ID, channel ID.
+        command: Stores information about this invoked command.
         client: Slack's API client for performing actions like sending messages.
-        payload: Additional data about the event that triggered the function.
-
-    Returns:
-        None
+        payload: Additional data about the event that triggered the function, including IDs and team_id.
     """
     ack()
-    logger.info(f"/kudos command received")
+    logger.info(f"/kudos - Command received")
     # Open the modal
 
     workspace_id = payload['team_id']
@@ -188,7 +180,7 @@ def handle_submission(ack, body, view, client, payload) -> None:
         body: Contains information about the user who triggered the modal.
         view: Contains the state and input values of the modal.
         client: Slack's API client for performing actions like sending messages.
-        payload: Additional data about the view_submission event, including IDs and team info.
+        payload: Additional data about the view_submission event, including IDs and team_id.
     """
     # Acknowledge the view_submission event
     ack()
@@ -196,28 +188,27 @@ def handle_submission(ack, body, view, client, payload) -> None:
     workspace = payload['team_id']
     DAO.create_workspace(workspace)
 
-    logger.info("view_submission event received")
+    logger.info("/kudos - Submission event received")
 
     sender_id = body["user"]["id"]
-    # print("sender_id: ", sender_id)
-
+    logger.info(f"/kudos - Selecting sender id as {sender_id}")
     try:
         # Extract recipient ID from view
         recipient_id = view['state']['values']["recipient_select_block"]["user_select_action"]["selected_user"]
-        # print("recipient_id: ", recipient_id)
+        logger.info(f"/kudos - Selecting recipient id as {recipient_id}")
 
         # Extract channel ID from view
         channel_id = view['state']['values']['channel_select_block']['channel_select_action']['selected_channel']
-        # print("channel_input: ", channel_id)
+        logger.info(f"/kudos - Selecting channel id as {channel_id}")
 
         # Extract selected corporation values from view
         selected_values = view['state']['values']['corp_select_block']['multi_static_select-action']['selected_options']
         selected_value_texts = [option['text']['text'] for option in selected_values]
-        # print("selected_values: ", selected_value_texts)
+        logger.info(f"/kudos - Selecting value text as {selected_value_texts}")
 
         # Extract message text from view
         message_text = view['state']['values']['message_input_block']['plain_text_input-action']['value']
-        # print("message_text: ", message_text)
+        logger.info(f"/kudos - Inputting message as {message_text}")
 
         # Extract checkbox values find out which checkbox is selected
         selected_checkbox_options = view['state']['values']['checkboxes_block']['checkboxes_action']['selected_options']
@@ -275,7 +266,7 @@ def handle_submission(ack, body, view, client, payload) -> None:
             text="Kudos sent successfully!"
         )
     except Exception as e:
-        logger.error(f"Error received in handle_submission: {e}")
+        logger.error(f"/kudos - Error received in handle_submission: {e}")
         client.chat_postMessage(
             channel=sender_id,
             text="Kudos failed to send. Please try again."
@@ -291,12 +282,12 @@ def open_customize_corp_value_modal(ack, command, client, payload) -> None:
     Open customize corp value modal
     Args:
         ack: Acknowledges the view_submission event to Slack to avoid timeouts.
-        command: Data about the user's command, including text, user ID, channel ID.
+        command: Stores information about this invoked command.
         client: Slack's API client for performing actions like sending messages.
-        payload: Additional data about the view_submission event, including IDs and team info.
+        payload: Additional data about the event is triggered, including IDs and team team_id.
     """
     ack()
-    logger.info(f"/kudos_customize command received")
+    logger.info(f"/kudos_customize - Command received")
 
     workspace_id = payload['team_id']
     DAO.create_workspace(workspace_id)
@@ -314,11 +305,11 @@ def handle_custom_submission(ack, body, client, view, payload) -> None:
         body: Contains information about the user who triggered the modal.
         view: Contains the state and input values of the modal.
         client: Slack's API client for performing actions like sending messages.
-        payload: Additional data about the view_submission event, including IDs and team info.
+        payload: Additional data about the view_submission event, including id and team_id
     """
     # Acknowledge the view_submission event
     ack()
-    logger.info(f"View_submission event received")
+    logger.info(f"/kudos_customize -  Submission event received")
 
     workspace_id = payload['team_id']
     DAO.create_workspace(workspace_id)
@@ -327,6 +318,7 @@ def handle_custom_submission(ack, body, client, view, payload) -> None:
     new_corp_value = view['state']['values']["new_value_block"]["new_corp_value_input"]["value"]
 
     DAO.add_corp_values(workspace_id, [new_corp_value])
+    logger.info(f"/kudos_customize - New corp value {new_corp_value} added")
 
     # Give the user a success message
     sender_id = body["user"]["id"]
