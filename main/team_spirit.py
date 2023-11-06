@@ -2,6 +2,8 @@ import config
 from design import *
 
 from database import *
+from typing import Tuple
+from datetime import datetime
 
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
@@ -16,18 +18,9 @@ app = App(
 DAO = get_DAO()
 
 
-# Helper function to fetch kudos data for a user
-def fetch_kudos_for_user(workspace_id: str, user_id: str):
-    logger.info(f"Fetching kudos data for user {user_id}")
-    user_kudos_data = DAO.get_user_kudos(workspace_id, user_id)
-    kudos_count = user_kudos_data[0]
-    corp_values = user_kudos_data[1]
-
-    kudos_values_status = "\n".join([f"• {kudos}: {count}" for kudos, count in corp_values.items()])
-
-    return kudos_count, kudos_values_status
-
-
+# #############################################################################
+# Basic feature for team_spirit
+# #############################################################################
 @app.event("app_mention")
 def event_test(event, say):
     say(f"Hi there, <@{event['user']}>!")
@@ -40,8 +33,46 @@ def echo(ack, respond, command):
     respond(f"{command['text']}")
 
 
+# #############################################################################
+# Set up helper function
+# #############################################################################
+def fetch_kudos_for_user(workspace_id: str, user_id: str) -> Tuple[int, str]:
+    """
+    Helper function to fetch kudos data for a user
+    Args:
+        workspace_id: current workspace id
+        user_id: given user id
+
+    Returns:
+        kudos_count: amount of total kudos received with given user
+        kudos_values_status: string contain given user's received corp values history.
+    """
+    logger.info(f"Fetching kudos data for user {user_id}")
+    user_kudos_data = DAO.get_user_kudos(workspace_id, user_id)
+    kudos_count = user_kudos_data[0]
+    corp_values = user_kudos_data[1]
+
+    kudos_values_status = "\n".join([f"• {kudos}: {count}" for kudos, count in corp_values.items()])
+
+    return kudos_count, kudos_values_status
+
+
+# #############################################################################
+# COMMAND HANDLER: /kudos_overview
+# #############################################################################
 @app.command("/kudos_overview")
-def kudos_overview(ack, command, client, payload):
+def kudos_overview(ack, command, client, payload) -> None:
+    """
+    Open kudos_overview modal on given client slack
+    Args:
+        ack: Acknowledgement function to respond to Slack's request.
+        command: Data about the user's command, including text, user ID, channel ID.
+        client: Slack's API client for performing actions like sending messages.
+        payload: Additional data about the event that triggered the function.
+
+    Returns:
+        None
+    """
     ack()
 
     workspace_id = payload['team_id']
@@ -57,7 +88,17 @@ def kudos_overview(ack, command, client, payload):
 
 
 @app.view("view_kudos_modal")
-def handle_kudos_view(ack, body, client):
+def handle_kudos_view(ack, body, client) -> None:
+    """
+    Handles the modal view for displaying kudos information of selecting user.
+    Args:
+        ack: Acknowledgement function to respond to Slack's request.
+        body: The request body that triggered the view.
+        client: The Slack client to interact with the Slack API.
+
+    Returns:
+        None
+    """
     ack()
 
     # Extract the selected user ID
@@ -65,7 +106,7 @@ def handle_kudos_view(ack, body, client):
         selected_user_id = body['view']['state']['values']['user_select']['user_selected']['selected_user']
     except KeyError as e:
         # Log the error and body for debugging
-        logger.error(f"KeyError: {e}")
+        logger.error(f"KeyError: User might not exists {e}")
         logger.error(body)
         return
 
@@ -109,8 +150,22 @@ def handle_kudos_view(ack, body, client):
     client.views_open(trigger_id=body['trigger_id'], view=view)
 
 
+# #############################################################################
+# COMMAND HANDLER: /kudos
+# #############################################################################
 @app.command("/kudos")
-def open_modal(ack, command, client, payload):
+def open_modal(ack, command, client, payload) -> None:
+    """
+    Open modal for giving teammate kudos.
+    Args:
+        ack: Acknowledgement function to respond to Slack's request.
+        command: Data about the user's command, including text, user ID, channel ID.
+        client: Slack's API client for performing actions like sending messages.
+        payload: Additional data about the event that triggered the function.
+
+    Returns:
+        None
+    """
     ack()
     logger.info(f"/kudos command received")
     # Open the modal
@@ -123,49 +178,25 @@ def open_modal(ack, command, client, payload):
     client.views_open(trigger_id=command["trigger_id"], view=set_up_kudos_modal(corp_vals))
 
 
-@app.command("/kudos_customize")
-def open_customize_corp_value_modal(ack, command, client, payload):
-    ack()
-    logger.info(f"/kudos_customize command received")
-
-    workspace_id = payload['team_id']
-    DAO.create_workspace(workspace_id)
-
-    client.views_open(trigger_id=command["trigger_id"], view=set_up_customize_modal())
-
-
-@app.view("custom_value_modal")
-def handle_custom_submission(ack, body, client, view, payload):
-    # Acknowledge the view_submission event
-    ack()
-    logger.info(f"View_submission event received")
-
-    workspace_id = payload['team_id']
-    DAO.create_workspace(workspace_id)
-
-    # Extract values from the view
-    new_corp_value = view['state']['values']["new_value_block"]["new_corp_value_input"]["value"]
-
-    DAO.add_corp_values(workspace_id, [new_corp_value])
-
-    # Give the user a success message
-    sender_id = body["user"]["id"]
-    client.chat_postMessage(
-        channel=sender_id,
-        text=f"Successfully added {new_corp_value} to the list of corp values!"
-    )
-
-
 @app.view("kudos_modal")
-def handle_submission(ack, body, view, client, payload):
+def handle_submission(ack, body, view, client, payload) -> None:
+    """
+    Processes the submission of the 'kudos_modal' and sends kudos messages based on user input.
+
+    Args:
+        ack: Acknowledges the view_submission event to Slack to avoid timeouts.
+        body: Contains information about the user who triggered the modal.
+        view: Contains the state and input values of the modal.
+        client: Slack's API client for performing actions like sending messages.
+        payload: Additional data about the view_submission event, including IDs and team info.
+    """
     # Acknowledge the view_submission event
     ack()
 
     workspace = payload['team_id']
     DAO.create_workspace(workspace)
 
-    # TODO: Replace print statements to logging statements with references to the workspace ID
-    # print("view_submission event received")
+    logger.info("view_submission event received")
 
     sender_id = body["user"]["id"]
     # print("sender_id: ", sender_id)
@@ -251,12 +282,74 @@ def handle_submission(ack, body, view, client, payload):
         )
 
 
+# #############################################################################
+# COMMAND HANDLER: /kudos_customize
+# #############################################################################
+@app.command("/kudos_customize")
+def open_customize_corp_value_modal(ack, command, client, payload) -> None:
+    """
+    Open customize corp value modal
+    Args:
+        ack: Acknowledges the view_submission event to Slack to avoid timeouts.
+        command: Data about the user's command, including text, user ID, channel ID.
+        client: Slack's API client for performing actions like sending messages.
+        payload: Additional data about the view_submission event, including IDs and team info.
+    """
+    ack()
+    logger.info(f"/kudos_customize command received")
+
+    workspace_id = payload['team_id']
+    DAO.create_workspace(workspace_id)
+
+    client.views_open(trigger_id=command["trigger_id"], view=set_up_customize_modal())
+
+
+@app.view("custom_value_modal")
+def handle_custom_submission(ack, body, client, view, payload) -> None:
+    """
+    Processes the submission of the '/kudos_customize' and notify user with their new added corp value.
+
+    Args:
+        ack: Acknowledges the view_submission event to Slack to avoid timeouts.
+        body: Contains information about the user who triggered the modal.
+        view: Contains the state and input values of the modal.
+        client: Slack's API client for performing actions like sending messages.
+        payload: Additional data about the view_submission event, including IDs and team info.
+    """
+    # Acknowledge the view_submission event
+    ack()
+    logger.info(f"View_submission event received")
+
+    workspace_id = payload['team_id']
+    DAO.create_workspace(workspace_id)
+
+    # Extract values from the view
+    new_corp_value = view['state']['values']["new_value_block"]["new_corp_value_input"]["value"]
+
+    DAO.add_corp_values(workspace_id, [new_corp_value])
+
+    # Give the user a success message
+    sender_id = body["user"]["id"]
+    client.chat_postMessage(
+        channel=sender_id,
+        text=f"Successfully added {new_corp_value} to the list of corp values!"
+    )
+
+
 @app.action("checkboxes_action")
-def handle_checkbox_action(ack):
+def handle_checkbox_action(ack) -> None:
+    """
+    Acknowledges slack API on checkbox action.
+    Args:
+        ack: Acknowledges the view_submission event to Slack to avoid timeouts.
+    """
     ack()
 
 
 def run() -> None:
+    """
+    Run team_spirit slack bot
+    """
     SocketModeHandler(app, config.SLACK_APP_TOKEN).start()
 
 

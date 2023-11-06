@@ -4,7 +4,60 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+# #############################################################################
+# BLOCK DESIGNED: kudos modal
+# #############################################################################
+def set_up_kudos_modal(corp_vals: List[str]) -> dict:
+    """
+    set up kudos modal
+    Args:
+        corp_vals: default corp value and customized corp value
+
+    Returns:
+        kudos modal in jason format
+    """
+    corp_value = set_up_corp_value(corp_vals)
+
+    # Define the view (modal content)
+    return {
+        "type": "modal",
+        "callback_id": "kudos_modal",
+        "title": {
+            "type": "plain_text",
+            "text": "Kudos",
+            "emoji": True
+        },
+        "submit": {
+            "type": "plain_text",
+            "text": "Submit",
+            "emoji": True
+        },
+        "close": {
+            "type": "plain_text",
+            "text": "Cancel",
+            "emoji": True
+        },
+        "blocks": [
+            set_up_recipient(),
+            set_up_recipient_footnote(),
+            set_up_channel(),
+            set_up_channel_footnote(),
+            corp_value,
+            set_up_corp_value_footnote(),
+            set_up_message(),
+            # set_up_message_footnote(),
+            set_up_checkbox()
+        ]
+    }
+
+
 def set_up_recipient() -> dict:
+    """
+    set up recipient block for kudos modal
+
+    Returns:
+        recipient block in jason format
+    """
     return {
         "type": "input",
         "block_id": "recipient_select_block",
@@ -24,6 +77,12 @@ def set_up_recipient() -> dict:
 
 
 def set_up_channel() -> dict:
+    """
+    set up channel block for kudos modal
+
+    Returns:
+        channel block in jason format
+    """
     return {
         "type": "input",
         "block_id": "channel_select_block",
@@ -43,7 +102,15 @@ def set_up_channel() -> dict:
 
 
 def set_up_corp_value(custom_values: List[str]) -> dict:
-    # Default list of corporate values and their corresponding emojis
+    """
+    Set up corp value(including customized) block for kudos modal
+    Args:
+        custom_values: list of customized corporate values
+
+    Returns:
+        corp_value: all corp values labeled in jason format
+
+    """
     corporate_values = custom_values
 
     # Generate options programmatically
@@ -85,6 +152,12 @@ def set_up_corp_value(custom_values: List[str]) -> dict:
 
 
 def set_up_message() -> dict:
+    """
+    set up message input block for kudos modal
+
+    Returns:
+        message input block in jason format
+    """
     return {
         "type": "input",
         "block_id": "message_input_block",
@@ -107,6 +180,12 @@ def set_up_message() -> dict:
 
 
 def set_up_recipient_footnote() -> dict:
+    """
+    set up recipient footnote block for kudos modal
+
+    Returns:
+        recipient footnote block in jason format
+    """
     return {
         "type": "context",
         "elements": [
@@ -119,6 +198,12 @@ def set_up_recipient_footnote() -> dict:
 
 
 def set_up_channel_footnote() -> dict:
+    """
+    set up channel footnote block for kudos modal
+
+    Returns:
+        channel footnote block in jason format
+    """
     return {
         "type": "context",
         "elements": [
@@ -131,6 +216,12 @@ def set_up_channel_footnote() -> dict:
 
 
 def set_up_corp_value_footnote() -> dict:
+    """
+    set up corp value footnote block for kudos modal
+
+    Returns:
+        corp value footnote block in jason format
+    """
     return {
         "type": "context",
         "elements": [
@@ -143,6 +234,12 @@ def set_up_corp_value_footnote() -> dict:
 
 
 def set_up_message_footnote() -> dict:
+    """
+    set up message footnote block for kudos modal
+
+    Returns:
+         message footnote block in jason format
+    """
     return {
         "type": "context",
         "elements": [
@@ -155,6 +252,12 @@ def set_up_message_footnote() -> dict:
 
 
 def set_up_checkbox() -> dict:
+    """
+    set up checkbox selected block for kudos modal
+
+    Returns:
+        checkbox selected block in jason format
+    """
     return {
         "type": "actions",
         "block_id": "checkboxes_block",
@@ -183,7 +286,16 @@ def set_up_checkbox() -> dict:
     }
 
 
+# #############################################################################
+# BLOCK DESIGNED: customize modal
+# #############################################################################
 def set_up_customize_modal() -> dict:
+    """
+    Set up customize modal
+
+    Returns:
+        customize modal block labeled in jason format
+    """
     return {
         "type": "modal",
         "callback_id": "custom_value_modal",
@@ -219,44 +331,16 @@ def set_up_customize_modal() -> dict:
     }
 
 
-def set_up_kudos_modal(corp_vals: List[str]) -> dict:
-
-    corp_value = set_up_corp_value(corp_vals)
-
-    # Define the view (modal content)
-    return {
-        "type": "modal",
-        "callback_id": "kudos_modal",
-        "title": {
-            "type": "plain_text",
-            "text": "Kudos",
-            "emoji": True
-        },
-        "submit": {
-            "type": "plain_text",
-            "text": "Submit",
-            "emoji": True
-        },
-        "close": {
-            "type": "plain_text",
-            "text": "Cancel",
-            "emoji": True
-        },
-        "blocks": [
-            set_up_recipient(),
-            set_up_recipient_footnote(),
-            set_up_channel(),
-            set_up_channel_footnote(),
-            corp_value,
-            set_up_corp_value_footnote(),
-            set_up_message(),
-            # set_up_message_footnote(),
-            set_up_checkbox()
-        ]
-    }
-
-
+# #############################################################################
+# BLOCK DESIGNED: overview modal
+# #############################################################################
 def set_up_overview_modal() -> dict:
+    """
+    set up overview modal, let client overview user's kudos history.
+
+    Returns:
+        user select panel labeled in jason format
+    """
     return {
         "type": "modal",
         "callback_id": "view_kudos_modal",
@@ -281,6 +365,16 @@ def set_up_overview_modal() -> dict:
 
 
 def set_up_kudos_overview_top(username: str, kudos_count: int) -> dict:
+    """
+    set up modal for displaying user's kudos history
+    Args:
+        username: target user's username
+        kudos_count: total amount of kudos target user received
+
+    Returns:
+        kudos history detail of target user.
+
+    """
     return {
         "type": "modal",
         "title": {"type": "plain_text", "text": "Kudos Overview"},
