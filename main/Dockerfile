@@ -5,4 +5,4 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-RUN echo "Successfully setup the environment!"
+CMD [ "python", "./main.py"]
