@@ -29,4 +29,5 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/team_spirit:latest
-          file: ./main/Dockerfile
+          context: ./main
+          file: ./Dockerfile
