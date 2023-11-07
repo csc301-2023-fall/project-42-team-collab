@@ -27,5 +27,5 @@ jobs:
 
     - name: Test database with Pytest
       run: |
-        cd ./main/database
-        python test_dao_psql.py
+        cd ./main
+        python -m pytest database/test_dao_psql.py

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import List
+from typing import List, Tuple
 
 
 class DAOBase(ABC):
@@ -77,12 +77,17 @@ class DAOBase(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def add_message(self, workspace_id: str, channel_id: str, msg_id: str,
+    def add_message(self, workspace_id: str, channel_id: str, channel_name: str, msg_id: str,
                     time: datetime, from_slack_id: str, to_slack_id: str,
+                    from_username: str, to_username: str,
                     text: str, kudos_value: List[str] = None) -> bool:
         """
         Add a new message to the workspace and record its kudos value.
 
+        TODO: Fix this docstring
+        :param channel_name:
+        :param from_username:
+        :param to_username:
         :param workspace_id: The unique identifier of the workspace that this
                              message belongs to.
         :param channel_id: The unique identifier of the channel that this
@@ -132,6 +137,17 @@ class DAOBase(ABC):
 
         :param workspace_id: The unique identifier of the workspace to get
                              corporate values from.
+        :return: A list of corporate values.
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_user_kudos(self, workspace_id: str, user_id: str) -> Tuple[int, dict[str, int]]:
+        """
+        Get all corporate values from the workspace.
+
+        :param workspace_id: The unique identifier for workspace
+        :param user_id: The unique identifier of the user to get kudos from
         :return: A list of corporate values.
         """
         raise NotImplementedError

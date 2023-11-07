@@ -1,6 +1,6 @@
 from typing import Optional
 
-from dao_psql import *
+from database.dao_psql import *
 
 _DAO: Optional[DAOBase] = None
 
