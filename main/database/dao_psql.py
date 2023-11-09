@@ -61,8 +61,8 @@ class DAOPostgreSQL(DAOBase):
             logger.info(f"Creating workspace for workspace with id: {workspace_id}")
             conn = self.get_connection()
             with conn.cursor() as cursor:
-                cursor.execute(f'CREATE SCHEMA IF NOT EXISTS {workspace_id};')
-                _select_schema(cursor, workspace_id)
+                # cursor.execute(f'CREATE SCHEMA IF NOT EXISTS {workspace_id};')
+                # _select_schema(cursor, workspace_id)
 
                 # init tables
                 init_sql = open(os.path.join(pathlib.Path(__file__).parent.resolve(), 'init.sql'), 'r').read().replace(
@@ -82,6 +82,7 @@ class DAOPostgreSQL(DAOBase):
                     "Flexibility",
                     "Accountability"
                 ]
+
                 self.add_corp_values(workspace_id, default_values)
 
                 conn.commit()
