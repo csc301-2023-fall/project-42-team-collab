@@ -37,6 +37,7 @@ List **process-related** (i.e. team organization and how you work) decisions and
 ---
  * The process of setting up the online database proved to be challenging, particularly with Microsoft Azure, which presented complexities during the setup phase. Additionally, inadequate configuration can lead to significant costs. Moreover, there was no financial support available from our partner or the course staff for students to allocate towards this expense.
  * Locating a suitable Linux container for setting up Docker proved to be a challenging task due to the complexity in identifying an optimal option.
+ * Our initially proposed method for integrating additional workspaces into our database has encountered an unexpected failure. Consequently, we are implementing a temporary workaround to sustain the program's functionality, concurrently conducting a thorough investigation to identify the root cause of the issue.
 #### Q3(a). Planned changes
 
 List any **process-related** (i.e. team organization and/or how you work) changes you are planning to make (if there are any)
@@ -44,7 +45,7 @@ List any **process-related** (i.e. team organization and/or how you work) change
  * Ordered from most to least important, with supporting argument explaining a change.
 
 ---
-
+ * Fix the bugs and unexpected instabilities of the program due to merging our components together. 
  * The migration of the application from Slack to alternative platforms such as Microsoft Teams and Discord to enhance communication and collaboration capabilities within the team.
 - We are planning to extend the application's functionality by implementing various features, which may include but are not limited to:
 
@@ -62,7 +63,7 @@ Briefly explain how you integrated the previously developed individuals componen
 
  * Keep this very short (1-3 lines).
 ---
-
+The database part added a logger message for each function to record the behavior. 
 
 ## Product - Review
 
@@ -72,4 +73,8 @@ Briefly explain how you integrated the previously developed individuals componen
  * Did your partner accept the features? And were there change requests?
  * What were your learnings through this process? This can be either from a process and/or product perspective.
  * *This section will be marked very leniently so keep it brief and just make sure the points are addressed*
-
+---
+* We listed out an outline of things that we want to mention and also thought about what kind of questions that our partner might ask and how we were going to answer them.
+* We managed to show almost all the features of our program, except some minor issues. 
+* Our partner accepted the features, and proposed several features that we could implement in the future, including but not limited to: adding organization goals, parsing commands instead of popping up a window every time a kudo is requested, etc. 
+* That before presenting, we need to ensure that everything works, and run a quick demo without our partner probably an hour before the demo, so that when demonstrating our program, no surprising issues would arise. 
