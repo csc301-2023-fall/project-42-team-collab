@@ -45,6 +45,7 @@ The key features of our application are as follows:
     - Target
     - Company Values that this kudos aligns with
     - Message
+    - Channel
 - (More to come...)
 
 ## Instructions
@@ -56,7 +57,7 @@ The key features of our application are as follows:
 
 - (Link to be provided later) The Slack App will be added to the workspace by the workspace admin, we will provide a link to add the app to their workspace. 
 - After the Slack App is added to the workspace, any user can just invoke the `/kudos` command in any message box available. 
-- (More details will be provided later, methods undecided) The user will also be able to customize the company values that they want to use for their workspace.
+- The user will also be able to add more company values that they want to use for their workspace in the pop-up window.
  
 ## Development requirements
 
