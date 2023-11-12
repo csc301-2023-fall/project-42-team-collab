@@ -10,10 +10,10 @@
 
 ## Iteration XX - Review & Retrospect
 
- * When: November 6, 2023
+ * When: November 12, 2023
  * Where: Online Zoom Meeting 
 
- * The recording link is here: 
+ * The recording of our demo is here: 
 
  * https://utoronto.zoom.us/rec/share/jJo7lJWrfT64yPBoxLF9JdbhaLhejLjHRVNA6Y_6AcHYIqjjdiWOdhwks__RIkvV.RrkGAJLFdz6Uuqya?startTime=1699309966000
  * Password: 0&%7$Si0Ge
