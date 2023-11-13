@@ -13,10 +13,6 @@
  * When: November 12, 2023
  * Where: Online Zoom Meeting 
 
- * The recording of our demo is here: 
-
- * https://utoronto.zoom.us/rec/share/jJo7lJWrfT64yPBoxLF9JdbhaLhejLjHRVNA6Y_6AcHYIqjjdiWOdhwks__RIkvV.RrkGAJLFdz6Uuqya?startTime=1699309966000
- * Password: 0&%7$Si0Ge
 
 ## Process - Reflection
 
@@ -99,6 +95,11 @@
 
 [//]: # ( * *This section will be marked very leniently so keep it brief and just make sure the points are addressed*)
 
+---
+ * The recording of our demo is here: 
+
+ * https://utoronto.zoom.us/rec/share/jJo7lJWrfT64yPBoxLF9JdbhaLhejLjHRVNA6Y_6AcHYIqjjdiWOdhwks__RIkvV.RrkGAJLFdz6Uuqya?startTime=1699309966000
+ * Password: 0&%7$Si0Ge
 ---
 * We listed out an outline of things that we want to mention and also thought about what kind of questions that our partner might ask and how we were going to answer them.
 
