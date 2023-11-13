@@ -371,7 +371,11 @@ class DAOPostgreSQL(DAOBase):
 
     def get_connection(self):
         logger.info("Getting connection to PostgreSQL database...")
-        if self._connection.closed:
-            logger.info("Connection closed, reconnecting...")
-            self._connection = self._connect()
+
+        # Temporary workaround, create multiple connections
+        # if self._connection.closed:
+        #     logger.info("Connection closed, reconnecting...")
+        #     self._connection = self._connect()
+        self._connection = self._connect()
+
         return self._connection
