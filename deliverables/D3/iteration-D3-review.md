@@ -101,6 +101,7 @@
  * https://utoronto.zoom.us/rec/share/jJo7lJWrfT64yPBoxLF9JdbhaLhejLjHRVNA6Y_6AcHYIqjjdiWOdhwks__RIkvV.RrkGAJLFdz6Uuqya?startTime=1699309966000
  * Password: 0&%7$Si0Ge
 ---
+
 * We listed out an outline of things that we want to mention and also thought about what kind of questions that our partner might ask and how we were going to answer them.
 
 * We managed to show almost all the features of our program, except some minor issues.
@@ -109,4 +110,10 @@
 
 * That before presenting, we need to ensure that everything works, and run a quick demo without our partner probably an hour before the demo, so that when demonstrating our program, no surprising issues would arise.
 
-* After the demo, we had a clear understanding on the next steps of our deployed product and how we can improve. With that being said, we are now still working on enhancing our Slack bot by moving towards the requirements stated. 
+* After the demo, we had a clear understanding on the next steps of our deployed product and how we can improve. With that being said, we are now still working on enhancing our Slack bot by moving towards the requirements stated.
+
+The following link is a demonstration of how our deployed product is hosted using Azure's services, which we did not present to our partner due to time constraints (it was setup after the meeting). 
+
+https://youtu.be/SK5Uy8bDuPE
+
+The details regarding how we chose to deploy our product with CI/CD pipelines and how we chose to integrate Azure into our Slack bot can be found in the video shown above. 
