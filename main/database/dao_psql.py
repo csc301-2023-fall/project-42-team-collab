@@ -320,7 +320,7 @@ class DAOPostgreSQL(DAOBase):
         except Exception as e:
             logger.error(f"Failed to get corp values from workspace with id '{workspace_id}'")
             print(e, file=sys.stderr)
-            return []
+            return ['DATABASE ERROR']
 
     def get_user_kudos(self, workspace_id: str, user_id: str) -> Tuple[int, dict[str, int]]:
         # TODO: Figure out what's going with our schema things
@@ -371,7 +371,17 @@ class DAOPostgreSQL(DAOBase):
 
     def get_connection(self):
         logger.info("Getting connection to PostgreSQL database...")
-        if self._connection.closed:
+
+        # Try to get connection 5 times, if failed, raise exception
+        i = 0
+        while self._connection.closed and i < 5:
             logger.info("Connection closed, reconnecting...")
             self._connection = self._connect()
+            i += 1
+
+        if i == 5:
+            raise Exception('Connection failed!')
+
+        logger.info('Successfully obtained connection')
+
         return self._connection
