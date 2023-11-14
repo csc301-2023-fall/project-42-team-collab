@@ -69,6 +69,8 @@ class DAOPostgreSQL(DAOBase):
                     'test_schema', workspace_id)
                 cursor.execute(init_sql)
 
+                conn.commit()
+
                 default_values = [
                     "Good Teamwork",
                     "Customer First",
@@ -85,11 +87,11 @@ class DAOPostgreSQL(DAOBase):
 
                 self.add_corp_values(workspace_id, default_values)
 
-                conn.commit()
                 return True
         except Exception as e:
             print(e, file=sys.stderr)
             logger.error(f"Failed to create workspace with id: {workspace_id}")
+            self.get_connection().rollback()
             return False
 
     def add_user(self, workspace_id: str, slack_id: str, name: str) -> bool:
@@ -117,6 +119,7 @@ class DAOPostgreSQL(DAOBase):
             logger.error(f"Failed to add user '({slack_id}, {name})' "
                          f"in workspace with id: {workspace_id}")
             print(e, file=sys.stderr)
+            self.get_connection().rollback()
             return False
 
     def delete_user(self, workspace_id: str, slack_id: str) -> bool:
@@ -170,6 +173,7 @@ class DAOPostgreSQL(DAOBase):
             logger.error(f"Failed to add channel '({channel_id}, {name})' "
                          f"to workspace with id: {workspace_id}")
             print(e, file=sys.stderr)
+            self.get_connection().rollback()
             return False
 
     def delete_channel(self, workspace_id: str, channel_id: str) -> bool:
@@ -247,6 +251,7 @@ class DAOPostgreSQL(DAOBase):
         except Exception as e:
             print(e, file=sys.stderr)
             logger.error(f"Failed to add message in workspace with id '{workspace_id}'")
+            self.get_connection().rollback()
             return False
 
     def add_corp_values(self, workspace_id: str, values: List[str]) -> bool:
@@ -277,6 +282,7 @@ class DAOPostgreSQL(DAOBase):
         except Exception as e:
             logger.error(f"Failed to add values '{values}' to workspace with id '{workspace_id}'")
             print(e, file=sys.stderr)
+            self.get_connection().rollback()
             return False
 
     def delete_corp_values(self, workspace_id: str, values: List[str]) -> bool:
