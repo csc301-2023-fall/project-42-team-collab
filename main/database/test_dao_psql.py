@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from database.dao_psql import DAOPostgreSQL
+from dao_psql import DAOPostgreSQL
 
 
 class TestDAOPostgreSQL:
@@ -40,9 +40,12 @@ class TestDAOPostgreSQL:
 
     def test_add_channel(self):
         try:
+            print('add channel')
             self.dao.create_workspace('t0001')
+            print('created workspace')
             result = self.dao.add_channel('t0001', 'test_channel_id',
                                           'test_name')
+            print('added channel')
             assert result is True
         except Exception as e:
             pytest.fail(f"Unexpected error: {e}")
