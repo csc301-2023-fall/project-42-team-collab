@@ -177,8 +177,19 @@ def open_modal(ack, command, client, payload) -> None:
     # Find all matches and extract user IDs
     matches = re.findall(pattern, text)
 
+    # Find current channel
+    initial_channel = payload['channel_id']
+
+    # Check if initial_channel is public or not
+    # Only obtains 20 public channels
+
+    all_channels = client.conversations_list()['channels']
+    if not any(initial_channel in c['id'] for c in all_channels):
+        initial_channel = ''
+
     client.views_open(trigger_id=command["trigger_id"], view=set_up_kudos_modal(corp_vals,
-                                                                                matches))
+                                                                                matches,
+                                                                                initial_channel))
 
 
 @app.view("kudos_modal")
