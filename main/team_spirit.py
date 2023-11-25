@@ -172,12 +172,14 @@ def open_modal(ack, command, client, payload) -> None:
     # Scans the input command to check if there is any user ids contained in it
     text = payload['text']
 
-    # Uses regular expression to find the first occurrence of "<@XXXXXXXXXXX|User_name>",
+    # Uses regular expression to find the first occurrence of "<@XXXXXXXXXXX|user_name>",
     # this is @-ing a user
     pattern = r"<@([A-Za-z0-9]+)\|[^>]+>"
 
     # Find all matches and extract user IDs
-    matches = re.findall(pattern, text)
+    user_matches = re.findall(pattern, text)
+    # Get rid of duplicates
+    user_matches = list(set(user_matches))
 
     # Find current channel
     initial_channel = payload['channel_id']
@@ -193,10 +195,17 @@ def open_modal(ack, command, client, payload) -> None:
     pattern = r"<@[A-Za-z0-9]+(\|[^\>]+)?>"
     prefill_msg = re.sub(pattern, '', text)
 
+    # Prefill values
+    pattern = r"\$(\w+)\$"
+    values = re.findall(pattern, text)
+
+    prefill_msg = re.sub(pattern, '', prefill_msg)
+
     client.views_open(trigger_id=command["trigger_id"], view=set_up_kudos_modal(corp_vals,
-                                                                                matches,
+                                                                                user_matches,
                                                                                 initial_channel,
-                                                                                prefill_msg))
+                                                                                prefill_msg,
+                                                                                values))
 
 
 @app.view("kudos_modal")
