@@ -63,7 +63,7 @@ def fetch_kudos_for_user(workspace_id: str, user_id: str) -> Tuple[int, str]:
 # COMMAND HANDLER: /kudos_overview
 # #############################################################################
 @app.command("/kudos_overview")
-def kudos_overview(ack, command, client, payload) -> None:
+def kudos_overview(ack, command, client, payload, say) -> None:
     """
     Open kudos_overview modal on given client slack
     Args:
@@ -74,6 +74,16 @@ def kudos_overview(ack, command, client, payload) -> None:
     """
     ack()
     logger.info("/kudos_overview - Command received")
+
+    user_info = client.users_info(user=payload["user_id"])
+    # Checks if the user is admin, owner, or primary_owner
+    if not (user_info['user']['is_admin'] or
+            user_info['user']['is_owner'] or
+            user_info['user']['is_primary_owner']):
+        logger.info(f"/kudos_overview - Access refused for user with name: {user_info['user']['profile']['display_name']}")
+
+        say(f"Error: You do not have access to this function!")
+        return
 
     workspace_id = payload['team_id']
     DAO.create_workspace(workspace_id)
@@ -319,7 +329,7 @@ def handle_submission(ack, body, view, client, payload) -> None:
 # COMMAND HANDLER: /kudos_customize
 # #############################################################################
 @app.command("/kudos_customize")
-def open_customize_corp_value_modal(ack, command, client, payload) -> None:
+def open_customize_corp_value_modal(ack, command, client, payload, say) -> None:
     """
     Open customize corp value modal
     Args:
@@ -330,6 +340,17 @@ def open_customize_corp_value_modal(ack, command, client, payload) -> None:
     """
     ack()
     logger.info(f"/kudos_customize - Command received")
+
+    user_info = client.users_info(user=payload["user_id"])
+    # Checks if the user is admin, owner, or primary_owner
+    if not (user_info['user']['is_admin'] or
+            user_info['user']['is_owner'] or
+            user_info['user']['is_primary_owner']):
+        logger.info(
+            f"/kudos_overview - Access refused for user with name: {user_info['user']['profile']['display_name']}")
+
+        say(f"Error: You do not have access to this function!")
+        return
 
     workspace_id = payload['team_id']
     DAO.create_workspace(workspace_id)
