@@ -5,6 +5,8 @@ from database import *
 from typing import Tuple
 from datetime import datetime
 
+import re
+
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
@@ -167,7 +169,17 @@ def open_modal(ack, command, client, payload) -> None:
 
     corp_vals = DAO.get_corp_values(workspace_id)
 
-    client.views_open(trigger_id=command["trigger_id"], view=set_up_kudos_modal(corp_vals))
+    # Scans the input command to check if there is any user ids contained in it
+    text = payload['text']
+    # Uses regular expression to find the first occurrence of "<@XXXXXXXXXXX>", this is @-ing a user
+    pattern = r"<@[A-Za-z0-9]+>"
+
+    # This returns a list, but we should only be extracting the first user
+    # returns empty string if not found
+    matches = re.findall(pattern, text)
+
+    client.views_open(trigger_id=command["trigger_id"], view=set_up_kudos_modal(corp_vals,
+                                                                                matches))
 
 
 @app.view("kudos_modal")
@@ -194,8 +206,9 @@ def handle_submission(ack, body, view, client, payload) -> None:
     logger.info(f"/kudos - Selecting sender id as {sender_id}")
     try:
         # Extract recipient ID from view
-        recipient_id = view['state']['values']["recipient_select_block"]["user_select_action"]["selected_user"]
-        logger.info(f"/kudos - Selecting recipient id as {recipient_id}")
+        recipient_id = view['state']['values']["recipient_select_block"]['user_select_action']['selected_users']
+
+        logger.info(f"/kudos - Selecting recipient ids as {recipient_id}")
 
         # Extract channel ID from view
         channel_id = view['state']['values']['channel_select_block']['channel_select_action']['selected_channel']
@@ -219,7 +232,7 @@ def handle_submission(ack, body, view, client, payload) -> None:
         message = (
             ":tada: *Kudos Announcement* :tada:\n"
             f"From: <@{sender_id}>\n\n"
-            f"To: <@{recipient_id}>\n\n"
+            f"To: {' '.join([f'<@{rec_id}>' for rec_id in recipient_id])}\n\n"
             f"At Channel: <#{channel_id}>\n\n"
             "Values Recognized: \n"
             f"{values_recognized}\n\n"
@@ -231,27 +244,30 @@ def handle_submission(ack, body, view, client, payload) -> None:
         message_id = payload['id']
 
         from_username = app.client.users_info(user=sender_id)['user']['profile']['display_name']
-        to_username = app.client.users_info(user=recipient_id)['user']['profile']['display_name']
         channel_name = app.client.conversations_info(channel=channel_id)['channel']['name']
 
-        DAO.add_message(workspace_id=workspace,
-                        channel_id=channel_id,
-                        channel_name=channel_name,
-                        msg_id=message_id,
-                        time=datetime.now(),
-                        from_slack_id=sender_id,
-                        from_username=from_username,
-                        to_slack_id=recipient_id,
-                        to_username=to_username,
-                        text=message_text,
-                        kudos_value=selected_value_texts)
+        for rec_id in recipient_id:
+            to_username = app.client.users_info(user=rec_id)['user']['profile'][
+                'display_name']
+            DAO.add_message(workspace_id=workspace,
+                            channel_id=channel_id,
+                            channel_name=channel_name,
+                            msg_id=message_id,
+                            time=datetime.now(),
+                            from_slack_id=sender_id,
+                            from_username=from_username,
+                            to_slack_id=rec_id,
+                            to_username=to_username,
+                            text=message_text,
+                            kudos_value=selected_value_texts)
 
         # Send a direct message to the recipient if the checkbox is selected
         if notify_recipient_selected:
-            client.chat_postMessage(
-                channel=recipient_id,
-                text=message
-            )
+            for rec_id in recipient_id:
+                client.chat_postMessage(
+                    channel=rec_id,
+                    text=message
+                )
 
         # Send a message to the channel if the checkbox is selected
         if announce_kudos_selected:
