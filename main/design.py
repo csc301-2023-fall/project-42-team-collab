@@ -185,7 +185,7 @@ def set_up_message(prefill_msg: str) -> dict:
     """
     set up message input block for kudos modal
 
-    Maximum length 100 words, enforced by "max_length"
+    Maximum length 300 characters, enforced by "max_length"
 
     Returns:
         message input block in JSON format
@@ -196,7 +196,7 @@ def set_up_message(prefill_msg: str) -> dict:
         "element": {
             "type": "plain_text_input",
             "multiline": True,
-            "max_length": 100,
+            "max_length": 300,
             "action_id": "plain_text_input-action",
             "initial_value": prefill_msg.strip(),
             "placeholder": {
@@ -279,7 +279,7 @@ def set_up_message_footnote() -> dict:
         "elements": [
             {
                 "type": "mrkdwn",
-                "text": "Word limit: *100* words."
+                "text": "Character limits: *300* characters."
             }
         ]
     }
@@ -327,6 +327,8 @@ def set_up_customize_modal() -> dict:
     """
     Set up customize modal
 
+    values are limited to 25 characters, enforced by max_length
+
     Returns:
         customize modal block labeled in JSON format
     """
@@ -349,7 +351,7 @@ def set_up_customize_modal() -> dict:
                 "element": {
                     "type": "plain_text_input",
                     "min_length": 1,
-                    "max_length": 10,
+                    "max_length": 25,
                     "placeholder": {
                         "type": "plain_text",
                         "text": "Name your new corporate value"
