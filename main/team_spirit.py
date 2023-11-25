@@ -171,11 +171,10 @@ def open_modal(ack, command, client, payload) -> None:
 
     # Scans the input command to check if there is any user ids contained in it
     text = payload['text']
-    # Uses regular expression to find the first occurrence of "<@XXXXXXXXXXX>", this is @-ing a user
-    pattern = r"<@[A-Za-z0-9]+>"
+    # Uses regular expression to find the first occurrence of "<@XXXXXXXXXXX|User_name>", this is @-ing a user
+    pattern = r"<@([A-Za-z0-9]+)\|[^>]+>"
 
-    # This returns a list, but we should only be extracting the first user
-    # returns empty string if not found
+    # Find all matches and extract user IDs
     matches = re.findall(pattern, text)
 
     client.views_open(trigger_id=command["trigger_id"], view=set_up_kudos_modal(corp_vals,
