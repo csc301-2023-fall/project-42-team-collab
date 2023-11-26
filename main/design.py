@@ -1,4 +1,7 @@
+import datetime
 from typing import List
+
+import config
 
 import logging
 logger = logging.getLogger(__name__)
@@ -15,6 +18,9 @@ def set_up_kudos_modal(corp_vals: List[str], initial_users: List[str],
     Args:
         corp_vals: default corp value and customized corp value
         initial_users: a list of users to be pre-selected
+        initial_channel: the initial channel that will be pre-filled into the modal view
+        prefill_msg: the initial message that is parsed and filled into the message box
+        values: the parsed list of values that will be pre-filled into the kudos box
 
     Returns:
         kudos modal in JSON format
@@ -202,7 +208,7 @@ def set_up_message(prefill_msg: str) -> dict:
         "element": {
             "type": "plain_text_input",
             "multiline": True,
-            "max_length": 300,
+            "max_length": config.MESSAGE_LENGTH_MAX,
             "action_id": "plain_text_input-action",
             "initial_value": prefill_msg.strip(),
             "placeholder": {
@@ -285,7 +291,7 @@ def set_up_message_footnote() -> dict:
         "elements": [
             {
                 "type": "mrkdwn",
-                "text": "Character limits: *300* characters."
+                "text": f"Character limits: *{config.MESSAGE_LENGTH_MAX}* characters."
             }
         ]
     }
@@ -334,7 +340,8 @@ def set_up_customize_modal() -> dict:
     """
     Set up customize modal
 
-    values are limited to 25 characters, enforced by max_length
+    values are limited from config.VALUE_LENGTH_MIN to config.VALUE_LENGTH_MAX characters
+    enforced by max_length
 
     Returns:
         customize modal block labeled in JSON format
@@ -359,8 +366,8 @@ def set_up_customize_modal() -> dict:
                 "type": "input",
                 "element": {
                     "type": "plain_text_input",
-                    "min_length": 1,
-                    "max_length": 25,
+                    "min_length": config.VALUE_LENGTH_MIN,
+                    "max_length": config.VALUE_LENGTH_MAX,
                     "placeholder": {
                         "type": "plain_text",
                         "text": "Name your new corporate value"
@@ -369,7 +376,7 @@ def set_up_customize_modal() -> dict:
                 },
                 "label": {
                     "type": "plain_text",
-                    "text": "New Corporate Value (1 - 10 characters)",
+                    "text": f"New Corporate Value ({config.VALUE_LENGTH_MIN} - {config.VALUE_LENGTH_MAX} characters)",
                     "emoji": True
                 },
                 "block_id": "new_value_block"
@@ -411,9 +418,14 @@ def set_up_overview_modal() -> dict:
             {
                 # This is the start date time picker
                 "type": "input",
+                "block_id": "start_time_pick",
                 "element": {
                     "type": "datetimepicker",
-                    "action_id": "datetimepicker-start_time"
+                    "action_id": "datetimepicker-start_time",
+                    # Unix time 1 means starting from the first moment,
+                    # i.e. pick earliest time possible
+                    # I didn't use time 0 because somehow it shows nothing in Slack
+                    "initial_date_time": 1
                 },
                 "hint": {
                     "type": "plain_text",
@@ -429,9 +441,12 @@ def set_up_overview_modal() -> dict:
             {
                 # This is the end date time picker
                 "type": "input",
+                "block_id": "end_time_pick",
                 "element": {
                     "type": "datetimepicker",
-                    "action_id": "datetimepicker-end_time"
+                    "action_id": "datetimepicker-end_time",
+                    # The time up until this point you called the window
+                    "initial_date_time": int(datetime.datetime.timestamp(datetime.datetime.now()))
                 },
                 "hint": {
                     "type": "plain_text",

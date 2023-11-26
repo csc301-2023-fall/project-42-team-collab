@@ -38,19 +38,22 @@ def echo(ack, respond, command):
 # #############################################################################
 # Set up helper function
 # #############################################################################
-def fetch_kudos_for_user(workspace_id: str, user_id: str) -> Tuple[int, str]:
+def fetch_kudos_for_user(workspace_id: str, user_id: str,
+                         start_time: int, end_time: int) -> Tuple[int, str]:
     """
     Helper function to fetch kudos data for a user
     Args:
         workspace_id: current workspace id
         user_id: given user id
+        start_time: start time (UNIX time) filter
+        end_time: end time (UNIX time) filter
 
     Returns:
         kudos_count: amount of total kudos received with given user
         kudos_values_status: string contain given user's received corp values history.
     """
     logger.info(f"Fetching kudos data for user {user_id}")
-    user_kudos_data = DAO.get_user_kudos(workspace_id, user_id)
+    user_kudos_data = DAO.get_user_kudos(workspace_id, user_id, start_time, end_time)
     kudos_count = user_kudos_data[0]
     corp_values = user_kudos_data[1]
 
@@ -71,6 +74,7 @@ def kudos_overview(ack, command, client, payload, say) -> None:
         command: Stores information about this invoked command.
         client: Slack's API client for performing actions like sending messages.
         payload: Additional data about the event that triggered the function.
+        say: A function used to send message to the user
     """
     ack()
     logger.info("/kudos_overview - Command received")
@@ -111,16 +115,20 @@ def handle_kudos_view(ack, body, client) -> None:
     # Extract the selected user ID
     try:
         selected_user_id = body['view']['state']['values']['user_select']['user_selected']['selected_user']
+        start_time = body['view']['state']['values']['start_time_pick']['datetimepicker-start_time']['selected_date_time']
+        end_time = body['view']['state']['values']['end_time_pick']['datetimepicker-end_time']['selected_date_time']
+
     except KeyError as e:
         # Log the error and body for debugging
-        logger.error(f"/kudos_overview - EmptySelectError: selected_user is None {e}")
+        logger.error(f"/kudos_overview - EmptySelectError: {e}")
         logger.error(body)
         return
 
     workspace_id = body['team']['id']
 
     # Fetch and format the kudos data for the selected user
-    kudos_count, kudos_value_status = fetch_kudos_for_user(workspace_id, selected_user_id)
+    kudos_count, kudos_value_status = fetch_kudos_for_user(workspace_id, selected_user_id,
+                                                           start_time, end_time)
 
     # Fetch the user's info to get the username
     try:
@@ -337,6 +345,7 @@ def open_customize_corp_value_modal(ack, command, client, payload, say) -> None:
         command: Stores information about this invoked command.
         client: Slack's API client for performing actions like sending messages.
         payload: Additional data about the event is triggered, including IDs and team team_id.
+        say: A function used to send message to the user
     """
     ack()
     logger.info(f"/kudos_customize - Command received")
