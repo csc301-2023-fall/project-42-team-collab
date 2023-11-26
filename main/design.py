@@ -62,10 +62,12 @@ def set_up_recipient(initial_users: List[str]) -> dict:
         recipient block in JSON format
     """
     return {
+        # The recipient block that will sometimes be prefilled
         "type": "input",
         "block_id": "recipient_select_block",
         "element": {
             "type": "multi_users_select",
+            # Pre filled users
             "initial_users": initial_users,
             "placeholder": {
                 "type": "plain_text",
@@ -88,6 +90,7 @@ def set_up_channel(initial_channel: str) -> dict:
         channel block in JSON format
     """
     input_block = {
+        # The channel blocks for selection
         "type": "input",
         "block_id": "channel_select_block",
         "label": {
@@ -144,6 +147,7 @@ def set_up_corp_value(custom_values: List[str], initial_values: List[str]) -> di
     logger.info(options)
 
     corp_val = {
+        # This is the message block for the corp values options that we have
         "type": "input",
         "block_id": "corp_select_block",
         "element": {
@@ -153,6 +157,7 @@ def set_up_corp_value(custom_values: List[str], initial_values: List[str]) -> di
                 "text": "Select options",
                 "emoji": True
             },
+            # These lists out all the options
             "options": options,
             "action_id": "multi_static_select-action"
         },
@@ -191,6 +196,7 @@ def set_up_message(prefill_msg: str) -> dict:
         message input block in JSON format
     """
     return {
+        # This is the message block to type in information about the kudos
         "type": "input",
         "block_id": "message_input_block",
         "element": {
@@ -297,6 +303,7 @@ def set_up_checkbox() -> dict:
         "block_id": "checkboxes_block",
         "elements": [
             {
+                # This is the checkbox to choose the different options
                 "type": "checkboxes",
                 "action_id": "checkboxes_action",
                 "options": [
@@ -347,6 +354,8 @@ def set_up_customize_modal() -> dict:
         },
         "blocks": [
             {
+                # This is the block for value that will be added
+                # The input block
                 "type": "input",
                 "element": {
                     "type": "plain_text_input",
@@ -375,6 +384,7 @@ def set_up_customize_modal() -> dict:
 def set_up_overview_modal() -> dict:
     """
     set up overview modal, let client overview user's kudos history.
+    also supports a time frame selection so that we can filter information
 
     Returns:
         user select panel labeled in JSON format
@@ -385,6 +395,7 @@ def set_up_overview_modal() -> dict:
         "title": {"type": "plain_text", "text": "View Kudos"},
         "blocks": [
             {
+                # This is the user picker
                 "type": "input",
                 "block_id": "user_select",
                 "element": {
@@ -396,6 +407,42 @@ def set_up_overview_modal() -> dict:
                     "action_id": "user_selected"
                 },
                 "label": {"type": "plain_text", "text": "Who do you want to view kudos for?"}
+            },
+            {
+                # This is the start date time picker
+                "type": "input",
+                "element": {
+                    "type": "datetimepicker",
+                    "action_id": "datetimepicker-start_time"
+                },
+                "hint": {
+                    "type": "plain_text",
+                    "text": "Start date & time that you want to view for this person",
+                    "emoji": True
+                },
+                "label": {
+                    "type": "plain_text",
+                    "text": "Start date & time",
+                    "emoji": True
+                }
+            },
+            {
+                # This is the end date time picker
+                "type": "input",
+                "element": {
+                    "type": "datetimepicker",
+                    "action_id": "datetimepicker-end_time"
+                },
+                "hint": {
+                    "type": "plain_text",
+                    "text": "End date & time that you want to view for this person",
+                    "emoji": True
+                },
+                "label": {
+                    "type": "plain_text",
+                    "text": "End date & time",
+                    "emoji": True
+                }
             }
         ],
         "submit": {"type": "plain_text", "text": "View"}
