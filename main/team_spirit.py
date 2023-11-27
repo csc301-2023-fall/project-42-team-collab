@@ -66,7 +66,7 @@ def fetch_kudos_for_user(workspace_id: str, user_id: str,
 # COMMAND HANDLER: /kudos_overview
 # #############################################################################
 @app.command("/kudos_overview")
-def kudos_overview(ack, command, client, payload, say) -> None:
+def kudos_overview(ack, command, client, payload, respond) -> None:
     """
     Open kudos_overview modal on given client slack
     Args:
@@ -74,7 +74,7 @@ def kudos_overview(ack, command, client, payload, say) -> None:
         command: Stores information about this invoked command.
         client: Slack's API client for performing actions like sending messages.
         payload: Additional data about the event that triggered the function.
-        say: A function used to send message to the user
+        respond: A function used to send message to the user, privately
     """
     ack()
     logger.info("/kudos_overview - Command received")
@@ -86,7 +86,7 @@ def kudos_overview(ack, command, client, payload, say) -> None:
             user_info['user']['is_primary_owner']):
         logger.info(f"/kudos_overview - Access refused for user with name: {user_info['user']['profile']['display_name']}")
 
-        say(f"Error: You do not have access to this function!")
+        respond(f"Error: You do not have access to this function!")
         return
 
     workspace_id = payload['team_id']
@@ -347,7 +347,7 @@ def handle_submission(ack, body, view, client, payload) -> None:
 # COMMAND HANDLER: /kudos_customize
 # #############################################################################
 @app.command("/kudos_customize")
-def open_customize_corp_value_modal(ack, command, client, payload, say) -> None:
+def open_customize_corp_value_modal(ack, command, client, payload, respond) -> None:
     """
     Open customize corp value modal
     Args:
@@ -355,7 +355,7 @@ def open_customize_corp_value_modal(ack, command, client, payload, say) -> None:
         command: Stores information about this invoked command.
         client: Slack's API client for performing actions like sending messages.
         payload: Additional data about the event is triggered, including IDs and team team_id.
-        say: A function used to send message to the user
+        respond: A function used to send message to the user, privately
     """
     ack()
     logger.info(f"/kudos_customize - Command received")
@@ -368,7 +368,7 @@ def open_customize_corp_value_modal(ack, command, client, payload, say) -> None:
         logger.info(
             f"/kudos_overview - Access refused for user with name: {user_info['user']['profile']['display_name']}")
 
-        say(f"Error: You do not have access to this function!")
+        respond(f"Error: You do not have access to this function!")
         return
 
     workspace_id = payload['team_id']
