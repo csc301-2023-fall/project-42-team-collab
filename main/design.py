@@ -258,6 +258,22 @@ def set_up_checkbox() -> dict:
     Returns:
         checkbox selected block in JSON format
     """
+    announce_in_channel = {
+        "text": {
+            "type": "mrkdwn",
+            "text": "*Announce kudos in the chosen channel*"
+        },
+        "value": "announce_kudos"
+    }
+
+    notify_recipient = {
+        "text": {
+            "type": "mrkdwn",
+            "text": "*Notify recipient with direct message about this kudos*"
+        },
+        "value": "notify_recipient"
+    }
+
     return {
         "type": "actions",
         "block_id": "checkboxes_block",
@@ -266,21 +282,11 @@ def set_up_checkbox() -> dict:
                 "type": "checkboxes",
                 "action_id": "checkboxes_action",
                 "options": [
-                    {
-                        "text": {
-                            "type": "mrkdwn",
-                            "text": "*Notify recipient with direct message about this kudos*"
-                        },
-                        "value": "notify_recipient"
-                    },
-                    {
-                        "text": {
-                            "type": "mrkdwn",
-                            "text": "*Announce kudos in the chosen channel*"
-                        },
-                        "value": "announce_kudos"
-                    }
+                    notify_recipient,
+                    announce_in_channel
                 ],
+                # Select the "announce in channel" by default
+                "initial_options": [announce_in_channel]
             }
         ]
     }

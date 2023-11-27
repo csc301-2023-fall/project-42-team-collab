@@ -212,8 +212,14 @@ def handle_submission(ack, body, view, client, payload) -> None:
 
         # Extract checkbox values find out which checkbox is selected
         selected_checkbox_options = view['state']['values']['checkboxes_block']['checkboxes_action']['selected_options']
-        notify_recipient_selected = any([option['value'] == 'notify_recipient' for option in selected_checkbox_options])
-        announce_kudos_selected = any([option['value'] == 'announce_kudos' for option in selected_checkbox_options])
+        notify_recipient_selected = False
+        announce_kudos_selected = False
+
+        for option in selected_checkbox_options:
+            if option['value'] == 'notify_recipient':
+                notify_recipient_selected = True
+            elif option['value'] == 'announce_kudos':
+                announce_kudos_selected = True
 
         values_recognized = '\n'.join([f"\t\t{value}" for value in selected_value_texts])
         message = (
