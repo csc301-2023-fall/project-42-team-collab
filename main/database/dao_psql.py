@@ -226,25 +226,29 @@ class DAOPostgreSQL(DAOBase):
                 # """, (msg_id, channel_id, time, from_slack_id,
                 #       to_slack_id, text))
 
-                if kudos_value is not None:
-                    for value in kudos_value:
-                        t = f"SELECT id FROM {workspace_id}.corp_values WHERE corp_value = '{value}'"
-                        cursor.execute(t)
+                # Only add the message id tied with kudos once
+                t = f"SELECT message_id FROM {workspace_id}.kudos WHERE message_id = '{msg_id}'"
+                cursor.execute(t)
+                if cursor.fetchall() == []:
+                    if kudos_value is not None:
+                        for value in kudos_value:
+                            t = f"SELECT id FROM {workspace_id}.corp_values WHERE corp_value = '{value}'"
+                            cursor.execute(t)
 
-                        # get the kudos value id
-                        # cursor.execute("""
-                        #     SELECT id FROM corp_values WHERE corp_value = %s;
-                        # """, (value,))
+                            # get the kudos value id
+                            # cursor.execute("""
+                            #     SELECT id FROM corp_values WHERE corp_value = %s;
+                            # """, (value,))
 
-                        kudos_value_id = cursor.fetchone()[0]
+                            kudos_value_id = cursor.fetchone()[0]
 
-                        t = f"INSERT INTO {workspace_id}.kudos (message_id, corp_value_id) VALUES ('{msg_id}', '{kudos_value_id}')"
-                        cursor.execute(t)
+                            t = f"INSERT INTO {workspace_id}.kudos (message_id, corp_value_id) VALUES ('{msg_id}', '{kudos_value_id}')"
+                            cursor.execute(t)
 
-                        # cursor.execute("""
-                        #     INSERT INTO kudos (message_id, corp_value_id)
-                        #     VALUES (%s, %s);
-                        # """, (msg_id, kudos_value_id))
+                            # cursor.execute("""
+                            #     INSERT INTO kudos (message_id, corp_value_id)
+                            #     VALUES (%s, %s);
+                            # """, (msg_id, kudos_value_id))
 
                 conn.commit()
                 return True
@@ -328,10 +332,14 @@ class DAOPostgreSQL(DAOBase):
             print(e, file=sys.stderr)
             return ['DATABASE ERROR']
 
-    def get_user_kudos(self, workspace_id: str, user_id: str) -> Tuple[int, dict[str, int]]:
+    def get_user_kudos(self, workspace_id: str, user_id: str,
+                       start_time: int = 1,
+                       end_time: int = datetime.timestamp(datetime.now())) -> Tuple[int, dict[str, int]]:
         # TODO: Figure out what's going with our schema things
         try:
             logger.info(f"Getting kudos stats of the user with id: {user_id}")
+            logger.info(f"Start time is (UNIX): {start_time}")
+            logger.info(f"End time is (UNIX): {end_time}")
             # get connection
             conn = self.get_connection()
             with conn.cursor() as cursor:
@@ -342,7 +350,8 @@ class DAOPostgreSQL(DAOBase):
                 FROM {workspace_id}.messages
                 JOIN {workspace_id}.kudos ON messages.id = kudos.message_id
                 JOIN {workspace_id}.corp_values ON kudos.corp_value_id = corp_values.id
-                WHERE messages.to_slack_id = '{user_id}'
+                WHERE messages.to_slack_id = '{user_id}' AND
+                time <= to_timestamp({end_time}) AND time >= to_timestamp({start_time})
                 GROUP BY kudos.corp_value_id, corp_values.corp_value;
                 """
 

@@ -5,6 +5,8 @@ from database import *
 from typing import Tuple
 from datetime import datetime
 
+import re
+
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
@@ -36,19 +38,22 @@ def echo(ack, respond, command):
 # #############################################################################
 # Set up helper function
 # #############################################################################
-def fetch_kudos_for_user(workspace_id: str, user_id: str) -> Tuple[int, str]:
+def fetch_kudos_for_user(workspace_id: str, user_id: str,
+                         start_time: int, end_time: int) -> Tuple[int, str]:
     """
     Helper function to fetch kudos data for a user
     Args:
         workspace_id: current workspace id
         user_id: given user id
+        start_time: start time (UNIX time) filter
+        end_time: end time (UNIX time) filter
 
     Returns:
         kudos_count: amount of total kudos received with given user
         kudos_values_status: string contain given user's received corp values history.
     """
     logger.info(f"Fetching kudos data for user {user_id}")
-    user_kudos_data = DAO.get_user_kudos(workspace_id, user_id)
+    user_kudos_data = DAO.get_user_kudos(workspace_id, user_id, start_time, end_time)
     kudos_count = user_kudos_data[0]
     corp_values = user_kudos_data[1]
 
@@ -61,7 +66,7 @@ def fetch_kudos_for_user(workspace_id: str, user_id: str) -> Tuple[int, str]:
 # COMMAND HANDLER: /kudos_overview
 # #############################################################################
 @app.command("/kudos_overview")
-def kudos_overview(ack, command, client, payload) -> None:
+def kudos_overview(ack, command, client, payload, say) -> None:
     """
     Open kudos_overview modal on given client slack
     Args:
@@ -69,9 +74,20 @@ def kudos_overview(ack, command, client, payload) -> None:
         command: Stores information about this invoked command.
         client: Slack's API client for performing actions like sending messages.
         payload: Additional data about the event that triggered the function.
+        say: A function used to send message to the user
     """
     ack()
     logger.info("/kudos_overview - Command received")
+
+    user_info = client.users_info(user=payload["user_id"])
+    # Checks if the user is admin, owner, or primary_owner
+    if not (user_info['user']['is_admin'] or
+            user_info['user']['is_owner'] or
+            user_info['user']['is_primary_owner']):
+        logger.info(f"/kudos_overview - Access refused for user with name: {user_info['user']['profile']['display_name']}")
+
+        say(f"Error: You do not have access to this function!")
+        return
 
     workspace_id = payload['team_id']
     DAO.create_workspace(workspace_id)
@@ -99,16 +115,20 @@ def handle_kudos_view(ack, body, client) -> None:
     # Extract the selected user ID
     try:
         selected_user_id = body['view']['state']['values']['user_select']['user_selected']['selected_user']
+        start_time = body['view']['state']['values']['start_time_pick']['datetimepicker-start_time']['selected_date_time']
+        end_time = body['view']['state']['values']['end_time_pick']['datetimepicker-end_time']['selected_date_time']
+
     except KeyError as e:
         # Log the error and body for debugging
-        logger.error(f"/kudos_overview - EmptySelectError: selected_user is None {e}")
+        logger.error(f"/kudos_overview - EmptySelectError: {e}")
         logger.error(body)
         return
 
     workspace_id = body['team']['id']
 
     # Fetch and format the kudos data for the selected user
-    kudos_count, kudos_value_status = fetch_kudos_for_user(workspace_id, selected_user_id)
+    kudos_count, kudos_value_status = fetch_kudos_for_user(workspace_id, selected_user_id,
+                                                           start_time, end_time)
 
     # Fetch the user's info to get the username
     try:
@@ -167,7 +187,43 @@ def open_modal(ack, command, client, payload) -> None:
 
     corp_vals = DAO.get_corp_values(workspace_id)
 
-    client.views_open(trigger_id=command["trigger_id"], view=set_up_kudos_modal(corp_vals))
+    # Scans the input command to check if there is any user ids contained in it
+    text = payload['text']
+
+    # Uses regular expression to find the first occurrence of "<@XXXXXXXXXXX|user_name>",
+    # this is @-ing a user
+    pattern = r"<@([A-Za-z0-9]+)\|[^>]+>"
+
+    # Find all matches and extract user IDs
+    user_matches = re.findall(pattern, text)
+    # Get rid of duplicates
+    user_matches = list(set(user_matches))
+
+    # Find current channel
+    initial_channel = payload['channel_id']
+
+    # Check if initial_channel is public or not
+    # Only obtains 20 public channels
+
+    all_channels = client.conversations_list()['channels']
+    if not any(initial_channel in c['id'] for c in all_channels):
+        initial_channel = ''
+
+    # Prefill message
+    pattern = r"<@[A-Za-z0-9]+(\|[^\>]+)?>"
+    prefill_msg = re.sub(pattern, '', text)
+
+    # Prefill values
+    pattern = r"\$(\w+)\$"
+    values = re.findall(pattern, text)
+
+    prefill_msg = re.sub(pattern, '', prefill_msg)
+
+    client.views_open(trigger_id=command["trigger_id"], view=set_up_kudos_modal(corp_vals,
+                                                                                user_matches,
+                                                                                initial_channel,
+                                                                                prefill_msg,
+                                                                                values))
 
 
 @app.view("kudos_modal")
@@ -194,8 +250,9 @@ def handle_submission(ack, body, view, client, payload) -> None:
     logger.info(f"/kudos - Selecting sender id as {sender_id}")
     try:
         # Extract recipient ID from view
-        recipient_id = view['state']['values']["recipient_select_block"]["user_select_action"]["selected_user"]
-        logger.info(f"/kudos - Selecting recipient id as {recipient_id}")
+        recipient_id = view['state']['values']["recipient_select_block"]['user_select_action']['selected_users']
+
+        logger.info(f"/kudos - Selecting recipient ids as {recipient_id}")
 
         # Extract channel ID from view
         channel_id = view['state']['values']['channel_select_block']['channel_select_action']['selected_channel']
@@ -225,7 +282,7 @@ def handle_submission(ack, body, view, client, payload) -> None:
         message = (
             ":tada: *Kudos Announcement* :tada:\n"
             f"From: <@{sender_id}>\n\n"
-            f"To: <@{recipient_id}>\n\n"
+            f"To: {' '.join([f'<@{rec_id}>' for rec_id in recipient_id])}\n\n"
             f"At Channel: <#{channel_id}>\n\n"
             "Values Recognized: \n"
             f"{values_recognized}\n\n"
@@ -237,27 +294,30 @@ def handle_submission(ack, body, view, client, payload) -> None:
         message_id = payload['id']
 
         from_username = app.client.users_info(user=sender_id)['user']['profile']['display_name']
-        to_username = app.client.users_info(user=recipient_id)['user']['profile']['display_name']
         channel_name = app.client.conversations_info(channel=channel_id)['channel']['name']
 
-        DAO.add_message(workspace_id=workspace,
-                        channel_id=channel_id,
-                        channel_name=channel_name,
-                        msg_id=message_id,
-                        time=datetime.now(),
-                        from_slack_id=sender_id,
-                        from_username=from_username,
-                        to_slack_id=recipient_id,
-                        to_username=to_username,
-                        text=message_text,
-                        kudos_value=selected_value_texts)
+        for rec_id in recipient_id:
+            to_username = app.client.users_info(user=rec_id)['user']['profile'][
+                'display_name']
+            DAO.add_message(workspace_id=workspace,
+                            channel_id=channel_id,
+                            channel_name=channel_name,
+                            msg_id=message_id,
+                            time=datetime.now(),
+                            from_slack_id=sender_id,
+                            from_username=from_username,
+                            to_slack_id=rec_id,
+                            to_username=to_username,
+                            text=message_text,
+                            kudos_value=selected_value_texts)
 
         # Send a direct message to the recipient if the checkbox is selected
         if notify_recipient_selected:
-            client.chat_postMessage(
-                channel=recipient_id,
-                text=message
-            )
+            for rec_id in recipient_id:
+                client.chat_postMessage(
+                    channel=rec_id,
+                    text=message
+                )
 
         # Send a message to the channel if the checkbox is selected
         if announce_kudos_selected:
@@ -283,7 +343,7 @@ def handle_submission(ack, body, view, client, payload) -> None:
 # COMMAND HANDLER: /kudos_customize
 # #############################################################################
 @app.command("/kudos_customize")
-def open_customize_corp_value_modal(ack, command, client, payload) -> None:
+def open_customize_corp_value_modal(ack, command, client, payload, say) -> None:
     """
     Open customize corp value modal
     Args:
@@ -291,9 +351,21 @@ def open_customize_corp_value_modal(ack, command, client, payload) -> None:
         command: Stores information about this invoked command.
         client: Slack's API client for performing actions like sending messages.
         payload: Additional data about the event is triggered, including IDs and team team_id.
+        say: A function used to send message to the user
     """
     ack()
     logger.info(f"/kudos_customize - Command received")
+
+    user_info = client.users_info(user=payload["user_id"])
+    # Checks if the user is admin, owner, or primary_owner
+    if not (user_info['user']['is_admin'] or
+            user_info['user']['is_owner'] or
+            user_info['user']['is_primary_owner']):
+        logger.info(
+            f"/kudos_overview - Access refused for user with name: {user_info['user']['profile']['display_name']}")
+
+        say(f"Error: You do not have access to this function!")
+        return
 
     workspace_id = payload['team_id']
     DAO.create_workspace(workspace_id)
