@@ -333,7 +333,8 @@ class DAOPostgreSQL(DAOBase):
             return ['DATABASE ERROR']
 
     def get_user_kudos(self, workspace_id: str, user_id: str,
-                       start_time: int, end_time: int) -> Tuple[int, dict[str, int]]:
+                       start_time: int = 1,
+                       end_time: int = datetime.timestamp(datetime.now())) -> Tuple[int, dict[str, int]]:
         # TODO: Figure out what's going with our schema things
         try:
             logger.info(f"Getting kudos stats of the user with id: {user_id}")
