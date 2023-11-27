@@ -142,12 +142,15 @@ class DAOBase(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_user_kudos(self, workspace_id: str, user_id: str) -> Tuple[int, dict[str, int]]:
+    def get_user_kudos(self, workspace_id: str, user_id: str,
+                       start_time: int, end_time: int) -> Tuple[int, dict[str, int]]:
         """
         Get all corporate values from the workspace.
 
         :param workspace_id: The unique identifier for workspace
         :param user_id: The unique identifier of the user to get kudos from
+        :param start_time: The start time to filter this person's kudos
+        :param end_time: The end time to filter this person's kudos
         :return: A list of corporate values.
         """
         raise NotImplementedError
