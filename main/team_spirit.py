@@ -214,7 +214,7 @@ def open_modal(ack, command, client, payload) -> None:
     prefill_msg = re.sub(pattern, '', text)
 
     # Prefill values
-    pattern = r"\$(\w+)\$"
+    pattern = r"\$([^$]+)\$"
     values = re.findall(pattern, text)
 
     prefill_msg = re.sub(pattern, '', prefill_msg)
