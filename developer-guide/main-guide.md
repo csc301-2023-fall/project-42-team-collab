@@ -258,6 +258,8 @@ Click "Create New Command" button
 
 ![Guide add new command](images/guid_create_command.png)
 
+After adding a command here, be sure to refer to [team_spirit.py](#teamspiritpy) to understand how to add a "command listener" so that your command actually works! 
+
 ---
 ## Usage
 (After installing the app in your workspace)
