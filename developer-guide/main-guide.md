@@ -1,6 +1,6 @@
 # Team Collab 
 
-Brief project description and purpose for future developers and users
+A comprehensive guide for future developers and users
 
 ---
 ## Table of Contents
