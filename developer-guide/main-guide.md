@@ -363,6 +363,8 @@ This section introduces the design of our database component. We choose to use M
 #### Table Design
 To support multiple workspaces, we choose to create a new *schema* for each workspace. For each schema, we have the following tables and constraints: 
 
+You can view a sample of this schema by checking into `main/database/init.sql`. This is the script that we use to initialize a new workspace's database relations. 
+
 ##### 1. Table: `users`
 
 - **Columns:**
