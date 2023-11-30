@@ -42,3 +42,5 @@ The default shell is `sh`, not `bash`.
 1. `docker login --username <username> --password <password>`. For example, I have used: `docker login --username yujiawei364557 --password highsalary`
 2. Change the line in `build_docker_and_run` (corresponding to your system, modify the .sh or .bat) that says `docker build --tag team_spirit ../`, change the tag to `<username>/<repository name>`. Something like: `yujiawei364557/team_spirit`. 
 3. Then, after executing `build_docker_and_run` at least once for your current version, you can call: `docker push <username>/<repository name>`, something like `docker push yujiawei364557/team_spirit`.
+
+Note: If you plan to replace the image name into `<username>/<repository name>`, it would be better if you also replace the image name in all three of the scripts, `build_docker_and_run`, `clean_docker_image`, and `copy_logs`, as that will introduce minimum error. 

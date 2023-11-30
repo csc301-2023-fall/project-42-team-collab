@@ -35,7 +35,11 @@ The product deployed will be a bot that is integrated into Slack, allowing users
 ---
 ## Getting Started [General Usage]
 
-TODO: Fill in general user's steps in getting the bot running in their own workspace. 
+Before any user can start to use the project product, we need to ensure that the section [Getting Started [Developer]](#getting-started-developer) is being read by someone, and has an active server started and running. This is crucial for the bot work. 
+
+Then, with that being done, under the [Installation [Online Development]](#installation-online-deployment) section, you should be able to obtain an "Installation link" to your workspace. Simply click on that link and select the workspace you want it to be installed in, and in a while, the bot should be installed to your workspace. 
+
+With the bot installed in your workspace, you can now proceed to the [Usage](#usage) section, which documents some of the simple things you can do with our bot. 
 
 ---
 ## Getting Started [Developer]
@@ -295,12 +299,67 @@ Outline the structure of the project. Describe the purpose of each major directo
 
 This project can mainly be divided into 3 parts, in the order of the dataflow: Slack, Backend and database
 
-### Slack
 
 ### Backend
+This section introduces the basic outline and structure of our Bot. 
+
+#### main.py
+
+The main entry point to all of our code is `main.py`, which imports all the relevant modules and starts up our bot. It doesn't provide much functionality, but it involves setting up the logger so that we have logs to review when something goes wrong.  
+
+The logging configurations can be found in `main/logging.conf`. 
+
+#### team_spirit.py
+
+`team_spirit.py` is our bot's main code, which involves calling all the relevant function in our database and creating listeners for events that are passed by Slack's API. 
+
+Since we have too many functions in `team_spirit.py`, I will just bring a quick overview on how we laid out the file. 
+
+Within the file, you should be able to see numerous dividers like: 
+
+```python
+# #############################################################################
+# COMMAND HANDLER: /kudos
+# #############################################################################
+```
+
+These dividers split our bot into multiple sections, each section deals with one specific command that is invoked by Slack's API. For example, the first function under the `/kudos` handler section is labelled: 
+
+```python
+@app.command("/kudos")
+def open_modal(ack, command, client, payload) -> None:
+```
+
+This is the main function that will be invoked when a user types in `/kudos` in their chat box. This is also known as a "command listener" function, which will be invoked when an event is being heard. 
+
+This function then calls functions that interact with the database and functions that interact with `design.py`, which will be described later. 
+
+The second function under the `/kudos` handler section is: 
+
+```python
+@app.view("kudos_modal")
+def handle_submission(ack, body, view, client, payload) -> None:
+```
+
+This is a "view listener" function, as it is called when the "view" with the "callback_id" of "kudos_modal" is being submitted. 
+
+The command `/kudos` opens up a "view" (a pop-up window), with specified attributes like "callback_id", which is used to interact with our "view listener" function. 
+
+All of the views that we have used in this project are JSON-like Python dictionaries, as you can see in `design.py`. 
+
+The rest of the functions in `team_spirit.py` follows a similar logic, where each of them has a "view listener" and a "command listener", sometimes with specific event listeners as requested by Slack.
+
+#### design.py
+
+This file stores all of the "view" components that we will use to generate the pop-up windows that will appear when we invoke a specific command.
+
+There are numerous fields that can be filled within these modules, but it is extremely hard to cover all of them. 
+
+You can learn more about how we setup the Modal views using [Slack's Block Kit](https://api.slack.com/tutorials/intro-to-modals-block-kit) and [Slack's Blocks](https://api.slack.com/reference/block-kit/blocks) in their respective hyperlinks. 
 
 ### Database
-This section introduces the design of our database component. We choose to use Microsoft Azure to host our database and PostgreSQL as our main language. We will introduce below the design of our tables and the functionalities we currently support 
+This section introduces the design of our database component. We choose to use Microsoft Azure to host our database and PostgreSQL as our main language. We will introduce below the design of our tables and the functionalities we currently support:
+
 #### Table Design
 To support multiple workspaces, we choose to create a new *schema* for each workspace. For each schema, we have the following tables and constraints: 
 
@@ -360,10 +419,13 @@ To support multiple workspaces, we choose to create a new *schema* for each work
 
 ## Contributing
 
-The following section is some TODOs that we have yet to complete as a part of our project, but we will provide general guidelines to these issues. 
+The following section is some TODOs that we have yet to complete as a part of our project, but we will provide general guidelines and description to these issues. 
+
+### Slack Back End
+1. Our current Bot's home page is completely blank, but it can be setup by using Slack's block kit relatively easily. Completing the Bot's home page allows for a new user to quickly grasp the usage of our bot, hence making it more accessible by users. 
 
 ### Documentation
-1. Our current GitHub page doesn't have a wiki page that documents everything in an organized manner. Mostly, we rely on comments that is written directly on the code file, not providing an actual documentation for them, which may cause some issues in terms of communicating. 
+1. Our current GitHub page doesn't have a wiki page that documents everything in an organized manner. Mostly, we rely on comments that is written directly on the code file, not providing an actual documentation for them, which may cause some issues in terms of communicating.
 
 ### Database 
 1. Multiple injections in the functions of DAOPostgreSQL stem from unforeseen behaviors in the _select_schema helper functions. Invoking this helper function tends to induce instability in the connection to Azure, leading to prolonged query times and potential non-responsiveness. A team member attempted to address this issue by committing the current session after selecting the schema; however, this solution fails to pass the pytest.
@@ -375,24 +437,22 @@ The following section is some TODOs that we have yet to complete as a part of ou
 ### Deployment
 1. Notice that currently, our Slack bot is deployed using "Socket mode", which is only recommended as a way of deploying the bot if only used for development purposes. If possible, you can setup your own HTTP server hosting at a domain, which allows you to redirect all sources of HTTP Requests to our bot using Slack's BOLT API. If you plan to distribute the bot into public, this is a necessary step, as socket direct connections are often insecure. 
 
+2. The project was originally planned to be also used by Microsoft Teams. However, as the API given by Slack is very limited to only working with Slack, we have limited our project's capabilities to only work with Slack. Furthermore, the APIs that we can use to communicate with Teams is extremely different with what we have currently. If we want to support Teams in the future, the best we can do is probably to reuse the same structure of our Slack bot and create a new project on it. 
+
 ## Testing
 
 Presently, our testing framework exclusively comprises unit tests for the database. Each test involves the creation and subsequent teardown of a new schema. It's crucial to note that these tests address only the fundamental aspects of the functionalities; they lack comprehensiveness. Nevertheless, the success of these tests is a prerequisite before implementing any modifications to the database components.
 
 To streamline the testing process, a team member has configured GitHub Actions to automatically run these tests whenever a new push is made to the main branch. This automation ensures continuous validation of the database functionalities, contributing to the overall reliability of our system.
 
-## Deployment
+You may modify the GitHub actions files stored under `.github/workflows`. 
 
-Provide guidance on deploying the project to production. Include any specific configurations or considerations for deployment environments.
+The file named `build_and_test.yml` configures Pytest and runs them on a Linux machine.
 
-## Technologies Used
-
-List the technologies, frameworks, and tools used in the project. This section helps developers understand the tech stack.
-
-## License
-
-Specify the project's license. This informs future developers about the terms under which they can use, modify, and distribute the project.
+The file named `docker-image.yml` uses Docker to build an image and push to our Docker Hub repository as stated in [Docker Hub](#docker-hub). Notice that I have used a lot of replacement fields like `${{ secrets.DOCKERHUB_USERNAME }}`. These are known as GitHub repository secrets, and you can learn more about them here: [Using secrets in GitHub actions](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions)
 
 ## Acknowledgments
 
-Express gratitude to individuals or organizations that contributed to the project. This can include mentions of libraries, tools, or resources used.
+Special thanks to the University of Toronto's CSC301 Teaching Team, which gave us the idea of this project! 
+
+Also, thanks a lot for you to be reading until now! 
