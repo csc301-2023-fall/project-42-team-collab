@@ -294,6 +294,14 @@ Any user in the workspace can:
 
    For example, I can execute `/kudos Hi this is Ray, saying thanks to @Will Will $Good Teamwork$. Very cool`. Then, these information will be automatically filled, and the message pre-filled will become: "Hi this is Ray, saying thanks to Will. Very cool"
 
+3. If you are a workspace primary owner, you can enter the "Manage Members" page to customize who should have access to the admin functions. 
+
+![member management](images/member_management.png)
+
+Then, it should bring you to a page that allows you to set the account types of each member in your workspace: 
+
+![change member type](images/change_member_type.png)
+
 ---
 ## Project Structure
 
