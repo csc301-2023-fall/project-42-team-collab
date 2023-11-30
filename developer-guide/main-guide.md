@@ -50,6 +50,7 @@ Depending on your preference, you can start the project either locally, or deplo
 
 - A valid Slack Development Account, which needs to be configured to run our bot. You should have a Slack Developer account if you have a regular Slack account. If you don't have a valid account, you can register a valid account here: [Slack API](https://api.slack.com/)
 - A PostgreSQL Database that you have full control over. The ones used in development by the project is provided Microsoft Azure. You are also welcome to use a local database, as long as you have methods of connecting to it. 
+- Clone this repository to any of your local development environments. 
 
 #### Local Development
 
@@ -93,6 +94,8 @@ Scroll down in this page to the "App Credentials" section, and you should see th
 
 Within these fields, take note of the "Signing Secret", as we will use it later in `config.py`. 
 
+Also, you want to take note of "Client ID" and "Client Secret", as we will use it later in `install.php`.
+
 Then, scroll down more, and you will find "App-Level Tokens". If there isn't any entries in there, simply click "Generate Token and Scopes", and select the scopes that it needs by referring to the picture below. 
 
 ![App level tokens](images/app_level_tokens.png)
@@ -103,15 +106,15 @@ After creating, you should be able to click the name of the newly created App To
 
 Note down the value of this app token as well. 
 
-Lastly, under the "Install App" sub-menu on the left, as shown in the below figure, you should be able to obtain a "Bot Token". Note it down as well. The bot token should begin with "xoxb-xxxx..."
+Under the "Install App" sub-menu on the left, as shown in the below figure, you should be able to obtain a "Bot Token". Note it down as well. The bot token should begin with "xoxb-xxxx..."
 
 ![Bot token](images/bot_token.png)
 
-With all three of these available, we can now proceed to the configurations of our bot. 
+With all of these information available, we can now proceed to the configurations of our bot.
 
 #### config.py
 
-Within `config.py`, there are a few fields to look out for: 
+Within `main/config.py`, there are a few fields to look out for: 
 
 ```python
 # Connectivity configurations
@@ -135,15 +138,100 @@ DB_PASSWORD = 'Highsalary001'
 
 Replace the database configurations with the connect credentials you actually have as a PostgreSQL database.
 
-After replacing all of the configuration files, we can now proceed to going into the next step. 
+After replacing the details of the configuration files, we can now proceed to going into the next step.
+
+#### install.php
+
+Under `main/setup_script/install.php`, there are a few fields to be updated as well.
+
+```php
+$client_id = "5933772890579.5948056374419";
+$client_secret = "8d1d5b9e81638194f42e8eba4daec9c4";
+```
+
+You want to update these two lines with the information that you have found in the previous step ([Slack Developer Portal](#slack-developer-portal)) as well.
+
+Then, simply save the file and continue on. 
 
 ### Installation [Local Development]
 
-TODO: Add local running tutorial
+After setting up all the required configurations above, you should be able to look into `main/docker/docker_readme.md`, and execute `build_docker_and_run.sh` or `build_docker_and_run.bat` to start up the bot. 
+
+A successful start up of the bot should look something like this: 
+
+![local startup](images/local_startup.png)
+
+If you do not want to use Docker, as instructed above, you also have the choice of running it on Python directly. 
+
+To do this, you want to change your working directory to the `main` folder. Then, you want to execute `pip install -r requirements.txt`. 
+
+Then, you can execute `python ./main.py` within the same directory, and you should able to see similar results as the Docker local deployment, as shown in the pictures below: 
+
+![pip install](images/pip_install.png)
+
+![local python startup](images/local_python_startup.png)
 
 ### Installation [Online Deployment]
 
-TODO: Add Azure tutorial or docker tutorial
+Note: The following part contains a lot of setup on Microsoft Azure and Docker Hub, as that is the Docker container hosting service that we have chosen for our project. 
+
+#### Docker Hub
+
+As mentioned by the prerequisites, you should have a valid Docker Hub account [https://hub.docker.com/](here). 
+
+Now, with your Docker Hub account, you want to create a repository that is **exactly** named `team_spirit`, as shown in the figure below. 
+
+![docker hub](images/docker_hub.png)
+
+For our project, we have decided to use a **private** repository, so we recommend you to do the same. 
+
+After creating the repository, you should see the following page by navigating into your repository. 
+
+![docker repository](images/docker_repo.png)
+
+On the upper right corner, you will be notified on how to push your current working image to Docker Hub. 
+
+More specific guide on how to push to your Docker Hub is written in `docker_readme.md`. A hyperlink is here: [How to push a local Docker image to Docker Hub?](../main/docker_readme.md#how-to-push-a-local-docker-image-to-docker-hub)
+
+After everything is setup, you should be able to push your local image to your Docker Hub, which completes this step. 
+
+You should be able to verify this by clicking into the repository and seeing that under "Tags", there is a "latest" Tag which is pushed very recently. 
+
+#### Microsoft Azure
+
+With all the Docker setup done, you can now create a new "Docker Container App" on Microsoft Azure. The setup for this part varies a lot, and is very hard to be covered in this guide, so I recommend you to look up a tutorial on YouTube or Google to create a new Docker Container App. 
+
+With a Docker Container App created, one of the main settings that you want to ensure is: 
+
+![azure docker settings](images/azure_docker_settings.png)
+
+With all these being done, you can simply start up the Docker Container and the bot should be running. 
+
+#### [Optional] Setting up release of the project to be installed in other workspaces
+
+This part is optional, but it is necessary if you plan to distribute your Slack bot to multiple workspaces. 
+
+The main goal of this part is to setup a PHP Web Server that runs an automated installation script, which triggers [Slack's OAuth Request](https://api.slack.com/authentication/oauth-v2) and installs the bot to the corresponding workspace. 
+
+The main goal here is to create a web server that can deal with HTTP GET and POST requests, and deal with them using an installation script. To complete this goal, I have utilized Microsoft Azure's web server, with a simple installation script provided in `main/setup_script/install.php`. 
+
+You want to ensure that the script is available on the Web Server (HTTPS needed), and can be accessed publicly. 
+
+With all that being done, the following is a figure of how it is laid out in our current web server. 
+
+![web server](images/web_server.png)
+
+The home page of our web server is `wwwroot`, and I have created a directory called `install` and placed the file `install.php` in there.
+
+With these being done, you should now have access to your script through a link, something like: `https://team-spirit.azurewebsites.net/install/install.php`. 
+
+Then, you want to head back once more to Slack Developer Portal, and under "OAuth & Permissions", add the redirect URL as the link to your installation script, as shown below. 
+
+![redirect_url](images/redirect_url.png)
+
+With these setup, you should now be able to use the link provided by "Manage Distribution" under the Slack Developer Portal to install your bot to other workspaces as well. 
+
+![manage distribution](images/manage_distribution.png)
 
 ---
 ## Usage
