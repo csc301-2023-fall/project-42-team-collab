@@ -402,6 +402,9 @@ def set_up_overview_modal() -> dict:
     Returns:
         user select panel labeled in JSON format
     """
+    # Calculate the Unix timestamp for the current time minus one year
+    one_year_ago = datetime.datetime.now() - datetime.timedelta(days=365)
+    one_year_ago_timestamp = int(datetime.datetime.timestamp(one_year_ago))
     return {
         "type": "modal",
         "callback_id": "view_kudos_modal",
@@ -431,7 +434,7 @@ def set_up_overview_modal() -> dict:
                     # Unix time 1 means starting from the first moment,
                     # i.e. pick earliest time possible
                     # I didn't use time 0 because somehow it shows nothing in Slack
-                    "initial_date_time": 1
+                    "initial_date_time": one_year_ago_timestamp
                 },
                 "hint": {
                     "type": "plain_text",
