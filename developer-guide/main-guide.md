@@ -153,6 +153,23 @@ You want to update these two lines with the information that you have found in t
 
 Then, simply save the file and continue on. 
 
+### Add new command to bot
+First head to [slack app](https://api.slack.com/apps) page, and click on the bot that you just added. 
+![Click the bot](/developer-guide/images/click_your_app.png)
+
+Then click "Slah Commands" on your left under "Features"
+![CLick Slash Commands](/developer-guide/images/add_command_window.png)
+
+Click "Create New Command" button
+![Click New Command](/developer-guide/images/create_new_command.png)
+
+1. Enter the name of your new command
+2. Add description about this new command
+3. (optional) Add hint about any parameter about this command
+4. Click "Save"
+![Guide add new command](/developer-guide/images/guid_create_command.png)
+
+
 ### Installation [Local Development]
 
 After setting up all the required configurations above, you should be able to look into `main/docker/docker_readme.md`, and execute `build_docker_and_run.sh` or `build_docker_and_run.bat` to start up the bot. 
