@@ -410,6 +410,48 @@ def handle_custom_submission(ack, body, client, view, payload) -> None:
     )
 
 
+# #############################################################################
+# COMMAND HANDLER: /corp_value_remove
+# #############################################################################
+@app.command("/corp_value_remove")
+def open_remove_corp_value_modal(ack, command, client, payload, respond) -> None:
+    """
+    Open remove corp value modal
+    Args:
+        ack: Acknowledges the view_submission event to Slack to avoid timeouts.
+        command: Stores information about this invoked command.
+        client: Slack's API client for performing actions like sending messages.
+        payload: Additional data about the event is triggered, including IDs and team team_id.
+        respond: A function used to send message to the user, privately
+    """
+    ack()
+    logger.info(f"/corp_value_remove - Command received")
+
+    user_info = client.users_info(user=payload["user_id"])
+    # Checks if the user is admin, owner, or primary_owner
+    if not (user_info['user']['is_admin'] or
+            user_info['user']['is_owner'] or
+            user_info['user']['is_primary_owner']):
+        logger.info(
+            f"/kudos_overview - Access refused for user with name: {user_info['user']['profile']['display_name']}")
+
+        respond(f"Error: You do not have access to this function!")
+        return
+    
+    workspace_id = payload['team_id']
+    DAO.create_workspace(workspace_id)
+    client.views_open(trigger_id=command["trigger_id"], view=set_up_remove_corp_value_modal(DAO.get_corp_values()))
+
+
+@app.view("custom_value_modal")
+def handle_corp_remove_submission(ack, body, client, view, payload) -> None:
+
+    
+
+
+
+
+
 @app.action("checkboxes_action")
 def handle_checkbox_action(ack) -> None:
     """
