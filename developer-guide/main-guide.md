@@ -151,11 +151,12 @@ TODO: Add Azure tutorial or docker tutorial
 
 An admin of the workspace can:
 1. Customize Corporation Values:
-   1. Send `/kudos_customize` in the chat
-   2. 
+   1. Send `/kudos_customize` in any chat box, then a window like the following picture shows will pop-up. 
+   ![kudos customize window](images/kudos_customize.png)
+   2. Then, you can type in the company value that you want to add to the workspace. 
 2. View other employees' stats:
    1. Send `/kudos_overview ` in the chat
-   2. 
+   2. TODO: Add more descriptions
 
 Any user in the workspace can:
 1. Send Kudos:
