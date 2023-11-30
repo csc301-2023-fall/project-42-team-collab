@@ -151,23 +151,7 @@ $client_secret = "8d1d5b9e81638194f42e8eba4daec9c4";
 
 You want to update these two lines with the information that you have found in the previous step ([Slack Developer Portal](#slack-developer-portal)) as well.
 
-Then, simply save the file and continue on. 
-
-### Add new command to bot
-First head to [slack app](https://api.slack.com/apps) page, and click on the bot that you just added. 
-![Click the bot](/developer-guide/images/click_your_app.png)
-
-Then click "Slah Commands" on your left under "Features"
-![CLick Slash Commands](/developer-guide/images/add_command_window.png)
-
-Click "Create New Command" button
-![Click New Command](/developer-guide/images/create_new_command.png)
-
-1. Enter the name of your new command
-2. Add description about this new command
-3. (optional) Add hint about any parameter about this command
-4. Click "Save"
-![Guide add new command](/developer-guide/images/guid_create_command.png)
+Then, simply save the file and continue on.
 
 
 ### Installation [Local Development]
@@ -250,22 +234,44 @@ With these setup, you should now be able to use the link provided by "Manage Dis
 
 ![manage distribution](images/manage_distribution.png)
 
+
+### Adding new commands to the bot
+First head to [Slack Developer Portal](https://api.slack.com/apps) page, and click on the bot that you just added. 
+
+![Click the bot](images/click_your_app.png)
+
+Then click "Slah Commands" on your left under "Features"
+![CLick Slash Commands](images/add_command_window.png)
+
+Click "Create New Command" button
+![Click New Command](images/create_new_command.png)
+
+1. Enter the name of your new command
+2. Add description about this new command
+3. (Optional) Add hint about any parameter about this command
+4. (Optional) If your Slash command needs to deal with parsing the input that has mentions about users or channels, tick the "Escape channels, users, and links" option, as that allows the input received to escape specific information for you to use. 
+5. Click "Save"
+
+![Guide add new command](images/guid_create_command.png)
+
 ---
 ## Usage
-(After installing the app)
+(After installing the app in your workspace)
 
 An admin of the workspace can:
 1. Customize Corporation Values:
    1. Send `/kudos_customize` in any chat box, then a window like the following picture shows will pop-up. 
    ![kudos customize window](images/kudos_customize.png)
    2. Then, you can type in the company value that you want to add to the workspace. 
+   3. If this succeeds, you should receive a private message from our Slack Bot saying that the value was added (for confirmation). 
 2. View other employees' stats:
-   1. Send `/kudos_overview ` in the chat
-   2. TODO: Add more descriptions
+   1. Send `/kudos_overview` in the chat, and the following window will pop-up.  
+   ![kudos overview window](images/kudos_overview.png)
+   2. Select the user and the time frame that you want to view kudos for, and click "View". The results should replace this window and display kudos information about that user within the specified time frame. 
 
 Any user in the workspace can:
-1. Send Kudos:
-   1. Send `/kudos` in the chat. A window should be popped up
+1. Send Kudos (Using the GUI):
+   1. Send `/kudos` in the chat.
    2. Select recipients (one or multiple)
    3. Select corporation values associated with the kudos
    4. Type messages to the recipients, along with reasons for the kudos
@@ -273,6 +279,14 @@ Any user in the workspace can:
 <div style="text-align:center">
   <img src="./images/kudos_window.png" alt="Kudos Window" width="70%">
 </div>
+
+2. Send Kudos (Using command parsing):
+   1. Send `/kudos message [@person1] [@person2] [@...] [$value1$] [$value2$] [$value...$] message`
+   2. In the pop-up window, you should see that the recipients are pre-filled with the `@mentions` of users that you have typed in the command. 
+   3. You should also see that the values that you have assigned using this command with `$value$` are automatically filled. 
+   4. You should also see that any content that is in the command that is not a `@mention` nor a `$value$` becomes a part of the actual message. 
+
+   For example, I can execute `/kudos Hi this is Ray, saying thanks to @Will Will $Good Teamwork$. Very cool`. Then, these information will be automatically filled, and the message pre-filled will become: "Hi this is Ray, saying thanks to Will. Very cool"
 
 ---
 ## Project Structure
@@ -346,7 +360,10 @@ To support multiple workspaces, we choose to create a new *schema* for each work
 
 ## Contributing
 
-Explain how others can contribute to the project. Include information about the contribution process, coding standards, and any guidelines for submitting issues or pull requests.
+The following section is some TODOs that we have yet to complete as a part of our project, but we will provide general guidelines to these issues. 
+
+### Documentation
+1. Our current GitHub page doesn't have a wiki page that documents everything in an organized manner. Mostly, we rely on comments that is written directly on the code file, not providing an actual documentation for them, which may cause some issues in terms of communicating. 
 
 ### Database 
 1. Multiple injections in the functions of DAOPostgreSQL stem from unforeseen behaviors in the _select_schema helper functions. Invoking this helper function tends to induce instability in the connection to Azure, leading to prolonged query times and potential non-responsiveness. A team member attempted to address this issue by committing the current session after selecting the schema; however, this solution fails to pass the pytest.
@@ -354,6 +371,9 @@ Explain how others can contribute to the project. Include information about the 
 2. Add an organization goal component to or project. It should behave like company values, but its cope is only restricted in small teams, and they might be more frequently changed by new goals. Think of them as short term tasks. Admins of a workspace/channel should be able to modify them just like company values. 
 
 3. Enhance the robustness of the code by addressing additional edge cases and unexpected behaviors triggered by unusual inputs or connection instability. This proactive approach will contribute to a more resilient and reliable system, capable of handling diverse scenarios effectively.
+
+### Deployment
+1. Notice that currently, our Slack bot is deployed using "Socket mode", which is only recommended as a way of deploying the bot if only used for development purposes. If possible, you can setup your own HTTP server hosting at a domain, which allows you to redirect all sources of HTTP Requests to our bot using Slack's BOLT API. If you plan to distribute the bot into public, this is a necessary step, as socket direct connections are often insecure. 
 
 ## Testing
 
