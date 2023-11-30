@@ -137,6 +137,23 @@ Replace the database configurations with the connect credentials you actually ha
 
 After replacing all of the configuration files, we can now proceed to going into the next step. 
 
+### Add new command to bot
+First head to [slack app](https://api.slack.com/apps) page, and click on the bot that you just added. 
+![Click the bot](/developer-guide/images/click_your_app.png)
+
+Then click "Slah Commands" on your left under "Features"
+![CLick Slash Commands](/developer-guide/images/add_command_window.png)
+
+Click "Create New Command" button
+![Click New Command](/developer-guide/images/create_new_command.png)
+
+1. Enter the name of your new command
+2. Add description about this new command
+3. (optional) Add hint about any parameter about this command
+4. Click "Save"
+![Guide add new command](/developer-guide/images/guid_create_command.png)
+
+
 ### Installation [Local Development]
 
 TODO: Add local running tutorial
