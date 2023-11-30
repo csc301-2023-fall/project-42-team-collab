@@ -2,22 +2,48 @@
 
 A comprehensive guide for future developers and users
 
----
-## Table of Contents
-- [Introduction](#introduction)
-- [Features](#features)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [Testing](#testing)
-- [Deployment](#deployment)
-- [Technologies Used](#technologies-used)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
-
+---- [Team Collab](#team-collab)
+- [Team Collab](#team-collab)
+  - [Introduction](#introduction)
+  - [Features](#features)
+  - [Getting Started \[General Usage\]](#getting-started-general-usage)
+  - [Getting Started \[Developer\]](#getting-started-developer)
+    - [Prerequisites](#prerequisites)
+      - [General requirements](#general-requirements)
+      - [Local Development](#local-development)
+      - [Online Deployment](#online-deployment)
+    - [Settings before deployment](#settings-before-deployment)
+      - [Slack developer portal](#slack-developer-portal)
+      - [config.py](#configpy)
+      - [install.php](#installphp)
+    - [Installation \[Local Development\]](#installation-local-development)
+    - [Installation \[Online Deployment\]](#installation-online-deployment)
+      - [Docker Hub](#docker-hub)
+      - [Microsoft Azure](#microsoft-azure)
+      - [\[Optional\] Setting up release of the project to be installed in other workspaces](#optional-setting-up-release-of-the-project-to-be-installed-in-other-workspaces)
+    - [Adding new commands to the bot](#adding-new-commands-to-the-bot)
+  - [Usage](#usage)
+  - [Project Structure](#project-structure)
+    - [Backend](#backend)
+      - [main.py](#mainpy)
+      - [team\_spirit.py](#team_spiritpy)
+      - [design.py](#designpy)
+    - [Database](#database)
+      - [Table Design](#table-design)
+        - [1. Table: `users`](#1-table-users)
+        - [2. Table: `channels`](#2-table-channels)
+        - [3. Table: `messages`](#3-table-messages)
+        - [4. Table: `corp_values`](#4-table-corp_values)
+        - [5. Table: `kudos`](#5-table-kudos)
+      - [DAO Design](#dao-design)
+  - [Contributing](#contributing)
+    - [Slack Back End](#slack-back-end)
+    - [Documentation](#documentation)
+    - [Database](#database-1)
+    - [Deployment](#deployment)
+  - [Testing](#testing)
+  - [Acknowledgments](#acknowledgments)
+  
 ---
 ## Introduction
 
@@ -420,7 +446,7 @@ You can view a sample of this schema by checking into `main/database/init.sql`. 
 - The primary key of `messages` is set to a couple since we want to enable multiple recipients.
 
 
-#### Code Design
+#### DAO Design
 1. To establish a connection with our database, use the `get_DAO()` function available in `__init__.py`. This practice ensures the prevention of creating multiple connections to our database.
 
 2. The `DAObase` is an interface that any Data Access Object must adhere to. For specific behaviors expected from a `DAObase` instance, please refer to the documentations in `main/database/dao_base.py`.
