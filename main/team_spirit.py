@@ -443,13 +443,28 @@ def open_remove_corp_value_modal(ack, command, client, payload, respond) -> None
     client.views_open(trigger_id=command["trigger_id"], view=set_up_remove_corp_value_modal(DAO.get_corp_values()))
 
 
-@app.view("custom_value_modal")
+
+@app.view("corp_remove_modal")
 def handle_corp_remove_submission(ack, body, client, view, payload) -> None:
+    ack()
+    logger.info(f"/corp_remove_modal -  Submission event received")
 
+    workspace_id = payload['team_id']
+    DAO.create_workspace(workspace_id)
+
+    # Extract values from the view
+    selected_values = view['state']['values']['remove_values']['value_selection']['selected_options']
+
+    DAO.delete_corp_values(workspace_id, selected_values)
+    logger.info(f"/corp_remove_modal - remove corps: {selected_values}")
+
+    # Give the user a success message
+    sender_id = body["user"]["id"]
+    client.chat_postMessage(
+        channel=sender_id,
+        text=f"Successfully remove {selected_values} from the list of corp values!"
+    )
     
-
-
-
 
 
 @app.action("checkboxes_action")
