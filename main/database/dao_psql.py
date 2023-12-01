@@ -9,6 +9,8 @@ from database.dao_base import DAOBase
 import pathlib
 import os
 
+import config
+
 import logging
 logger = logging.getLogger(__name__)
 
@@ -42,11 +44,11 @@ class DAOPostgreSQL(DAOBase):
     _connection: Any
 
     def __init__(self,
-                 hostname: str = 'teamspirit.postgres.database.azure.com',
-                 port: int = 5432,
-                 dbname: str = 'team_spirit',
-                 user: str = 'kudosadmin',
-                 password: str = 'Highsalary001') -> None:
+                 hostname: str = config.DB_HOSTNAME,
+                 port: int = config.DB_PORT,
+                 dbname: str = config.DB_DBNAME,
+                 user: str = config.DB_USER,
+                 password: str = config.DB_PASSWORD) -> None:
         logger.info("Connecting to PostgreSQL database...")
         self.hostname = hostname
         self.port = port

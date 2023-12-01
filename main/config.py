@@ -13,6 +13,13 @@ VALUE_LENGTH_MIN = 1
 VALUE_LENGTH_MAX = 25
 MESSAGE_LENGTH_MAX = 300
 
+# Database config
+DB_HOSTNAME = 'teamspirit.postgres.database.azure.com'
+DB_PORT = 5432
+DB_DBNAME = 'team_spirit'
+DB_USER = 'kudosadmin'
+DB_PASSWORD = 'Highsalary001'
+
 # Report debug information
 logger.debug(f'Slack bot token: {SLACK_BOT_TOKEN}')
 logger.debug(f'Slack signing secret token: {SLACK_SIGNING_SECRET}')
