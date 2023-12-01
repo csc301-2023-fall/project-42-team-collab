@@ -17,6 +17,8 @@ A comprehensive guide for future developers and users
       - [config.py](#configpy)
       - [install.php](#installphp)
     - [Installation \[Local Development\]](#installation-local-development)
+      - [Installation using Docker](#installation-using-docker)
+      - [Installation without using Docker](#installation-without-using-docker)
     - [Installation \[Online Deployment\]](#installation-online-deployment)
       - [Docker Hub](#docker-hub)
       - [Microsoft Azure](#microsoft-azure)
@@ -186,11 +188,15 @@ Then, simply save the file and continue on.
 
 ### Installation [Local Development]
 
+#### Installation using Docker
+
 After setting up all the required configurations above, you should be able to look into `main/docker/docker_readme.md`, and execute `build_docker_and_run.sh` or `build_docker_and_run.bat` to start up the bot. 
 
 A successful start up of the bot should look something like this: 
 
 ![local startup](images/local_startup.png)
+
+#### Installation without using Docker
 
 If you do not want to use Docker, as instructed above, you also have the choice of running it on Python directly. 
 
