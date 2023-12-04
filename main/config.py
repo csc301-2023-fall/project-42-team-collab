@@ -16,7 +16,7 @@ MESSAGE_LENGTH_MAX = 300
 # Database config
 DB_HOSTNAME = 'teamspirit.postgres.database.azure.com'
 DB_PORT = 5432
-DB_DBNAME = 'team_spirit'
+DB_DBNAME = 'dev'
 DB_USER = 'kudosadmin'
 DB_PASSWORD = 'Highsalary001'
 

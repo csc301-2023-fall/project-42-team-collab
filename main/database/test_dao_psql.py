@@ -34,6 +34,9 @@ class TestDAOPostgreSQL:
         try:
             self.dao.create_workspace('t0001')
             result = self.dao.delete_user('t0001', 'test_slack_id')
+            assert result is False
+            self.dao.add_user('t0001', 'test_slack_id', 'test_name')
+            result = self.dao.delete_user('t0001', 'test_slack_id')
             assert result is True
         except Exception as e:
             pytest.fail(f"Unexpected error: {e}")
@@ -53,6 +56,10 @@ class TestDAOPostgreSQL:
     def test_delete_channel(self):
         try:
             self.dao.create_workspace('t0001')
+            result = self.dao.delete_channel('t0001', 'test_channel_id')
+            assert result is False
+            self.dao.add_channel('t0001', 'test_channel_id',
+                                          'test_name')
             result = self.dao.delete_channel('t0001', 'test_channel_id')
             assert result is True
         except Exception as e:
