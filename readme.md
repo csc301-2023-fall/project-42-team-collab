@@ -1,6 +1,10 @@
 # Slack App / Getting Employed
 
-We use Notion and GitHub project to manage tasks, post announcements, and archive documents.
+## [Main Guide](developer-guide/main-guide.md)
+
+A full and complete guide to setup and use the project as a regular user and a developer is available by the hyperlink above. 
+
+Please read through this guide, it should be able to clear out a lot of your confusions. 
 
 ## Partner Intro
 
@@ -55,15 +59,9 @@ The key features of our application are as follows:
 [//]: # (* Provide clear steps for using each feature described in the previous section.)
 [//]: # (* This section is critical to testing your application and must be done carefully and thoughtfully.)
 
-- (Link to be provided later) The Slack App will be added to the workspace by the workspace admin, we will provide a link to add the app to their workspace. 
-- The user will be able to send kudos to a colleague, see the kudos that a user has received, and customize the corporation values for the workspace. 
-- After the Slack App is added to the workspace, any user can invoke any of the following commands in any message box available. 
-
----
-The following list of commands are supported by the bot after being added to the workspace: 
-- `/kudos`: pops a window that prompts you to fill information needed to send a kudos. 
-- `/kudos_overview`: displays the kudos that a particular user has received in the past. 
-- `/kudos_customize`: customize the corporation values that are available in this workspace. 
+- The Slack App will be added to the workspace by the workspace admin, we will provide a link to add the app to their workspace. 
+- After the Slack App is added to the workspace, any user can just invoke the `/kudos` command in any message box available. 
+- The user will also be able to add more company values that they want to use for their workspace in the pop-up window.
  
 ## Development requirements
 
