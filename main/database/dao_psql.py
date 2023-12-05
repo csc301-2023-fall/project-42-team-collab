@@ -150,7 +150,7 @@ class DAOPostgreSQL(DAOBase):
                 # TODO: Temporary work around
                 # _select_schema(cursor, workspace_id)
 
-                cursor.execute("SELECT id FROM {workspace_id}.channels WHERE id = '{channel_id}'")
+                cursor.execute(f"SELECT id FROM {workspace_id}.channels WHERE id = '{channel_id}'")
 
                 # If the channel already exists
                 if cursor.fetchone() is not None:
