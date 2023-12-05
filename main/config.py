@@ -27,7 +27,7 @@ logger.debug(f'Slack app token: {SLACK_APP_TOKEN}')
 logger.debug(f'Port: {PORT}')
 
 # Default Corporation Values
-default_values = [
+DEFAULT_VALUES = [
                     "Good Teamwork",
                     "Customer First",
                     "Innovation",
