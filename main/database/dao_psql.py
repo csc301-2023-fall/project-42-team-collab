@@ -71,19 +71,7 @@ class DAOPostgreSQL(DAOBase):
 
                 conn.commit()
 
-                default_values = [
-                    "Good Teamwork",
-                    "Customer First",
-                    "Innovation",
-                    "Leadership",
-                    "Continuous Learning",
-                    "Problem Solving",
-                    "Integrity",
-                    "Collaboration",
-                    "Passion",
-                    "Flexibility",
-                    "Accountability"
-                ]
+                default_values = config.default_values
 
                 self.add_corp_values(workspace_id, default_values)
 
@@ -103,15 +91,13 @@ class DAOPostgreSQL(DAOBase):
                 # TODO: Temporary work around
                 # _select_schema(cursor, workspace_id)
 
-                t = f"SELECT slack_id FROM {workspace_id}.users WHERE slack_id = '{slack_id}'"
-                cursor.execute(t)
+                cursor.execute(f"SELECT slack_id FROM {workspace_id}.users WHERE slack_id = '{slack_id}'")
 
                 # If the user already exists
                 if cursor.fetchone() is not None:
                     return False
 
-                t = f"INSERT INTO {workspace_id}.users (slack_id, name) VALUES ('{slack_id}', '{name}')"
-                cursor.execute(t)
+                cursor.execute("INSERT INTO {workspace_id}.users (slack_id, name) VALUES ('{slack_id}', '{name}')")
 
                 conn.commit()
                 return True
@@ -131,8 +117,7 @@ class DAOPostgreSQL(DAOBase):
                 # TODO: Temporary work around
                 # _select_schema(cursor, workspace_id)
 
-                t = f"SELECT slack_id FROM {workspace_id}.users WHERE slack_id = '{slack_id}'"
-                cursor.execute(t)
+                cursor.execute("SELECT slack_id FROM {workspace_id}.users WHERE slack_id = '{slack_id}'")
 
                 # If the user does not exist
                 if cursor.fetchone() is None:
@@ -160,15 +145,14 @@ class DAOPostgreSQL(DAOBase):
             with conn.cursor() as cursor:
                 # TODO: Temporary work around
                 # _select_schema(cursor, workspace_id)
-                t = f"SELECT id FROM {workspace_id}.channels WHERE id = '{channel_id}'"
-                cursor.execute(t)
+
+                cursor.execute("SELECT id FROM {workspace_id}.channels WHERE id = '{channel_id}'")
 
                 # If the channel already exists
                 if cursor.fetchone() is not None:
                     return False
 
-                t = f"INSERT INTO {workspace_id}.channels (id, name) VALUES ('{channel_id}', '{name}')"
-                cursor.execute(t)
+                cursor.execute("INSERT INTO {workspace_id}.channels (id, name) VALUES ('{channel_id}', '{name}')")
 
                 conn.commit()
                 return True
@@ -188,8 +172,7 @@ class DAOPostgreSQL(DAOBase):
                 # TODO: Temporary work around
                 # _select_schema(cursor, workspace_id)
 
-                t = f"SELECT id FROM {workspace_id}.channels WHERE id = '{channel_id}'"
-                cursor.execute(t)
+                cursor.execute("SELECT id FROM {workspace_id}.channels WHERE id = '{channel_id}'")
 
                 # If the channel does not exist
                 if cursor.fetchone() is None:
@@ -227,25 +210,24 @@ class DAOPostgreSQL(DAOBase):
                 # _select_schema(cursor, workspace_id)
 
                 # add the message to the message table
-                t = (f"INSERT INTO {workspace_id}.messages (id, channel_id, time, from_slack_id, to_slack_id, text)"
-                     f"VALUES ('{msg_id}', '{channel_id}', '{time}', '{from_slack_id}', '{to_slack_id}', '{text}')")
-                cursor.execute(t)
+                cursor.execute(f"INSERT INTO {workspace_id}.messages "
+                               f"(id, channel_id, time, from_slack_id, to_slack_id, text)"
+                               f"VALUES ('{msg_id}', '{channel_id}', '{time}', '{from_slack_id}', '{to_slack_id}', '{text}')")
 
                 # Only add the message id tied with kudos once
                 # add only if the kudos table doesn't have entries with this message id
-                t = f"SELECT message_id FROM {workspace_id}.kudos WHERE message_id = '{msg_id}'"
-                cursor.execute(t)
+                cursor.execute(f"SELECT message_id FROM {workspace_id}.kudos WHERE message_id = '{msg_id}'")
                 if cursor.fetchall() == []:
                     if kudos_value is not None:
                         for value in kudos_value:
-                            t = f"SELECT id FROM {workspace_id}.corp_values WHERE corp_value = '{value}'"
-                            cursor.execute(t)
+                            cursor.execute(f"SELECT id FROM {workspace_id}.corp_values WHERE corp_value = '{value}'")
 
                             # retrieve the id of the value
                             kudos_value_id = cursor.fetchone()[0]
 
-                            t = f"INSERT INTO {workspace_id}.kudos (message_id, corp_value_id) VALUES ('{msg_id}', '{kudos_value_id}')"
-                            cursor.execute(t)
+
+                            cursor.execute(f"INSERT INTO {workspace_id}.kudos (message_id, corp_value_id) "
+                                           f"VALUES ('{msg_id}', '{kudos_value_id}')")
 
                 conn.commit()
                 return True
@@ -270,8 +252,7 @@ class DAOPostgreSQL(DAOBase):
                 for value in values:
                     # check if the value is already in the table
                     if value not in curr_values:
-                        t = f"INSERT INTO {workspace_id}.corp_values (corp_value) VALUES ('{value}')"
-                        cursor.execute(t)
+                        cursor.execute("INSERT INTO {workspace_id}.corp_values (corp_value) VALUES ('{value}')")
 
                 conn.commit()
                 return True
@@ -311,8 +292,7 @@ class DAOPostgreSQL(DAOBase):
                 # TODO:Temporary work around
                 # _select_schema(cursor, workspace_id)
 
-                t = f'select corp_value from {workspace_id}.corp_values'
-                cursor.execute(t)
+                cursor.execute(f'select corp_value from {workspace_id}.corp_values')
 
                 values = []
                 for row in cursor.fetchall():
@@ -328,7 +308,6 @@ class DAOPostgreSQL(DAOBase):
     def get_user_kudos(self, workspace_id: str, user_id: str,
                        start_time: int = 1,
                        end_time: int = datetime.timestamp(datetime.now())) -> Tuple[int, dict[str, int]]:
-        # TODO: Figure out what's going with our schema things
         try:
             logger.info(f"Getting kudos stats of the user with id: {user_id}")
             logger.info(f"Start time is (UNIX): {start_time}")
@@ -338,7 +317,7 @@ class DAOPostgreSQL(DAOBase):
                 # TODO: Temporary work around
                 # _select_schema(cursor, workspace_id)
 
-                t = f"""
+                cursor.execute(f"""
                 SELECT corp_values.corp_value, COUNT(*) as kudos_count
                 FROM {workspace_id}.messages
                 JOIN {workspace_id}.kudos ON messages.id = kudos.message_id
@@ -346,9 +325,7 @@ class DAOPostgreSQL(DAOBase):
                 WHERE messages.to_slack_id = '{user_id}' AND
                 time <= to_timestamp({end_time}) AND time >= to_timestamp({start_time})
                 GROUP BY kudos.corp_value_id, corp_values.corp_value;
-                """
-
-                cursor.execute(t)
+                """)
 
                 stats = {}
                 for kudo in cursor.fetchall():

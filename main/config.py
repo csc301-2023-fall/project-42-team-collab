@@ -25,3 +25,18 @@ logger.debug(f'Slack bot token: {SLACK_BOT_TOKEN}')
 logger.debug(f'Slack signing secret token: {SLACK_SIGNING_SECRET}')
 logger.debug(f'Slack app token: {SLACK_APP_TOKEN}')
 logger.debug(f'Port: {PORT}')
+
+# Default Corporation Values
+default_values = [
+                    "Good Teamwork",
+                    "Customer First",
+                    "Innovation",
+                    "Leadership",
+                    "Continuous Learning",
+                    "Problem Solving",
+                    "Integrity",
+                    "Collaboration",
+                    "Passion",
+                    "Flexibility",
+                    "Accountability"
+                ]
