@@ -136,12 +136,12 @@ List each team member and:
     - He will also be the partner liaison (As the leader)
 2. Will Zhao - Backend Developer, Quality Assurance Tester
    - He will serve as a backend developer and will primarily be responsible for refining and organizing the code and streamlining the workflow for the entire project. (He likes to organize stuff)
-   - He will ensure that the implemented feature works as intended and meets the specified requirments. 
+   - He will ensure that the implemented feature works as intended and meets the specified requirements. 
 3. Arthur Li - Frontend Developer, Quality Assurance Tester
    - He will be responsible for the frontend development of the project, especially the ones related to the Slack's API (Has prior experience in frontend development in CSC309)
    - He will main decide on how the frontend will look like and how it will interact with the backend in the project
    - He will also be responsible for testing the implemented features and ensure there are no quality issues.
-4. Jiawei Yu - Backend Developer, Database Manager
+4. Jiawei Yu - Database Manager
     - He will be responsible for some parts of the backend development of the project, especially the ones with the database (Has experience in database management)
     - He chooses to take this role as he likes managing databases and understanding the back scene of a project seems really enjoyable to him
 
