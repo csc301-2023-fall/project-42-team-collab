@@ -71,7 +71,7 @@ class DAOPostgreSQL(DAOBase):
 
                 conn.commit()
 
-                default_values = config.default_values
+                default_values = config.DEFAULT_VALUES
 
                 self.add_corp_values(workspace_id, default_values)
 
