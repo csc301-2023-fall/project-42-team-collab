@@ -462,8 +462,10 @@ You can view a sample of this schema by checking into `main/database/init.sql`. 
 ##### 5. Table: `kudos`
 
 - **Columns:**
-  - `message_id` (VARCHAR(30), Primary Key): Unique identifier for the kudos message.
+  - `message_id` (VARCHAR(30)): Unique identifier for the kudos message.
   - `corp_value_id` (INTEGER, Foreign Key): References `corp_values` table.
+- **Primary Key:**
+  - Composite key on `(message_id, corp_value_id)`.
 
 **Note:**
 - Foreign key constraints are established for referential integrity.
