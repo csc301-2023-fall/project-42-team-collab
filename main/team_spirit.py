@@ -413,7 +413,7 @@ def handle_custom_submission(ack, body, client, view, payload) -> None:
 # #############################################################################
 # COMMAND HANDLER: /corp_value_remove
 # #############################################################################
-@app.command("/corp_value_remove")
+@app.command("/kudos_corp_value_remove")
 def open_remove_corp_value_modal(ack, command, client, payload, respond) -> None:
     """
     Open remove corp value modal
@@ -425,23 +425,29 @@ def open_remove_corp_value_modal(ack, command, client, payload, respond) -> None
         respond: A function used to send message to the user, privately
     """
     ack()
-    logger.info(f"/corp_value_remove - Command received")
+    logger.info(f"/kudos_corp_value_remove - Command received")
 
     user_info = client.users_info(user=payload["user_id"])
     # Checks if the user is admin, owner, or primary_owner
     if not (user_info['user']['is_admin'] or
             user_info['user']['is_owner'] or
             user_info['user']['is_primary_owner']):
-        logger.info(
-            f"/kudos_overview - Access refused for user with name: {user_info['user']['profile']['display_name']}")
+        logger.error(
+            f"/kudos_corp_value_remove - Access refused for user with name: {user_info['user']['profile']['display_name']}")
 
         respond(f"Error: You do not have access to this function!")
         return
     
     workspace_id = payload['team_id']
     DAO.create_workspace(workspace_id)
-    client.views_open(trigger_id=command["trigger_id"], view=set_up_remove_corp_value_modal(DAO.get_corp_values()))
+    corp_values = DAO.get_corp_values(workspace_id)
+    customized_corp_values = [item for item in corp_values if item not in config.DEFAULT_VALUES]
+    if len(customized_corp_values) == 0:
+        logger.error(f"/kudos_corp_value_remove - No customized corp values found")
+        respond(f"Error: You do not have any customized corp values!")
+        return
 
+    client.views_open(trigger_id=command["trigger_id"], view=set_up_remove_corp_value_modal(customized_corp_values))
 
 
 @app.view("corp_remove_modal")
@@ -453,7 +459,11 @@ def handle_corp_remove_submission(ack, body, client, view, payload) -> None:
     DAO.create_workspace(workspace_id)
 
     # Extract values from the view
-    selected_values = view['state']['values']['remove_values']['value_selection']['selected_options']
+    options = view['state']['values']['remove_values']['value_selection']['selected_options']
+    if not options:
+        logger.error(f"/corp_remove_modal - No corp values selected")
+        return
+    selected_values = [option['text']['text'] for option in options]
 
     DAO.delete_corp_values(workspace_id, selected_values)
     logger.info(f"/corp_remove_modal - remove corps: {selected_values}")
@@ -465,7 +475,6 @@ def handle_corp_remove_submission(ack, body, client, view, payload) -> None:
         text=f"Successfully remove {selected_values} from the list of corp values!"
     )
     
-
 
 @app.action("checkboxes_action")
 def handle_checkbox_action(ack) -> None:

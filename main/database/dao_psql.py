@@ -221,6 +221,7 @@ class DAOPostgreSQL(DAOBase):
 
                 # Only add the message id tied with kudos once
                 # add only if the kudos table doesn't have entries with this message id
+
                 cursor.execute(
                     f"SELECT message_id FROM {workspace_id}.kudos WHERE message_id = '{msg_id}'")
                 if cursor.fetchall() == []:
@@ -340,7 +341,12 @@ class DAOPostgreSQL(DAOBase):
                 for kudo in cursor.fetchall():
                     stats[kudo[0]] = kudo[1]
 
-            return sum(stats.values()), stats
+                cursor.execute(f"SELECT count(*) FROM {workspace_id}.messages WHERE to_slack_id = '{user_id}' AND "
+                               f"time <= to_timestamp({end_time}) AND time >= to_timestamp({start_time})")
+
+                count = cursor.fetchone()[0]
+
+            return count, stats
         except Exception as e:
             logger.error(f"Failed to get corp values from the user with id '{user_id}'")
             print(e, file=sys.stderr)
