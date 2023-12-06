@@ -63,10 +63,11 @@ This command can be used by Managers of a certain work space to ensure that an e
 
 ## User Interface
 - The app provides intuitive GUIs for all functionalities.
-- Screenshots in the app guide include:
+- Screenshots in the app guide shows the following, referenced [Main Guide#usage](developer-guide/main-guide.md#usage):
   - Customization window for adding/removing corporate values.
   - Overview window for viewing employee kudos.
   - Kudos sending window and member management interface.
+  - Corporate value removal window with multi-selection.
 
 ## Instructions
 
@@ -77,7 +78,8 @@ This command can be used by Managers of a certain work space to ensure that an e
 
 - The Slack App will be added to the workspace by the workspace admin, we will provide a link to add the app to their workspace. 
 - After the Slack App is added to the workspace, any user can just invoke the `/kudos` command in any message box available. 
-- The user will also be able to add more company values that they want to use for their workspace in the pop-up window.
+- The user will also be able to customize more company values, by typing `/kudos_customize`, or remove existing customized corporate values, by typing `/kudos_corp_value_remove`, that they want to use for their workspace in the pop-up window.
+- The user will also be able to view the kudos statistics for employees by typing `/kudos_overview` in the pop-up window.
  
 ## Development requirements
 
@@ -85,13 +87,7 @@ This command can be used by Managers of a certain work space to ensure that an e
 [//]: # (* Briefly describe instructions for setting up and running the application. You should address this part like how one would expect a README doc of real-world deployed application would be.)
 [//]: # (* You can see this [example]&#40;https://github.com/alichtman/shallow-backup#readme&#41; to get started.)
 
-### Using Docker
-- We will containerize our application using Docker, so the developer will need to have Docker installed on their machine.
-- Then, we will provide scripts for a developer to run to set up the application on their machine using the help of Docker.
-
-### Without Docker
-- (Update `requirements.txt` file later on) The developer will need to install the requirements for the application, which will be provided in the `requirements.txt` file.
-- Then, the developer will need to run the application using the `python app.py` command after the developer is finish with editing the code.
+Reference to the [Main Guide#getting-started-developer](developer-guide/main-guide.md#getting-started-developer) for the full guide on how to setup and run the application.
 
 ## Deployment and Github Workflow
 
