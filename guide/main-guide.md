@@ -211,6 +211,10 @@ Then, you can execute `python ./main.py` within the same directory, and you shou
 
 Note: The following part contains a lot of setup on Microsoft Azure and Docker Hub, as that is the Docker container hosting service that we have chosen for our project. 
 
+**Here is a guide that I have recorded, which provides all of the details you need to know to setup online deployment:** 
+
+https://youtu.be/tXMTvcuYfSA
+
 #### Docker Hub
 
 As mentioned by the prerequisites, you should have a valid Docker Hub account [https://hub.docker.com/](here). 
@@ -235,7 +239,9 @@ You should be able to verify this by clicking into the repository and seeing tha
 
 #### Microsoft Azure
 
-With all the Docker setup done, you can now create a new "Docker Container App" on Microsoft Azure. The setup for this part varies a lot, and is very hard to be covered in this guide, so I recommend you to look up a tutorial on YouTube or Google to create a new Docker Container App. 
+With all the Docker setup done, you can now create a new "Docker Container App" on Microsoft Azure. The setup for this part varies a lot, and is very hard to be covered in this guide, so I recommend you to look up a tutorial on YouTube or Google to create a new Docker Container App.
+
+Please refer to the guide linked in [Installation [Online Deployment]](#installation-online-deployment) if you can't find a tutorial that works. The timestamp for this part is at 06:07, 22:22, and 27:05. 
 
 With a Docker Container App created, one of the main settings that you want to ensure is: 
 
@@ -246,6 +252,8 @@ With all these being done, you can simply start up the Docker Container and the 
 #### [Optional] Setting up release of the project to be installed in other workspaces
 
 This part is optional, but it is necessary if you plan to distribute your Slack bot to multiple workspaces. 
+
+Please refer to the guide linked in [Installation [Online Deployment]](#installation-online-deployment) if you think setting this part up is difficult. This part is at timestamps 11:54 and 15:21. 
 
 The main goal of this part is to setup a PHP Web Server that runs an automated installation script, which triggers [Slack's OAuth Request](https://api.slack.com/authentication/oauth-v2) and installs the bot to the corresponding workspace. 
 
