@@ -2,7 +2,6 @@
 
 A comprehensive guide for future developers and users
 
----- [Team Collab](#team-collab)
 - [Team Collab](#team-collab)
   - [Introduction](#introduction)
   - [Features](#features)
