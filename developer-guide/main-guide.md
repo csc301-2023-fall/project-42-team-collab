@@ -2,7 +2,6 @@
 
 A comprehensive guide for future developers and users
 
----- [Team Collab](#team-collab)
 - [Team Collab](#team-collab)
   - [Introduction](#introduction)
   - [Features](#features)
@@ -25,6 +24,15 @@ A comprehensive guide for future developers and users
       - [\[Optional\] Setting up release of the project to be installed in other workspaces](#optional-setting-up-release-of-the-project-to-be-installed-in-other-workspaces)
     - [Adding new commands to the bot](#adding-new-commands-to-the-bot)
   - [Usage](#usage)
+    - [Admin Commands](#admin-commands)
+      - [Customize Corporation Values](#customize-corporation-values)
+      - [Customize Corporation Values](#customize-corporation-values-1)
+      - [Remove Customized Corp Values](#remove-customized-corp-values)
+      - [View other employees' stats](#view-other-employees-stats)
+    - [General Commands](#general-commands)
+      - [Send Kudos (Using the GUI)](#send-kudos-using-the-gui)
+      - [Send Kudos (Using command parsing)](#send-kudos-using-command-parsing)
+  - [Managing Members](#managing-members)
   - [Project Structure](#project-structure)
     - [Backend](#backend)
       - [main.py](#mainpy)
@@ -296,19 +304,30 @@ After adding a command here, be sure to refer to [team_spirit.py](#teamspiritpy)
 ## Usage
 (After installing the app in your workspace)
 
-An admin of the workspace can:
-1. Customize Corporation Values:
+### Admin Commands
+#### Customize Corporation Values:
    1. Send `/kudos_customize` in any chat box, then a window like the following picture shows will pop-up. 
    ![kudos customize window](images/kudos_customize.png)
    2. Then, you can type in the company value that you want to add to the workspace. 
-   3. If this succeeds, you should receive a private message from our Slack Bot saying that the value was added (for confirmation). 
-2. View other employees' stats:
+   3. If this succeeds, you should receive a private message from our Slack Bot saying that the value was added (for confirmation).
+#### Customize Corporation Values:
+   1. Send `/kudos_customize` in any chat box, then a window like the following picture shows will pop-up. 
+   ![kudos customize window](images/kudos_customize.png)
+   2. Then, you can type in the company value that you want to add to the workspace. 
+   3. If this succeeds, you should receive a private message from our Slack Bot saying that the value was added (for confirmation).
+#### Remove Customized Corp Values:
+   1. Send `/kudos_corp_value_remove` in any chat box, then a window like the following picture shows will pop-up.
+    ![kudos corp value remove window](images/corp_value_remove_window.png)
+   2. Select the value that you want to remove, and click "Remove". Note you can choose multiple values to remove at once.
+   3. If this succeeds, you should receive a private message from our Slack Bot saying that the chosen values were removed (for confirmation).
+   4. Be aware that if you send kudos to someone and include a corporate value that has been deleted, that particular value will be removed from the kudos. Furthermore, if all the corporate values in your kudos have been removed, then the entire kudos will also be deleted. 
+#### View other employees' stats:
    1. Send `/kudos_overview` in the chat, and the following window will pop-up.  
    ![kudos overview window](images/kudos_overview.png)
    2. Select the user and the time frame that you want to view kudos for, and click "View". The results should replace this window and display kudos information about that user within the specified time frame. 
 
-Any user in the workspace can:
-1. Send Kudos (Using the GUI):
+### General Commands
+#### Send Kudos (Using the GUI):
    1. Send `/kudos` in the chat.
    2. Select recipients (one or multiple)
    3. Select corporation values associated with the kudos
@@ -318,7 +337,7 @@ Any user in the workspace can:
   <img src="./images/kudos_window.png" alt="Kudos Window" width="70%">
 </div>
 
-2. Send Kudos (Using command parsing):
+#### Send Kudos (Using command parsing):
    1. Send `/kudos message [@person1] [@person2] [@...] [$value1$] [$value2$] [$value...$] message`
    2. In the pop-up window, you should see that the recipients are pre-filled with the `@mentions` of users that you have typed in the command. 
    3. You should also see that the values that you have assigned using this command with `$value$` are automatically filled. 
@@ -326,7 +345,9 @@ Any user in the workspace can:
 
    For example, I can execute `/kudos Hi this is Ray, saying thanks to @Will Will $Good Teamwork$. Very cool`. Then, these information will be automatically filled, and the message pre-filled will become: "Hi this is Ray, saying thanks to Will. Very cool"
 
-3. If you are a workspace primary owner, you can enter the "Manage Members" page to customize who should have access to the admin functions. 
+## Managing Members
+
+If you are a workspace primary owner, you can enter the "Manage Members" page to customize who should have access to the admin functions. 
 
 ![member management](images/member_management.png)
 

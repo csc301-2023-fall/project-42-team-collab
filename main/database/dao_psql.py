@@ -278,11 +278,26 @@ class DAOPostgreSQL(DAOBase):
                 # TODO: Temporary workaround
                 # _select_schema(cursor, workspace_id)
 
+                # Also remove any messages that has ONLY the deleted value
+                # Also update the kudos table to remove the row with the deleted value
                 for value in values:
-                    cursor.execute(f"""
-                        DELETE FROM {workspace_id}.corp_values WHERE corp_value = '{value}';
-                    """)
+                    cursor.execute(f"SELECT id FROM {workspace_id}.corp_values WHERE corp_value = '{value}'")
 
+                    deleted_value_id = cursor.fetchone()[0]
+
+                    # Select in kudos table such that it only has 1 row
+                    cursor.execute(f"SELECT message_id FROM {workspace_id}.kudos WHERE message_id IN (SELECT message_id FROM {workspace_id}.kudos GROUP BY message_id HAVING count(*) = 1) AND corp_value_id = {deleted_value_id}")
+
+                    for row in cursor.fetchall():
+                        deleted_msg_id = row[0]
+                        cursor.execute(f"DELETE FROM {workspace_id}.messages WHERE id = '{deleted_msg_id}'")
+
+                    cursor.execute(f"DELETE FROM {workspace_id}.kudos WHERE corp_value_id = '{deleted_value_id}'")
+
+                    # This change is CASCADED
+                    # cursor.execute(f"""
+                    #     DELETE FROM {workspace_id}.corp_values WHERE corp_value = '{value}';
+                    # """)
                 conn.commit()
                 return True
         except Exception as e:
