@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS test_schema.corp_values
 
 CREATE TABLE IF NOT EXISTS test_schema.kudos
 (
-    message_id    VARCHAR(30) PRIMARY KEY,
-    corp_value_id INTEGER REFERENCES test_schema.corp_values (id) ON DELETE CASCADE
+    message_id    VARCHAR(30),
+    corp_value_id INTEGER REFERENCES test_schema.corp_values (id) ON DELETE CASCADE,
+    PRIMARY KEY (message_id, corp_value_id)
 );
