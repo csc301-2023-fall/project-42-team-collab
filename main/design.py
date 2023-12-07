@@ -54,7 +54,6 @@ def set_up_kudos_modal(corp_vals: List[str], initial_users: List[str],
             corp_value,
             set_up_corp_value_footnote(),
             set_up_message(prefill_msg),
-            # set_up_message_footnote(),
             set_up_checkbox()
         ]
     }

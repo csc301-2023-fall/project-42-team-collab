@@ -272,25 +272,12 @@ def handle_submission(ack, body, view, client, payload) -> None:
         notify_recipient_selected = False
         announce_kudos_selected = False
 
+        # Check if the checkbox is selected
         for option in selected_checkbox_options:
             if option['value'] == 'notify_recipient':
                 notify_recipient_selected = True
             elif option['value'] == 'announce_kudos':
                 announce_kudos_selected = True
-
-        # values_recognized = '\n'.join([f"\t\t{value}" for value in selected_value_texts])
-
-        # Original Message Template
-        # message = (
-        #     ":tada: *Kudos Announcement* :tada:\n"
-        #     f"From: <@{sender_id}>\n\n"
-        #     f"To: {' '.join([f'<@{rec_id}>' for rec_id in recipient_id])}\n\n"
-        #     f"At Channel: <#{channel_id}>\n\n"
-        #     "Values Recognized: \n"
-        #     f"{values_recognized}\n\n"
-        #     "Message:\n"
-        #     f"{message_text}\n"
-        # )
 
         message = f"<@{sender_id}> sent kudos to {', '.join([f'<@{rec_id}>' for rec_id in recipient_id])} for [{', '.join(selected_value_texts)}] saying \"{message_text}\""
 
