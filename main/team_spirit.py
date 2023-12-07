@@ -401,6 +401,17 @@ def handle_custom_submission(ack, body, client, view, payload) -> None:
     # Extract values from the view
     new_corp_value = view['state']['values']["new_value_block"]["new_corp_value_input"]["value"]
 
+    # Check if the new corp value already exists
+    if new_corp_value in DAO.get_corp_values(workspace_id):
+        logger.error(f"/kudos_customize -  Corp value {new_corp_value} already exists")
+        # Give the user a fail message
+        sender_id = body["user"]["id"]
+        client.chat_postMessage(
+            channel=sender_id,
+            text=f"Error: {new_corp_value} already exists!"
+        )
+        return
+    
     DAO.add_corp_values(workspace_id, [new_corp_value])
     logger.info(f"/kudos_customize - New corp value {new_corp_value} added")
 
@@ -429,6 +440,9 @@ def open_remove_corp_value_modal(ack, command, client, payload, respond) -> None
     ack()
     logger.info(f"/kudos_corp_value_remove - Command received")
 
+     # Splitting the command text into multiple values
+    prefilled_values = command.get('text', '').strip().split()
+
     user_info = client.users_info(user=payload["user_id"])
     # Checks if the user is admin, owner, or primary_owner
     if not (user_info['user']['is_admin'] or
@@ -442,14 +456,18 @@ def open_remove_corp_value_modal(ack, command, client, payload, respond) -> None
     
     workspace_id = payload['team_id']
     DAO.create_workspace(workspace_id)
+
+    # Retrieve and filter corporate values
     corp_values = DAO.get_corp_values(workspace_id)
     customized_corp_values = [item for item in corp_values if item not in config.DEFAULT_VALUES]
-    if len(customized_corp_values) == 0:
-        logger.error(f"/kudos_corp_value_remove - No customized corp values found")
-        respond(f"Error: You do not have any customized corp values!")
-        return
 
-    client.views_open(trigger_id=command["trigger_id"], view=set_up_remove_corp_value_modal(customized_corp_values))
+    # Check each prefilled value
+    for value in prefilled_values:
+        if value not in customized_corp_values:
+            respond(f"Error: The value '{value}' is not a customized corp value or does not exist!")
+            return
+
+    client.views_open(trigger_id=command["trigger_id"], view=set_up_remove_corp_value_modal(customized_corp_values, prefilled_values))
 
 
 @app.view("corp_remove_modal")
