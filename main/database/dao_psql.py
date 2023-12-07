@@ -281,6 +281,7 @@ class DAOPostgreSQL(DAOBase):
                 # Also remove any messages that has ONLY the deleted value
                 # Also update the kudos table to remove the row with the deleted value
                 for value in values:
+                    logger.info(f"Deleting value '{value}' from workspace with id: {workspace_id}")
                     cursor.execute(f"SELECT id FROM {workspace_id}.corp_values WHERE corp_value = '{value}'")
 
                     deleted_value_id = cursor.fetchone()[0]
@@ -294,10 +295,10 @@ class DAOPostgreSQL(DAOBase):
 
                     cursor.execute(f"DELETE FROM {workspace_id}.kudos WHERE corp_value_id = '{deleted_value_id}'")
 
-                    # This change is CASCADED
-                    # cursor.execute(f"""
-                    #     DELETE FROM {workspace_id}.corp_values WHERE corp_value = '{value}';
-                    # """)
+                    # This change is sometimes CASCADED
+                    cursor.execute(f"""
+                        DELETE FROM {workspace_id}.corp_values WHERE corp_value = '{value}';
+                    """)
                 conn.commit()
                 return True
         except Exception as e:
