@@ -36,11 +36,13 @@ This command can be used by Managers of a certain work space to ensure that an e
 ### Admin Commands
 - **Customize Corporation Values**:
   - Use `/kudos_customize` to add new corporate values.
+  - Supports prefilling typed values for quick adding.
   - After adding, receive confirmation from the Slack Bot.
 
 - **Remove Customized Corp Values**:
   - Use `/kudos_corp_value_remove` to delete existing values.
   - Supports multi-selection for bulk removal.
+  - Supports prefilling typed values for quick removal.
   - Includes safeguards to ensure kudos integrity with value updates.
 
 - **View Employee Stats**:

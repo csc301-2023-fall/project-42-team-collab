@@ -306,17 +306,12 @@ After adding a command here, be sure to refer to [team_spirit.py](#teamspiritpy)
 
 ### Admin Commands
 #### Customize Corporation Values:
-   1. Send `/kudos_customize` in any chat box, then a window like the following picture shows will pop-up. 
-   ![kudos customize window](images/kudos_customize.png)
-   2. Then, you can type in the company value that you want to add to the workspace. 
-   3. If this succeeds, you should receive a private message from our Slack Bot saying that the value was added (for confirmation).
-#### Customize Corporation Values:
-   1. Send `/kudos_customize` in any chat box, then a window like the following picture shows will pop-up. 
+   1. Send `/kudos_customize` in any chat box, then a window like the following picture shows will pop-up. Note that this command also supports prefilling the value(s) you typed in the command, e.g. `/kudos_customize GoodTeamwork Innovation`.
    ![kudos customize window](images/kudos_customize.png)
    2. Then, you can type in the company value that you want to add to the workspace. 
    3. If this succeeds, you should receive a private message from our Slack Bot saying that the value was added (for confirmation).
 #### Remove Customized Corp Values:
-   1. Send `/kudos_corp_value_remove` in any chat box, then a window like the following picture shows will pop-up.
+   1. Send `/kudos_corp_value_remove` in any chat box, then a window like the following picture shows will pop-up. Note that this command also supports prefilling the value(s) that you have added to the workspace, e.g. `/kudos_corp_value_remove GoodTeamwork Innovation`.
     ![kudos corp value remove window](images/corp_value_remove_window.png)
    2. Select the value that you want to remove, and click "Remove". Note you can choose multiple values to remove at once.
    3. If this succeeds, you should receive a private message from our Slack Bot saying that the chosen values were removed (for confirmation).
