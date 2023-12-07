@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import pytest
+import config
 
 from database.dao_psql import DAOPostgreSQL
 
@@ -91,7 +92,8 @@ class TestDAOPostgreSQL:
     def test_delete_corp_values(self):
         try:
             self.dao.create_workspace('t0001')
-            result = self.dao.delete_corp_values('t0001', ['value1', 'value2'])
+
+            result = self.dao.delete_corp_values('t0001', [config.DEFAULT_VALUES[0], config.DEFAULT_VALUES[1]])
             assert result is True
         except Exception as e:
             pytest.fail(f"Unexpected error: {e}")
@@ -118,6 +120,7 @@ class TestDAOPostgreSQL:
                 "Accountability"
             ]
             """
+            # This is also reflected in the config file
             assert len(values) == 11
 
             self.dao.add_corp_values('t0001', ['value1', 'value2'])

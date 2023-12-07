@@ -299,7 +299,9 @@ class DAOPostgreSQL(DAOBase):
                     cursor.execute(f"""
                         DELETE FROM {workspace_id}.corp_values WHERE corp_value = '{value}';
                     """)
+
                 conn.commit()
+
                 return True
         except Exception as e:
             logger.error(
