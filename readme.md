@@ -1,10 +1,16 @@
 # Slack App / Getting Employed
 
+## D5 Handoff Video & Quick introduction
+
+We have filmed a simple video that walks through our product briefly and the features it currently supports, please take a look before reading through the guides below. 
+
+https://youtu.be/6g5cdE2szyk
+
 ## [Main Guide](developer-guide/main-guide.md)
 
 A full and complete guide to setup and use the project as a regular user and a developer is available by the hyperlink above. 
 
-Please read through this guide, it should be able to clear out a lot of your confusions. 
+Please read through this guide, it should be able to clear out a lot of your confusions.
 
 ## Partner Intro
 
