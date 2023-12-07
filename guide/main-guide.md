@@ -515,6 +515,7 @@ The following section is some TODOs that we have yet to complete as a part of ou
 
 ### Slack Back End
 1. Our current Bot's home page is completely blank, but it can be setup by using Slack's block kit relatively easily. Completing the Bot's home page allows for a new user to quickly grasp the usage of our bot, hence making it more accessible by users. 
+2. Some of the Slash events like `/echo` (slash command) and `@ mentions` (event listener) are still left within the codebase for new developers to test out Slack's API and have a general feel with the bot. Please remove them when the bot is ready to be deployed to the public.  
 
 ### Documentation
 1. Our current GitHub page doesn't have a wiki page that documents everything in an organized manner. Mostly, we rely on comments that is written directly on the code file, not providing an actual documentation for them, which may cause some issues in terms of communicating.

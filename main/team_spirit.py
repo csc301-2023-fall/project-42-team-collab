@@ -472,8 +472,7 @@ def open_remove_corp_value_modal(ack, command, client, payload, respond) -> None
 
 @app.view("corp_remove_modal")
 def handle_corp_remove_submission(ack, body, client, view, payload) -> None:
-    '''
-
+    """
     Processes the submission of the '/kudos_corp_value_remove' and notify user with a success message.
     Args:
         ack: Acknowledges the view_submission event to Slack to avoid timeouts.
@@ -481,7 +480,7 @@ def handle_corp_remove_submission(ack, body, client, view, payload) -> None:
         view: Contains the state and input values of the modal.
         client: Slack's API client for performing actions like sending messages.
         payload: Additional data about the view_submission event, including id and team_id
-    '''
+    """
     ack()
     logger.info(f"/corp_remove_modal -  Submission event received")
 
