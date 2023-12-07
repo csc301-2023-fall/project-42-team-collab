@@ -278,24 +278,6 @@ def set_up_corp_value_footnote() -> dict:
     }
 
 
-def set_up_message_footnote() -> dict:
-    """
-    set up message footnote block for kudos modal
-
-    Returns:
-         message footnote block in JSON format
-    """
-    return {
-        "type": "context",
-        "elements": [
-            {
-                "type": "mrkdwn",
-                "text": f"Character limits: *{config.MESSAGE_LENGTH_MAX}* characters."
-            }
-        ]
-    }
-
-
 def set_up_checkbox() -> dict:
     """
     set up checkbox selected block for kudos modal
