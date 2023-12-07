@@ -221,6 +221,7 @@ class DAOPostgreSQL(DAOBase):
 
                 # Only add the message id tied with kudos once
                 # add only if the kudos table doesn't have entries with this message id
+
                 cursor.execute(
                     f"SELECT message_id FROM {workspace_id}.kudos WHERE message_id = '{msg_id}'")
                 if cursor.fetchall() == []:
@@ -277,11 +278,27 @@ class DAOPostgreSQL(DAOBase):
                 # TODO: Temporary workaround
                 # _select_schema(cursor, workspace_id)
 
+                # Also remove any messages that has ONLY the deleted value
+                # Also update the kudos table to remove the row with the deleted value
                 for value in values:
+                    logger.info(f"Deleting value '{value}' from workspace with id: {workspace_id}")
+                    cursor.execute(f"SELECT id FROM {workspace_id}.corp_values WHERE corp_value = '{value}'")
+
+                    deleted_value_id = cursor.fetchone()[0]
+
+                    # Select in kudos table such that it only has 1 row
+                    cursor.execute(f"SELECT message_id FROM {workspace_id}.kudos WHERE message_id IN (SELECT message_id FROM {workspace_id}.kudos GROUP BY message_id HAVING count(*) = 1) AND corp_value_id = {deleted_value_id}")
+
+                    for row in cursor.fetchall():
+                        deleted_msg_id = row[0]
+                        cursor.execute(f"DELETE FROM {workspace_id}.messages WHERE id = '{deleted_msg_id}'")
+
+                    cursor.execute(f"DELETE FROM {workspace_id}.kudos WHERE corp_value_id = '{deleted_value_id}'")
+
+                    # This change is sometimes CASCADED
                     cursor.execute(f"""
                         DELETE FROM {workspace_id}.corp_values WHERE corp_value = '{value}';
                     """)
-
                 conn.commit()
                 return True
         except Exception as e:
@@ -340,7 +357,12 @@ class DAOPostgreSQL(DAOBase):
                 for kudo in cursor.fetchall():
                     stats[kudo[0]] = kudo[1]
 
-            return sum(stats.values()), stats
+                cursor.execute(f"SELECT count(*) FROM {workspace_id}.messages WHERE to_slack_id = '{user_id}' AND "
+                               f"time <= to_timestamp({end_time}) AND time >= to_timestamp({start_time})")
+
+                count = cursor.fetchone()[0]
+
+            return count, stats
         except Exception as e:
             logger.error(f"Failed to get corp values from the user with id '{user_id}'")
             print(e, file=sys.stderr)

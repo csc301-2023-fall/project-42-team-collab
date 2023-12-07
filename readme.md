@@ -31,26 +31,45 @@ For example, one feature that we are intending to complete is the feature to sen
 
 This command can be used by Managers of a certain work space to ensure that an employee does receive acknowledgements when they do something beyond expectations.
 
-## Key Features
+## Features
 
-[//]: # (* Describe the key features in the application that the user can access.)
-[//]: # (* Provide a breakdown or detail for each feature.)
-[//]: # (* This section will be used to assess the value of the features built)
+### Admin Commands
+- **Customize Corporation Values**:
+  - Use `/kudos_customize` to add new corporate values.
+  - Supports prefilling typed values for quick adding.
+  - After adding, receive confirmation from the Slack Bot.
 
-The key features of our application are as follows:
+- **Remove Customized Corp Values**:
+  - Use `/kudos_corp_value_remove` to delete existing values.
+  - Supports multi-selection for bulk removal.
+  - Supports prefilling typed values for quick removal.
+  - Includes safeguards to ensure kudos integrity with value updates.
 
-- Customization of company values
-  - A workspace admin can customize the company values that they want to use for their workspace
-  - Whenever a person wants to give kudos to another person, they can select the company values that they want to align this kudos with
-- Kudos
-  - The user can send a kudos to another user in the same workspace by invoking the command `/kudos`
-  - This command will create a pop-up form that the user can fill in to send a kudos to another user
-  - The information that we have currently designed is the following: 
-    - Target
-    - Company Values that this kudos aligns with
-    - Message
-    - Channel
-- (More to come...)
+- **View Employee Stats**:
+  - Use `/kudos_overview` to see kudos statistics for employees.
+  - Select users and time frames for detailed insights.
+
+### General Commands
+- **Send Kudos (GUI)**:
+  - Initiate with `/kudos`.
+  - Choose recipients, values, and compose messages.
+  - Options for public announcement and direct messaging.
+
+- **Send Kudos (Command Parsing)**:
+  - Use command syntax for quick sending.
+  - Pre-fill recipients, values, and messages in the pop-up window.
+
+### Managing Members
+- Workspace owners can manage member access to admin functions.
+- Interface for changing account types of workspace members.
+
+## User Interface
+- The app provides intuitive GUIs for all functionalities.
+- Screenshots in the app guide shows the following, referenced [Main Guide#usage](developer-guide/main-guide.md#usage):
+  - Customization window for adding/removing corporate values.
+  - Overview window for viewing employee kudos.
+  - Kudos sending window and member management interface.
+  - Corporate value removal window with multi-selection.
 
 ## Instructions
 
@@ -61,7 +80,8 @@ The key features of our application are as follows:
 
 - The Slack App will be added to the workspace by the workspace admin, we will provide a link to add the app to their workspace. 
 - After the Slack App is added to the workspace, any user can just invoke the `/kudos` command in any message box available. 
-- The user will also be able to add more company values that they want to use for their workspace in the pop-up window.
+- The user will also be able to customize more company values, by typing `/kudos_customize`, or remove existing customized corporate values, by typing `/kudos_corp_value_remove`, that they want to use for their workspace in the pop-up window.
+- The user will also be able to view the kudos statistics for employees by typing `/kudos_overview` in the pop-up window.
  
 ## Development requirements
 
@@ -69,13 +89,7 @@ The key features of our application are as follows:
 [//]: # (* Briefly describe instructions for setting up and running the application. You should address this part like how one would expect a README doc of real-world deployed application would be.)
 [//]: # (* You can see this [example]&#40;https://github.com/alichtman/shallow-backup#readme&#41; to get started.)
 
-### Using Docker
-- We will containerize our application using Docker, so the developer will need to have Docker installed on their machine.
-- Then, we will provide scripts for a developer to run to set up the application on their machine using the help of Docker.
-
-### Without Docker
-- (Update `requirements.txt` file later on) The developer will need to install the requirements for the application, which will be provided in the `requirements.txt` file.
-- Then, the developer will need to run the application using the `python app.py` command after the developer is finish with editing the code.
+Reference to the [Main Guide#getting-started-developer](developer-guide/main-guide.md#getting-started-developer) for the full guide on how to setup and run the application.
 
 ## Deployment and Github Workflow
 
