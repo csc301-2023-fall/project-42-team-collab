@@ -374,7 +374,9 @@ def open_customize_corp_value_modal(ack, command, client, payload, respond) -> N
     workspace_id = payload['team_id']
     DAO.create_workspace(workspace_id)
 
-    client.views_open(trigger_id=command["trigger_id"], view=set_up_customize_modal())
+    prefill_msg = payload['text']
+
+    client.views_open(trigger_id=command["trigger_id"], view=set_up_customize_modal(prefill_msg))
 
 
 @app.view("custom_value_modal")
