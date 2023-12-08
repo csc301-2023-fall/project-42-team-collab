@@ -521,11 +521,14 @@ The following section is some TODOs that we have yet to complete as a part of ou
 1. Our current GitHub page doesn't have a wiki page that documents everything in an organized manner. Mostly, we rely on comments that is written directly on the code file, not providing an actual documentation for them, which may cause some issues in terms of communicating.
 
 ### Database 
-1. Multiple injections in the functions of DAOPostgreSQL stem from unforeseen behaviors in the `_select_schema` helper functions. Invoking this helper function tends to induce instability in the connection to Azure, leading to prolonged query times and potential non-responsiveness. A team member attempted to address this issue by committing the current session after selecting the schema; however, this solution fails to pass the pytest.
+1. Multiple injections in the functions of DAOPostgreSQL stem from unforeseen behaviors in the `_select_schema` helper functions. Invoking this helper function tends to induce instability in the connection to Azure, leading to prolonged query times and potential non-responsiveness.
+   - A team member attempted to address this issue by committing the current session after selecting the schema. However, this solution fails. Even though it passes the tests, the `_select_schema` function does not change the schema we are currently in. 
 
-2. Add an organization goal component to or project. It should behave like company values, but its cope is only restricted in small teams, and they might be more frequently changed by new goals. Think of them as short term tasks. Admins of a workspace/channel should be able to modify them just like company values. 
+2. Add an organization goal component to or project. It should behave like company values, but its cope is only restricted in small teams, and they might be more frequently changed by new goals. Think of them as short term tasks. Admins of a workspace/channel should be able to modify them just like company values.
 
-3. Enhance the robustness of the code by addressing additional edge cases and unexpected behaviors triggered by unusual inputs or connection instability. This proactive approach will contribute to a more resilient and reliable system, capable of handling diverse scenarios effectively.
+3. As mentioned in `database/init.sql`, change the types of `slack_id` in users table and `id` in channels table into fixed length strings. This should not be a big problem as the id's are provided by Slack as strings and they are very unlikely to collide. This improves the performance of the database component. We did not apply this change since we are not sure if those id's are actually fixed length. 
+
+4. Enhance the robustness of the code by addressing additional edge cases and unexpected behaviors triggered by unusual inputs or connection instability. This proactive approach will contribute to a more resilient and reliable system, capable of handling diverse scenarios effectively.
 
 ### Deployment
 1. Notice that currently, our Slack bot is deployed using "Socket mode", which is only recommended as a way of deploying the bot if only used for development purposes. If possible, you can setup your own HTTP server hosting at a domain, which allows you to redirect all sources of HTTP Requests to our bot using Slack's BOLT API. If you plan to distribute the bot into public, this is a necessary step, as socket direct connections are often insecure. 
