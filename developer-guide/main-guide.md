@@ -178,6 +178,25 @@ DB_PASSWORD = 'Highsalary001'
 
 Replace the database configurations with the connect credentials you actually have as a PostgreSQL database.
 
+Lastly, you can also replace the default values for the corporation values: 
+
+```python
+# Default Corporation Values
+DEFAULT_VALUES = [
+                    "Good Teamwork",
+                    "Customer First",
+                    "Innovation",
+                    "Leadership",
+                    "Continuous Learning",
+                    "Problem Solving",
+                    "Integrity",
+                    "Collaboration",
+                    "Passion",
+                    "Flexibility",
+                    "Accountability"
+                ]
+```
+
 After replacing the details of the configuration files, we can now proceed to going into the next step.
 
 #### install.php

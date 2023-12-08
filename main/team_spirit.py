@@ -461,6 +461,14 @@ def open_remove_corp_value_modal(ack, command, client, payload, respond) -> None
     corp_values = DAO.get_corp_values(workspace_id)
     customized_corp_values = [item for item in corp_values if item not in config.DEFAULT_VALUES]
 
+    if not customized_corp_values:
+        # Case of no-customized corp values added yet:
+        logger.error(
+            f"/kudos_corp_value_remove - Called by user '{user_info['user']['profile']['display_name']}' with no customized values in the workspace")
+
+        respond(f"Error: There are no customized values added yet!")
+        return
+
     # Check each prefilled value
     for value in prefilled_values:
         if value not in customized_corp_values:

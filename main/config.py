@@ -20,12 +20,6 @@ DB_DBNAME = 'team_spirit'
 DB_USER = 'kudosadmin'
 DB_PASSWORD = 'Highsalary001'
 
-# Report debug information
-logger.debug(f'Slack bot token: {SLACK_BOT_TOKEN}')
-logger.debug(f'Slack signing secret token: {SLACK_SIGNING_SECRET}')
-logger.debug(f'Slack app token: {SLACK_APP_TOKEN}')
-logger.debug(f'Port: {PORT}')
-
 # Default Corporation Values
 DEFAULT_VALUES = [
                     "Good Teamwork",
@@ -40,3 +34,9 @@ DEFAULT_VALUES = [
                     "Flexibility",
                     "Accountability"
                 ]
+
+# Report debug information
+logger.debug(f'Slack bot token: {SLACK_BOT_TOKEN}')
+logger.debug(f'Slack signing secret token: {SLACK_SIGNING_SECRET}')
+logger.debug(f'Slack app token: {SLACK_APP_TOKEN}')
+logger.debug(f'Port: {PORT}')
