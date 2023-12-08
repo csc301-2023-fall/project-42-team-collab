@@ -37,11 +37,15 @@ For example, one feature that we have completed is the feature to send a "kudos"
 
 This command can be used by Managers of a certain work space to ensure that an employee does receive acknowledgements when they do something beyond expectations.
 
-We have also implemented other features that can be used to help manage a team. These commands are described better in the following section. 
+We have also implemented features that allows a workspace to customize (add / remove) their own values that can be tied to a "kudos" message. 
+
+More details on these features is in the next section. 
 
 ## Features
 
 More detailed descriptions of these commands can be found at Main Guide's [Usage](guide/main-guide.md#usage) section. 
+
+If you have not watched the D5 video mentioned [above](#d5-handoff-video--quick-introduction), you can take a look at that video now, which will showcase what features we have implemented. 
 
 ### Admin Commands
 - **Customize Corporation Values**:
@@ -92,7 +96,7 @@ More detailed descriptions of these commands can be found at Main Guide's [Usage
 - The Slack App will be added to the workspace by the workspace admin, we will provide a link to add the app to their workspace. The steps to obtain such link can be found in [Main Guide's setting up of release of project to be installed in other workspaces](guide/main-guide.md#optional-setting-up-release-of-the-project-to-be-installed-in-other-workspaces). 
 - After the Slack App is added to the workspace, any user can just invoke the `/kudos` command in any message box available. 
 - The user will also be able to customize more company values, by typing `/kudos_customize`, or remove existing customized corporate values, by typing `/kudos_corp_value_remove`, that they want to use for their workspace in the pop-up window.
-- The user will also be able to view the kudos statistics for employees by typing `/kudos_overview` in the pop-up window by selecting the user and a time frame.
+- The user will also be able to view the kudos statistics for employees by typing `/kudos_overview` in the pop-up window by selecting the user and a time frame for which we want to inspect the amount of kudos a user has received within the specified time. 
  
 ## Development requirements
 
