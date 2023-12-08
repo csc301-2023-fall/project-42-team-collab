@@ -5,7 +5,7 @@ from datetime import datetime
 
 logging.config.fileConfig('logging.conf')
 
-# Note that the name of name of the logger will be called "root"
+# Note that the name of the logger will be called "root"
 logger = logging.getLogger()
 
 # Create the logging directory if it doesn't exist

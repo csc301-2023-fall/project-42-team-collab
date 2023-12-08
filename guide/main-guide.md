@@ -1,71 +1,74 @@
-# Team Collab 
+# Team Collab / Team Spirit
 
-A comprehensive guide for future developers and users
+This guide serves as a comprehensive guide for future developers and users
 
-- [Team Collab](#team-collab)
-  - [Introduction](#introduction)
-  - [Features](#features)
-  - [Getting Started \[General Usage\]](#getting-started-general-usage)
-  - [Getting Started \[Developer\]](#getting-started-developer)
-    - [Prerequisites](#prerequisites)
-      - [General requirements](#general-requirements)
-      - [Local Development](#local-development)
-      - [Online Deployment](#online-deployment)
-    - [Settings before deployment](#settings-before-deployment)
-      - [Slack developer portal](#slack-developer-portal)
-      - [config.py](#configpy)
-      - [install.php](#installphp)
-    - [Installation \[Local Development\]](#installation-local-development)
-      - [Installation using Docker](#installation-using-docker)
-      - [Installation without using Docker](#installation-without-using-docker)
-    - [Installation \[Online Deployment\]](#installation-online-deployment)
-      - [Docker Hub](#docker-hub)
-      - [Microsoft Azure](#microsoft-azure)
-      - [\[Optional\] Setting up release of the project to be installed in other workspaces](#optional-setting-up-release-of-the-project-to-be-installed-in-other-workspaces)
-    - [Adding new commands to the bot](#adding-new-commands-to-the-bot)
-  - [Usage](#usage)
-    - [Admin Commands](#admin-commands)
-      - [Customize Corporation Values](#customize-corporation-values)
-      - [Customize Corporation Values](#customize-corporation-values-1)
-      - [Remove Customized Corp Values](#remove-customized-corp-values)
-      - [View other employees' stats](#view-other-employees-stats)
-    - [General Commands](#general-commands)
-      - [Send Kudos (Using the GUI)](#send-kudos-using-the-gui)
-      - [Send Kudos (Using command parsing)](#send-kudos-using-command-parsing)
-  - [Managing Members](#managing-members)
-  - [Project Structure](#project-structure)
-    - [Backend](#backend)
-      - [main.py](#mainpy)
-      - [team\_spirit.py](#team_spiritpy)
-      - [design.py](#designpy)
-    - [Database](#database)
-      - [Table Design](#table-design)
-        - [1. Table: `users`](#1-table-users)
-        - [2. Table: `channels`](#2-table-channels)
-        - [3. Table: `messages`](#3-table-messages)
-        - [4. Table: `corp_values`](#4-table-corp_values)
-        - [5. Table: `kudos`](#5-table-kudos)
-      - [DAO Design](#dao-design)
-  - [Contributing](#contributing)
-    - [Slack Back End](#slack-back-end)
-    - [Documentation](#documentation)
-    - [Database](#database-1)
-    - [Deployment](#deployment)
-  - [Testing](#testing)
-  - [Acknowledgments](#acknowledgments)
+- [Introduction](#introduction)
+- [Features](#features)
+- [Getting Started \[General Usage\]](#getting-started-general-usage)
+- [Getting Started \[Developer\]](#getting-started-developer)
+  - [Prerequisites](#prerequisites)
+    - [General requirements](#general-requirements)
+    - [Local Development](#local-development)
+    - [Online Deployment](#online-deployment)
+  - [Settings before deployment](#settings-before-deployment)
+    - [Slack developer portal](#slack-developer-portal)
+    - [config.py](#configpy)
+    - [install.php](#installphp)
+  - [Installation \[Local Development\]](#installation-local-development)
+    - [Installation using Docker](#installation-using-docker)
+    - [Installation without using Docker](#installation-without-using-docker)
+  - [Installation \[Online Deployment\]](#installation-online-deployment)
+    - [Docker Hub](#docker-hub)
+    - [Microsoft Azure](#microsoft-azure)
+    - [\[Optional\] Setting up release of the project to be installed in other workspaces](#optional-setting-up-release-of-the-project-to-be-installed-in-other-workspaces)
+  - [Adding new commands to the bot](#adding-new-commands-to-the-bot)
+- [Usage](#usage)
+  - [Admin Commands](#admin-commands)
+    - [Customize Corporation Values](#customize-corporation-values)
+    - [Customize Corporation Values](#customize-corporation-values-1)
+    - [Remove Customized Corp Values](#remove-customized-corp-values)
+    - [View other employees' stats](#view-other-employees-stats)
+  - [General Commands](#general-commands)
+    - [Send Kudos (Using the GUI)](#send-kudos-using-the-gui)
+    - [Send Kudos (Using command parsing)](#send-kudos-using-command-parsing)
+- [Managing Members](#managing-members)
+- [Project Structure](#project-structure)
+  - [Backend](#backend)
+    - [main.py](#mainpy)
+    - [team\_spirit.py](#team_spiritpy)
+    - [design.py](#designpy)
+  - [Database](#database)
+    - [Table Design](#table-design)
+      - [1. Table: `users`](#1-table-users)
+      - [2. Table: `channels`](#2-table-channels)
+      - [3. Table: `messages`](#3-table-messages)
+      - [4. Table: `corp_values`](#4-table-corp_values)
+      - [5. Table: `kudos`](#5-table-kudos)
+    - [DAO Design](#dao-design)
+- [Contributing](#contributing)
+  - [Slack Back End](#slack-back-end)
+  - [Documentation](#documentation)
+  - [Database](#database-1)
+  - [Deployment](#deployment)
+- [Testing](#testing)
+- [Acknowledgments](#acknowledgments)
   
 ---
 ## Introduction
 
-This project aims to build an app that works smoothly with Slack (might be able to support teams later on), promoting teamwork by recognizing achievements (kudos). The target users for this product are workspaces with fewer than 2000 people. 
+This project aims to build an app that works smoothly with Slack (might be able to support Microsoft Teams later on), promoting teamwork by recognizing achievements (kudos). The target users for this product are workspaces with fewer than 2000 people. 
 
 The product deployed will be a bot that is integrated into Slack, allowing users to interact with the bot to give kudos (acknowledgement messages) to another user, with an attached message and chosen attached "company values", which are defined as values (keywords) that the Slack workspace wants to achieve. 
+
+Here's a quick introduction video that one of our group members has filmed. It should give you a pretty basic overview of what our bot is able to do in a general perspective, without getting into too much complicated details.  
+
+https://youtu.be/6g5cdE2szyk
 
 ---
 ## Features
 
 1. Acknowledge colleagues for their work done with kudos, and align each kudos with one or more corporate values.
-2. Customize Corporate Values for a workspace. The project supports permission check, only **workspace admin, workspace owner, and workspace primary owners** of a workspace is permitted to modify corporation values. You can learn more about Slack roles in this page: [Types of roles in Slack](https://slack.com/help/articles/360018112273-Types-of-roles-in-Slack). For our project, we will only be concerned about Workspace Primary Owner, Workspace Owners, Workspace Admins, and Full members.
+2. Customize (add / remove) Corporate Values for a workspace. The project supports permission check, only **workspace admin, workspace owner, and workspace primary owners** of a workspace is permitted to modify corporation values. You can learn more about Slack roles in this page: [Types of roles in Slack](https://slack.com/help/articles/360018112273-Types-of-roles-in-Slack). For our project, we will only be concerned about Workspace Primary Owner, Workspace Owners, Workspace Admins, and Full members.
 3. Analyze an employee's statistics, including the number and values for the kudos received within a specified time frame. Only admins are permitted to view others' stats. 
 
 ---
@@ -126,27 +129,29 @@ Then, follow along the guide that is presented.
 2. In the "Enter app manifest below" window, delete the original content and paste in the information from the file `manifest.yml` in the same directory as this markdown
 3. Then hit "Create"
 
-If everything is right, you should now enter the app's "basic information" page, which allows you to configure certain information about your bot, and also extract some of the **IMPORTANT INFORMATION** to use the bot with. 
+If everything is right, you should now enter the app's "basic information" page, which allows you to configure certain information about your bot, and also extract some of the **IMPORTANT INFORMATION** to use the bot with. Due to time constraints, some of the information in our `manifest.yml` might not be fully polished, so you might have to perform some updates in the information section of the bot.  
 
 Scroll down in this page to the "App Credentials" section, and you should see the following: 
 
 ![App credentials](images/app_credentials.png)
 
-Within these fields, take note of the "Signing Secret", as we will use it later in `config.py`. 
+Within these fields, take note of the "**Signing Secret**", as we will use it later in `config.py`. 
 
-Also, you want to take note of "Client ID" and "Client Secret", as we will use it later in `install.php`.
+Also, you want to take note of "**Client ID**" and "**Client Secret**", as we will use it later in `install.php`.
 
-Then, scroll down more, and you will find "App-Level Tokens". If there isn't any entries in there, simply click "Generate Token and Scopes", and select the scopes that it needs by referring to the picture below. 
+Then, scroll down more, and you will find "App-Level Tokens". If there isn't any entries in there, simply click "Generate Token and Scopes", and select the scopes that it needs by referring to the picture below. The tokens that you need are: "connections:write, authorizations:read, app_configurations:write". 
+
+Note: This set of token permissions isn't tested thoroughly, and might contain extra permissions needed for the bot to work. 
 
 ![App level tokens](images/app_level_tokens.png)
 
-After creating, you should be able to click the name of the newly created App Token, and obtain a "Token", as shown below (the one that begins with "xapp-x-xxx...").
+After creating, you should be able to click the name of the newly created App Token, and obtain a "**Token**", as shown below (the one that begins with "xapp-x-xxx...").
 
 ![App level token value](images/app_level_token_value.png)
 
 Note down the value of this app token as well. 
 
-Under the "Install App" sub-menu on the left, as shown in the below figure, you should be able to obtain a "Bot Token". Note it down as well. The bot token should begin with "xoxb-xxxx..."
+Under the "Install App" sub-menu on the left, as shown in the below figure, you should be able to obtain a "**Bot Token**". Note it down as well. The bot token should begin with "xoxb-xxxx..."
 
 ![Bot token](images/bot_token.png)
 
@@ -163,7 +168,7 @@ SLACK_SIGNING_SECRET = "48928ff7a9457f0f4264af506b5b6bcf"
 SLACK_APP_TOKEN = "xapp-1-A05TW1NB0CB-5948193295891-720a67e31f92b0c273bbe5ff3525501b3cdf79421f7aa4143d61ba6cc9d08c53"
 ```
 
-Within `config.py`, you want to replace the values that we have in there with the new values that you have obtained in the previous step. 
+Within `config.py`, you want to replace the values that we have in there with the new values that you have obtained in the previous step. The values shown above are the current values that we are using for our bot. 
 
 Then, you want to also take a look at the section regarding the database: 
 
@@ -177,6 +182,8 @@ DB_PASSWORD = 'Highsalary001'
 ```
 
 Replace the database configurations with the connect credentials you actually have as a PostgreSQL database.
+
+Note: The database credentials we have shown above will be unavailable after **January 1st, 2024**.
 
 Lastly, you can also replace the default values for the corporation values: 
 
@@ -212,7 +219,6 @@ You want to update these two lines with the information that you have found in t
 
 Then, simply save the file and continue on.
 
-
 ### Installation [Local Development]
 
 #### Installation using Docker
@@ -222,6 +228,10 @@ After setting up all the required configurations above, you should be able to lo
 A successful start up of the bot should look something like this: 
 
 ![local startup](images/local_startup.png)
+
+The indication that the bot is up and running is the line: 
+
+`⚡ Bolt app is running!`. 
 
 #### Installation without using Docker
 
@@ -239,11 +249,17 @@ Then, you can execute `python ./main.py` within the same directory, and you shou
 
 Note: The following part contains a lot of setup on Microsoft Azure and Docker Hub, as that is the Docker container hosting service that we have chosen for our project. 
 
+**Here is a guide that I have recorded, which provides all of the details you need to know to setup online deployment:** 
+
+https://youtu.be/tXMTvcuYfSA
+
+Please check the video description for the timestamps for the setup of each different component. 
+
 #### Docker Hub
 
 As mentioned by the prerequisites, you should have a valid Docker Hub account [https://hub.docker.com/](here). 
 
-Now, with your Docker Hub account, you want to create a repository that is **exactly** named `team_spirit`, as shown in the figure below. 
+Now, with your Docker Hub account, you want to create a repository that is **exactly** named `team_spirit`, as shown in the figure below. (You may also choose to create repository names that are different, but that requires updating a lot of the scripts we have written)
 
 ![docker hub](images/docker_hub.png)
 
@@ -263,7 +279,9 @@ You should be able to verify this by clicking into the repository and seeing tha
 
 #### Microsoft Azure
 
-With all the Docker setup done, you can now create a new "Docker Container App" on Microsoft Azure. The setup for this part varies a lot, and is very hard to be covered in this guide, so I recommend you to look up a tutorial on YouTube or Google to create a new Docker Container App. 
+With all the Docker setup done, you can now create a new "Docker Container App" on Microsoft Azure. The setup for this part varies a lot, and is very hard to be covered in this guide, so I recommend you to look up a tutorial on YouTube or Google to create a new Docker Container App.
+
+Please refer to the guide linked in [Installation [Online Deployment]](#installation-online-deployment) if you can't find a tutorial that works. The timestamp for this part is at 06:07, 22:22, and 27:05. 
 
 With a Docker Container App created, one of the main settings that you want to ensure is: 
 
@@ -275,9 +293,13 @@ With all these being done, you can simply start up the Docker Container and the 
 
 This part is optional, but it is necessary if you plan to distribute your Slack bot to multiple workspaces. 
 
+Please refer to the guide linked in [Installation [Online Deployment]](#installation-online-deployment) if you think setting this part up is difficult. This part is at timestamps 11:54 and 15:21. 
+
 The main goal of this part is to setup a PHP Web Server that runs an automated installation script, which triggers [Slack's OAuth Request](https://api.slack.com/authentication/oauth-v2) and installs the bot to the corresponding workspace. 
 
 The main goal here is to create a web server that can deal with HTTP GET and POST requests, and deal with them using an installation script. To complete this goal, I have utilized Microsoft Azure's web server, with a simple installation script provided in `main/setup_script/install.php`. 
+
+Please refer to the guide linked in [Installation [Online Deployment]](#installation-online-deployment). The timestamp for this part is at 11:54 and 15:21.
 
 You want to ensure that the script is available on the Web Server (HTTPS needed), and can be accessed publicly. 
 
@@ -303,13 +325,13 @@ First head to [Slack Developer Portal](https://api.slack.com/apps) page, and cli
 
 ![Click the bot](images/click_your_app.png)
 
-Then click "Slah Commands" on your left under "Features"
+Then click "Slash Commands" on your left under "Features"
 ![CLick Slash Commands](images/add_command_window.png)
 
 Click "Create New Command" button
 ![Click New Command](images/create_new_command.png)
 
-1. Enter the name of your new command
+1. Enter the name of your new command (take note of this name)
 2. Add description about this new command
 3. (Optional) Add hint about any parameter about this command
 4. (Optional) If your Slash command needs to deal with parsing the input that has mentions about users or channels, tick the "Escape channels, users, and links" option, as that allows the input received to escape specific information for you to use. 
@@ -317,11 +339,20 @@ Click "Create New Command" button
 
 ![Guide add new command](images/guid_create_command.png)
 
-After adding a command here, be sure to refer to [team_spirit.py](#teamspiritpy) to understand how to add a "command listener" so that your command actually works! 
+After adding a command here, be sure to refer to [team_spirit.py](#teamspiritpy) to understand how to add a "command listener" so that your command actually works!
+
+A "command listener" is of the following format: 
+
+```python
+@app.command("/kudos")
+def open_modal(ack, command, client, payload) -> None:
+```
+
+Where you can replace the `command_name` in `@app.command("/<command_name>")` to define the function that will handle this Slash command request when invoked by a user. 
 
 ---
 ## Usage
-(After installing the app in your workspace)
+This section will focus on the general usage by a regular (non-developer) user, after the app is installed in your workspace.
 
 ### Admin Commands
 #### Customize Corporation Values:
@@ -347,9 +378,8 @@ After adding a command here, be sure to refer to [team_spirit.py](#teamspiritpy)
    3. Select corporation values associated with the kudos
    4. Type messages to the recipients, along with reasons for the kudos
    5. Select if announce this kudos publicly in this channel, and if notify recipients with direct message this kudos. 
-<div style="text-align:center">
-  <img src="./images/kudos_window.png" alt="Kudos Window" width="70%">
-</div>
+
+![kudos window image](images/kudos_window.png)
 
 #### Send Kudos (Using command parsing):
    1. Send `/kudos message [@person1] [@person2] [@...] [$value1$] [$value2$] [$value...$] message`
@@ -384,7 +414,7 @@ This section introduces the basic outline and structure of our Bot.
 
 The main entry point to all of our code is `main.py`, which imports all the relevant modules and starts up our bot. It doesn't provide much functionality, but it involves setting up the logger so that we have logs to review when something goes wrong.  
 
-The logging configurations can be found in `main/logging.conf`. 
+The logging configurations can be found in `main/logging.conf`. Which allows you to change the logging level. By default, it is at INFO, which prints out most information when functions are invoked.  
 
 #### team_spirit.py
 
@@ -428,11 +458,11 @@ The rest of the functions in `team_spirit.py` follows a similar logic, where eac
 
 #### design.py
 
-This file stores all of the "view" components that we will use to generate the pop-up windows that will appear when we invoke a specific command.
+This file stores all of the "view" components (JSON dictionaries) that we will use to generate the pop-up windows that will appear when we invoke a specific command.
 
 There are numerous fields that can be filled within these modules, but it is extremely hard to cover all of them. 
 
-You can learn more about how we setup the Modal views using [Slack's Block Kit](https://api.slack.com/tutorials/intro-to-modals-block-kit) and [Slack's Blocks](https://api.slack.com/reference/block-kit/blocks) in their respective hyperlinks. 
+You can learn more about how we setup the Modal views using [Slack's Block Kit](https://api.slack.com/tutorials/intro-to-modals-block-kit) and [Slack's Blocks](https://api.slack.com/reference/block-kit/blocks) in their respective hyperlinks.
 
 ### Database
 This section introduces the design of our database component. We choose to use Microsoft Azure to host our database and PostgreSQL as our main language. We will introduce below the design of our tables and the functionalities we currently support:
@@ -485,7 +515,7 @@ You can view a sample of this schema by checking into `main/database/init.sql`. 
 - Foreign key constraints are established for referential integrity.
 - Appropriate actions on delete (`NO ACTION`, `CASCADE`) are specified based on the relationships.
 - Column data types and constraints are provisionally set; consider adjustments based on specific requirements and constraints.
-- Every id except the id for `copr_values` is generated by slack and is unlikely to collide. The id for `corp_values` is automatically generated by a sequence. 
+- Every id except the id for `corp_values` is generated by slack and is unlikely to collide. The id for `corp_values` is automatically generated by a sequence. 
 - The primary key of `messages` is set to a couple since we want to enable multiple recipients.
 
 
@@ -504,16 +534,20 @@ The following section is some TODOs that we have yet to complete as a part of ou
 
 ### Slack Back End
 1. Our current Bot's home page is completely blank, but it can be setup by using Slack's block kit relatively easily. Completing the Bot's home page allows for a new user to quickly grasp the usage of our bot, hence making it more accessible by users. 
+2. Some of the Slash events like `/echo` (slash command) and `@ mentions` (event listener) are still left within the codebase for new developers to test out Slack's API and have a general feel with the bot. Please remove them when the bot is ready to be deployed to the public.  
 
 ### Documentation
 1. Our current GitHub page doesn't have a wiki page that documents everything in an organized manner. Mostly, we rely on comments that is written directly on the code file, not providing an actual documentation for them, which may cause some issues in terms of communicating.
 
 ### Database 
-1. Multiple injections in the functions of DAOPostgreSQL stem from unforeseen behaviors in the _select_schema helper functions. Invoking this helper function tends to induce instability in the connection to Azure, leading to prolonged query times and potential non-responsiveness. A team member attempted to address this issue by committing the current session after selecting the schema; however, this solution fails to pass the pytest.
+1. Multiple injections in the functions of DAOPostgreSQL stem from unforeseen behaviors in the `_select_schema` helper functions. Invoking this helper function tends to induce instability in the connection to Azure, leading to prolonged query times and potential non-responsiveness.
+   - A team member attempted to address this issue by committing the current session after selecting the schema. However, this solution fails. Even though it passes the tests, the `_select_schema` function does not change the schema we are currently in. 
 
-2. Add an organization goal component to or project. It should behave like company values, but its cope is only restricted in small teams, and they might be more frequently changed by new goals. Think of them as short term tasks. Admins of a workspace/channel should be able to modify them just like company values. 
+2. Add an organization goal component to or project. It should behave like company values, but its cope is only restricted in small teams, and they might be more frequently changed by new goals. Think of them as short term tasks. Admins of a workspace/channel should be able to modify them just like company values.
 
-3. Enhance the robustness of the code by addressing additional edge cases and unexpected behaviors triggered by unusual inputs or connection instability. This proactive approach will contribute to a more resilient and reliable system, capable of handling diverse scenarios effectively.
+3. As mentioned in `database/init.sql`, change the types of `slack_id` in users table and `id` in channels table into fixed length strings. This should not be a big problem as the id's are provided by Slack as strings and they are very unlikely to collide. This improves the performance of the database component. We did not apply this change since we are not sure if those id's are actually fixed length. 
+
+4. Enhance the robustness of the code by addressing additional edge cases and unexpected behaviors triggered by unusual inputs or connection instability. This proactive approach will contribute to a more resilient and reliable system, capable of handling diverse scenarios effectively.
 
 ### Deployment
 1. Notice that currently, our Slack bot is deployed using "Socket mode", which is only recommended as a way of deploying the bot if only used for development purposes. If possible, you can setup your own HTTP server hosting at a domain, which allows you to redirect all sources of HTTP Requests to our bot using Slack's BOLT API. If you plan to distribute the bot into public, this is a necessary step, as socket direct connections are often insecure. 
